@@ -6,9 +6,11 @@
 
 namespace Zicht\Bundle\MenuBundle\Manager;
 
+use \Doctrine\Bundle\DoctrineBundle\Registry;
+
 class MenuManager
 {
-    function __construct(\Doctrine\Bundle\DoctrineBundle\Registry $doctrine)
+    function __construct(Registry $doctrine)
     {
         $this->doctrine = $doctrine;
         $this->items = array();

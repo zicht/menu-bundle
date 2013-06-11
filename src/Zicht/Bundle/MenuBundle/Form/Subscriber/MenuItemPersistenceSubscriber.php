@@ -41,9 +41,11 @@ class MenuItemPersistenceSubscriber implements EventSubscriberInterface
         if ($e->getData() === null) {
             return;
         }
-        if ($item = $this->mm->getItem($this->provider->url($e->getData()))) {
-            $item->setAddToMenu(true);
-            $e->getForm()->get($this->builder->getName())->setData($item);
+        if ($this->provider->supports($e->getData())) {
+            if ($item = $this->mm->getItem($this->provider->url($e->getData()))) {
+                $item->setAddToMenu(true);
+                $e->getForm()->get($this->builder->getName())->setData($item);
+            }
         }
     }
 

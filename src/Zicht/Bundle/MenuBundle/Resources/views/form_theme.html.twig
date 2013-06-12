@@ -13,8 +13,8 @@
 
     <script type="text/javascript">
         (function($) {
-            var dropdown_selector = '#{{ form.parent.get('id') }}';
-            var container = '#{{ form.get('id') }}_controls';
+            var dropdown_selector = '#{{ form.parent.vars.id }}';
+            var container = '#{{ form.vars.id }}_controls';
 
             var addEventHandlers = function() {
                 $(function() {
@@ -59,16 +59,15 @@
 {% block zicht_menu_item_row %}
     {{ form_row(form.add_to_menu) }}
 
-    <div id="{{ form.get('id') }}_config_container">
         {{ form_row(form.parent) }}
         {{ form_rest(form) }}
     </div>
 
     <script type="text/javascript">
         (function($) {
-            var container_selector      = '#{{ form.get('id') }}_config_container';
-            var checkbox_selector       = '#{{ form.add_to_menu.get('id') }}';
-            var parent_field_selector   = '#{{ form.parent.get('id') }}';
+            var container_selector      = '#{{ form.vars.id }}_config_container';
+            var checkbox_selector       = '#{{ form.add_to_menu.vars.id }}';
+            var parent_field_selector   = '#{{ form.parent.vars.id }}';
 
             $(function() {
                 var $checkbox = $(checkbox_selector);

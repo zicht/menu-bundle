@@ -23,5 +23,9 @@
         <service id="zicht_menu.menu_manager" class="Zicht\Bundle\MenuBundle\Manager\MenuManager">
             <argument type="service" id="doctrine" />
         </service>
+        <service id="zicht_menu.menu_builder" class="Zicht\Bundle\MenuBundle\Menu\Builder">
+            <argument type="service" id="knp_menu.factory" />
+            <argument type="service" id="doctrine" />
+        </service>
     </services>
 </container>

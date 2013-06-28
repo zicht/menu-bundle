@@ -43,9 +43,13 @@ class Builder extends ContainerAware
     function build($name, Request $request)
     {
         $root = $this->menuItemEntity->findOneBy(array(
-            'path' => null,
+            'parent' => null,
             'name' => $name
         ));
+
+        if (null === $root) {
+            throw new \InvalidArgumentException("Could not find root item with name '$name'");
+        }
 
         $menu = $this->factory->createItem('root');
         $this->addMenuItemHierarchy($request, $this->menuItemEntity->childrenHierarchy($root), $menu);

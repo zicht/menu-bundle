@@ -3,6 +3,8 @@
 namespace Zicht\Bundle\MenuBundle\DependencyInjection;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Reference;
+use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\DependencyInjection\Loader;
@@ -25,5 +27,20 @@ class ZichtMenuExtension extends Extension
         $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.xml');
         $loader->load('admin.xml');
+
+        if (!empty($config['menus'])) {
+            $service = new Definition('Knp\Menu\MenuItem');
+            $service->setScope('request');
+            $service->setFactoryMethod('build');
+            $service->setFactoryService($config['builder_service']);
+            $service->addArgument(null);
+            $service->addArgument(new Reference('request'));
+            foreach ($config['menus'] as $menuId) {
+                $instance = clone $service;
+                $instance->replaceArgument(0, $menuId);
+                $instance->addTag('knp_menu.menu', array('alias' => $menuId));
+                $container->setDefinition('zicht_menu.menus.' . $menuId, $instance);
+            }
+        }
     }
 }

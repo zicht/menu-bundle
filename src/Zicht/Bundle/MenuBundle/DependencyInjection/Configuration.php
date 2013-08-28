@@ -20,6 +20,16 @@ class Configuration implements ConfigurationInterface
         $treeBuilder = new TreeBuilder();
         $rootNode = $treeBuilder->root('zicht_menu');
 
+        $rootNode
+            ->children()
+                ->scalarNode('builder_service')->end()
+                ->arrayNode('menus')
+                    ->prototype('scalar')->end()
+                    ->end()
+                ->end()
+            ->end()
+        ;
+
         // Here you should define the parameters that are allowed to
         // configure your bundle. See the documentation linked above for
         // more information on that topic.

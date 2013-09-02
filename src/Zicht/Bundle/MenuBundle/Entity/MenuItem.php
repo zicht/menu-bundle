@@ -13,9 +13,15 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * Zicht\Bundle\MenuBundle\Entity\MenuItem
  *
  * @ORM\Entity
- * @ORM\Table(name="menu_item", indexes={@ORM\Index(columns={"name", "path"})})
- * @Gedmo\Tree(type="nested")
+ * @ORM\Table(
+ *      name="menu_item",
+ *      indexes={
+ *          @ORM\Index(columns={"name", "path"}),
+ *          @ORM\Index(columns={"lft", "rgt", "root"})
+ *      }
+ * )
  * @ORM\Entity(repositoryClass="Gedmo\Tree\Entity\Repository\NestedTreeRepository")
+ * @Gedmo\Tree(type="nested")
  */
 class MenuItem
 {

@@ -79,6 +79,11 @@ class MenuItem
     private $title;
 
     /**
+     * @ORM\Column(name="language", type="string", length=5, nullable=true)
+     */
+    private $language = null;
+
+    /**
      * @var string $path
      *
      * @ORM\Column(name="path", type="string", length=255, nullable=true)
@@ -354,5 +359,15 @@ class MenuItem
     public function isAddToMenu()
     {
         return $this->addToMenu;
+    }
+
+    public function setLanguage($language)
+    {
+        $this->language = $language;
+    }
+
+    public function getLanguage()
+    {
+        return $this->language;
     }
 }

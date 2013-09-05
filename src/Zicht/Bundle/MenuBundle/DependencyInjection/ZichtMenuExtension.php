@@ -1,13 +1,17 @@
 <?php
+/**
+ * @author Gerard van Helden <gerard@zicht.nl>
+ * @copyright Zicht online <http://zicht.nl>
+ */
 
 namespace Zicht\Bundle\MenuBundle\DependencyInjection;
 
-use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Reference;
-use Symfony\Component\DependencyInjection\Definition;
-use Symfony\Component\Config\FileLocator;
-use Symfony\Component\HttpKernel\DependencyInjection\Extension;
-use Symfony\Component\DependencyInjection\Loader;
+use \Symfony\Component\DependencyInjection\ContainerBuilder;
+use \Symfony\Component\DependencyInjection\Reference;
+use \Symfony\Component\DependencyInjection\Definition;
+use \Symfony\Component\Config\FileLocator;
+use \Symfony\Component\HttpKernel\DependencyInjection\Extension;
+use \Symfony\Component\DependencyInjection\Loader;
 
 /**
  * This is the class that loads and manages your bundle configuration
@@ -42,5 +46,9 @@ class ZichtMenuExtension extends Extension
                 $container->setDefinition('zicht_menu.menus.' . $menuId, $instance);
             }
         }
+
+        $formResources = $container->getParameter('twig.form.resources');
+        $formResources[]= 'ZichtMenuBundle::form_theme.html.twig';
+        $container->setParameter('twig.form.resources', $formResources);
     }
 }

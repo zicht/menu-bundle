@@ -17,7 +17,7 @@
         <service id="zicht_menu.form.zicht_menu_item_type" class="Zicht\Bundle\MenuBundle\Form\MenuItemType">
             <tag name="form.type" alias="zicht_menu_item"/>
             <argument type="service" id="zicht_menu.menu_manager" />
-            <argument type="service" id="zicht_url.request_aware_provider" strict="false" />
+            <argument type="service" id="zicht_url.provider" />
             <argument type="service" id="router" />
         </service>
         <service id="zicht_menu.menu_manager" class="Zicht\Bundle\MenuBundle\Manager\MenuManager">

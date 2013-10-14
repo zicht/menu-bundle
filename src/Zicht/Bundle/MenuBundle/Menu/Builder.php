@@ -5,31 +5,44 @@
  */
 namespace Zicht\Bundle\MenuBundle\Menu;
 
-use Knp\Menu\FactoryInterface;
-use Symfony\Component\DependencyInjection\ContainerAware;
-use Symfony\Component\HttpFoundation\Request;
+use \Knp\Menu\FactoryInterface;
+use \InvalidArgumentException;
+use \Symfony\Component\DependencyInjection\ContainerAware;
+use \Symfony\Component\HttpFoundation\Request;
+use \Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
+
+/**
+ *
+ */
 class Builder extends ContainerAware
 {
     /**
      * @var \Knp\Menu\FactoryInterface
      */
-    private $factory;
+    protected $factory;
 
     /**
      * @var \Gedmo\Tree\Entity\Repository\NestedTreeRepository
      */
-    private $menuItemEntity;
+    protected $menuItemEntity;
+
+    /**
+     * @var \Doctrine\Bundle\DoctrineBundle\Registry
+     */
+    protected $em;
 
 
     /**
      * @param FactoryInterface $factory
      * @param \Doctrine\Bundle\DoctrineBundle\Registry $doctrine
+     * @param string $entity
      */
     public function __construct(FactoryInterface $factory, $doctrine, $entity = 'ZichtMenuBundle:MenuItem')
     {
         $this->factory = $factory;
-        $this->menuItemEntity = $doctrine->getManager()->getRepository($entity);;
+        $this->em = $doctrine->getManager();
+        $this->menuItemEntity = $this->em->getRepository($entity);;
     }
 
 
@@ -51,6 +64,22 @@ class Builder extends ContainerAware
             throw new \InvalidArgumentException("Could not find root item with name '$name'");
         }
 
+        return $this->createMenu($request, $root);
+    }
+
+
+    /**
+     * @param $request
+     * @param $root
+     * @return \Knp\Menu\ItemInterface
+     * @throws \InvalidArgumentException
+     */
+    public function createMenu($request, $root)
+    {
+        if (!$root) {
+            var_dump($root);
+            throw new InvalidArgumentException("Invalid root item");
+        }
         $menu = $this->factory->createItem('root');
         $this->addMenuItemHierarchy($request, $this->menuItemEntity->childrenHierarchy($root), $menu);
         $menu->setCurrentUri($request->getRequestUri());
@@ -97,5 +126,26 @@ class Builder extends ContainerAware
         );
 
         return $menuItem;
+    }
+
+
+    /**
+     * Adds an item on the fly that was not originally in the menu.
+     *
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param \Knp\Menu\ItemInterface $item
+     * @return void
+     */
+    public function addGhostItem(Request $request, $item)
+    {
+        $item->addChild(
+            $this->factory->createItem(
+                $this->currentPage ? $this->currentPage->getTitle() : '',
+                array(
+                    'uri' => $request->getRequestUri(),
+                    'display' => false
+                )
+            )
+        );
     }
 }

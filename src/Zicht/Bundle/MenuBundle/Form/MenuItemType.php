@@ -6,11 +6,12 @@
 namespace Zicht\Bundle\MenuBundle\Form;
 
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Zicht\Bundle\UrlBundle\Url\Provider;
 use Symfony\Component\Form\FormBuilderInterface;
 
 class MenuItemType extends \Symfony\Component\Form\AbstractType
 {
-    public function __construct($menuManager, $urlProvider)
+    public function __construct($menuManager, Provider $urlProvider)
     {
         $this->menuManager = $menuManager;
         $this->urlProvider = $urlProvider;

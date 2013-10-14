@@ -136,11 +136,11 @@ class Builder extends ContainerAware
      * @param \Knp\Menu\ItemInterface $item
      * @return void
      */
-    public function addGhostItem(Request $request, $item)
+    public function addGhostItem(Request $request, $item, $title = '')
     {
         $item->addChild(
             $this->factory->createItem(
-                $this->currentPage ? $this->currentPage->getTitle() : '',
+                $title,
                 array(
                     'uri' => $request->getRequestUri(),
                     'display' => false

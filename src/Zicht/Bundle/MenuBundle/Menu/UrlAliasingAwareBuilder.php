@@ -17,6 +17,7 @@ class UrlAliasingAwareBuilder extends Builder
                 menu_item.title,
                 COALESCE(url_alias.public_url, menu_item.path) as path,
                 menu_item.id,
+                menu_item.lvl,
                 menu_item.name,
                 menu_item.parent_id,
                 menu_item.path as path_alias
@@ -38,17 +39,14 @@ class UrlAliasingAwareBuilder extends Builder
             $root->getLvl()
         );
         $hierarchy = $this->em->getConnection()->query($query)->fetchAll(\PDO::FETCH_ASSOC);
-        $items = array();
-        foreach ($hierarchy as &$item) {
-            $items[$item['id']] = &$item;
-            unset($item);
-        }
-        foreach ($hierarchy as &$item) {
-            $items[$item['parent_id']]['__children'][]=& $item;
-            unset($item);
-        }
         $menu = $this->factory->createItem('root');
-        $this->addMenuItemHierarchy($request, $items[$root->getId()]['__children'], $menu);
+
+        $this->addMenuItemHierarchy(
+            $request,
+            $this->menuItemEntity->buildTree($hierarchy),
+            $menu
+        );
+
         $menu->setCurrentUri($request->getRequestUri());
         return $menu;
     }

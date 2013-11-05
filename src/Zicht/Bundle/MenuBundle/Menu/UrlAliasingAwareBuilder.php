@@ -9,6 +9,11 @@ use \Zicht\Bundle\UrlBundle\Entity\UrlAlias;
 
 class UrlAliasingAwareBuilder extends Builder
 {
+    /**
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param $root
+     * @return \Knp\Menu\ItemInterface
+     */
     public function createMenu($request, $root)
     {
         /** @var $qb \Doctrine\ORM\QueryBuilder */
@@ -20,7 +25,7 @@ class UrlAliasingAwareBuilder extends Builder
                 menu_item.lvl,
                 menu_item.name,
                 menu_item.parent_id,
-                menu_item.path as path_alias
+                menu_item.path as internal_url
             FROM
                 menu_item
                     LEFT JOIN url_alias ON(
@@ -47,7 +52,28 @@ class UrlAliasingAwareBuilder extends Builder
             $menu
         );
 
-        $menu->setCurrentUri($request->getRequestUri());
+        /** @var $items \Knp\Menu\ItemInterface[] */
+        $items = new \RecursiveIteratorIterator(
+            new \Knp\Menu\Iterator\RecursiveItemIterator($menu),
+            \RecursiveIteratorIterator::CHILD_FIRST
+        );
+
+        foreach ($items as $item) {
+            if ($item->getUri() === $request->getRequestUri()) {
+                $item->setCurrent(true);
+                break;
+            } elseif($item->getUri() === $request->attributes->get('_internal_url')) {
+                $item->setCurrent(true);
+                break;
+            } elseif ($item->getExtra('internal_url') === $request->getRequestUri()) {
+                $item->setCurrent(true);
+                break;
+            } elseif ($item->getExtra('internal_url') === $request->attributes->get('_internal_url')) {
+                $item->setCurrent(true);
+                break;
+            }
+        }
+
         return $menu;
     }
 }

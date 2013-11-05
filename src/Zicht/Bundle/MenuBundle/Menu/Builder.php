@@ -124,7 +124,7 @@ class Builder extends ContainerAware
                 'attributes' => $attributes
             )
         );
-
+        $menuItem->setExtras($item);
         return $menuItem;
     }
 

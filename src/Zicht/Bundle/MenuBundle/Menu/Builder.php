@@ -42,7 +42,7 @@ class Builder extends ContainerAware
     {
         $this->factory = $factory;
         $this->em = $doctrine->getManager();
-        $this->menuItemEntity = $this->em->getRepository($entity);;
+        $this->menuItemEntity = $this->em->getRepository($entity);
     }
 
 
@@ -52,19 +52,38 @@ class Builder extends ContainerAware
      * @param string $name
      * @param \Symfony\Component\HttpFoundation\Request $request
      * @return \Knp\Menu\ItemInterface
+     *
+     * @throws \InvalidArgumentException
      */
-    function build($name, Request $request)
+    public function build($name, Request $request)
     {
-        $root = $this->menuItemEntity->findOneBy(array(
-            'parent' => null,
-            'name' => $name
-        ));
+        $root = $this->getRootItemByName($name, $request);
 
         if (null === $root) {
             throw new \InvalidArgumentException("Could not find root item with name '$name'");
         }
 
         return $this->createMenu($request, $root);
+    }
+
+
+    /**
+     * Get the root item based on the specified name and request.
+     *
+     * @param string $name
+     * @param Request $request
+     * @return mixed
+     */
+    public function getRootItemByName($name, $request)
+    {
+        $params = array(
+            'parent' => null,
+            'name'   => $name
+        );
+        if ($request->get('_locale')) {
+            $params['language']= $request->get('_locale');
+        }
+        return $this->menuItemEntity->findOneBy($params);
     }
 
 

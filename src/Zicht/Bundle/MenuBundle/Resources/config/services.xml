@@ -6,6 +6,7 @@
 
     <parameters>
         <parameter key="zicht_menu.item_entity">Zicht\Bundle\MenuBundle\Entity\MenuItem</parameter>
+        <parameter key="zicht_menu.menu_builder.class">Zicht\Bundle\MenuBundle\Entity\MenuItem</parameter>
     </parameters>
     <services>
         <service id="zicht_menu.url_provider" class="Zicht\Bundle\MenuBundle\Url\MenuItemNameUrlProvider">

@@ -76,14 +76,24 @@ class Builder extends ContainerAware
      */
     public function getRootItemByName($name, $request)
     {
+        $ret = null;
         $params = array(
             'parent' => null,
             'name'   => $name
         );
         if ($request->get('_locale')) {
             $params['language']= $request->get('_locale');
+            $ret = $this->menuItemEntity->findOneBy($params);
+
+            // Fallback to "no locale".
+            if (!$ret) {
+                unset($params['language']);
+            }
         }
-        return $this->menuItemEntity->findOneBy($params);
+        if (!$ret) {
+            $ret = $this->menuItemEntity->findOneBy($params);
+        }
+        return $ret;
     }
 
 
@@ -96,7 +106,6 @@ class Builder extends ContainerAware
     public function createMenu($request, $root)
     {
         if (!$root) {
-            var_dump($root);
             throw new InvalidArgumentException("Invalid root item");
         }
         $menu = $this->factory->createItem('root');

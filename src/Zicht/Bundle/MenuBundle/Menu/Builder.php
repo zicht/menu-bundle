@@ -134,12 +134,18 @@ class Builder extends ContainerAware
         if ($name = $item['name']) {
             $attributes['class'] = $name;
         }
-        $baseUrl = $request->getBaseUrl();
+
+        if (preg_match('!^(?:https?://|mailto:)!', $item['path'])) {
+            $uri = $item['path'];
+        } else {
+            $baseUrl = $request->getBaseUrl();
+            $uri = $baseUrl . '/' . ltrim($item['path'], '/');
+        }
 
         $menuItem = $menu->addChild(
             $item['title'],
             array(
-                'uri' => $baseUrl . '/' . ltrim($item['path'], '/'),
+                'uri'        => $uri,
                 'attributes' => $attributes
             )
         );

@@ -15,7 +15,7 @@ class MenuItemAdmin extends TreeAdmin
     {
         parent::configureFormFields($formMapper);
         $formMapper
-            ->add('path', 'zicht_url')
+            ->add('path', 'zicht_url', array('required' => false))
             ->add('name')
         ;
 

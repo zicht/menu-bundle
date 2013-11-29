@@ -1,8 +1,8 @@
 {% block zicht_parent_choice_widget %}
     <div class="controls">
 
-    <span id="{{ form.get('id') }}_controls" style="cursor: pointer">
-        {% for parent in form.get('parents') %}
+    <span id="{{ form.vars.id }}_controls" style="cursor: pointer">
+        {% for parent in form.vars.parents %}
             <span class="parent" data-id="{{ parent.parent.id|default('') }}">
                 {{ parent }} &gt;
             </span>

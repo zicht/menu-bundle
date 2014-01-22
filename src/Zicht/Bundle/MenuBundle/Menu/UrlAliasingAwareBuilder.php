@@ -65,10 +65,10 @@ class UrlAliasingAwareBuilder extends Builder
             } elseif($item->getUri() === $request->attributes->get('_internal_url')) {
                 $item->setCurrent(true);
                 break;
-            } elseif ($item->getExtra('internal_url') === $request->getRequestUri()) {
+            } elseif ($item->getExtra('internal_url') && $item->getExtra('internal_url') === $request->getRequestUri()) {
                 $item->setCurrent(true);
                 break;
-            } elseif ($item->getExtra('internal_url') === $request->attributes->get('_internal_url')) {
+            } elseif ($item->getExtra('internal_url') && $item->getExtra('internal_url') === $request->attributes->get('_internal_url')) {
                 $item->setCurrent(true);
                 break;
             }

@@ -21,7 +21,7 @@ class MenuItemAdmin extends TreeAdmin
         ;
 
         $formMapper->setHelps(array(
-            'name' => 'Name can be used as an url reference in code'
+            'name' => 'help.name'
         ));
     }
 

@@ -1,5 +1,5 @@
-add_to_menu: Toevoegen aan menu
-parent: Ouder
+add_to_menu: Opnemen in navigatiestructuur
+parent: Hoofditem
 title: Titel
 
 help.name: Naam kan gebruikt worden als url referentie in code

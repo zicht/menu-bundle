@@ -5,9 +5,9 @@
  */
 namespace Zicht\Bundle\MenuBundle\Form;
 
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Zicht\Bundle\UrlBundle\Url\Provider;
-use Symfony\Component\Form\FormBuilderInterface;
+use \Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use \Symfony\Component\Form\FormBuilderInterface;
+use \Zicht\Bundle\UrlBundle\Url\Provider;
 
 class MenuItemType extends \Symfony\Component\Form\AbstractType
 {

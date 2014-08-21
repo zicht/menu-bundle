@@ -25,15 +25,19 @@ class UrlAliasingAwareBuilder extends Builder
                 menu_item.lvl,
                 menu_item.name,
                 menu_item.parent_id,
-                menu_item.path as internal_url
+                COALESCE(url_alias.internal_url, url_alias2.internal_url, menu_item.path) as internal_url
             FROM
                 menu_item
                     LEFT JOIN url_alias ON(
                         menu_item.path=url_alias.internal_url
-                        AND url_alias.mode=%d
+                        AND url_alias.mode=%1$d
+                    )
+                    LEFT JOIN url_alias url_alias2 ON(
+                        menu_item.path=url_alias.public_url
+                        AND url_alias.mode=%1$d
                     )
             WHERE
-                menu_item.lft BETWEEN %d AND %d AND menu_item.root=%d AND lvl > %d
+                menu_item.lft BETWEEN %2$d AND %3$d AND menu_item.root=%4$d AND lvl > %5$d
             ORDER BY
                 menu_item.lft
             ',
@@ -43,6 +47,7 @@ class UrlAliasingAwareBuilder extends Builder
             $root->getRoot(),
             $root->getLvl()
         );
+
         $hierarchy = $this->em->getConnection()->query($query)->fetchAll(\PDO::FETCH_ASSOC);
         $menu = $this->factory->createItem('root');
 

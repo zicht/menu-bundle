@@ -58,7 +58,7 @@ class MenuItemPersistenceSubscriber implements EventSubscriberInterface
                 if (!$menuItem->getTitle()) {
                     $menuItem->setTitle((string) $e->getData());
                 }
-                $menuItem->setPath($this->provider->url($e->getData()));
+                $menuItem->setPath($this->provider->url($e->getData(), array('aliasing' => false)));
                 $this->mm->addItem($menuItem);
             } elseif ($menuItem->getId()) {
                 $this->mm->removeItem($menuItem);

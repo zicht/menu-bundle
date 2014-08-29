@@ -119,12 +119,15 @@ class Builder extends ContainerAware
 
     public function addMenuItemHierarchy($request, $children, $parent)
     {
+        $ret = 0;
         foreach ($children as $child) {
+            $ret ++;
             $item = $this->addMenuItem($request, $child, $parent);
             if (!empty($child['__children'])) {
-                $this->addMenuItemHierarchy($request, $child['__children'], $item);
+                $ret += $this->addMenuItemHierarchy($request, $child['__children'], $item);
             }
         }
+        return $ret;
     }
 
 
@@ -152,10 +155,11 @@ class Builder extends ContainerAware
         }
 
         $menuItem = $menu->addChild(
-            $item['title'],
+            $item['id'],
             array(
                 'uri'        => $uri,
-                'attributes' => $attributes
+                'attributes' => $attributes,
+                'label'      => $item['title']
             )
         );
         $menuItem->setExtras($item);
@@ -174,10 +178,11 @@ class Builder extends ContainerAware
     {
         $item->addChild(
             $this->factory->createItem(
-                $title,
+                $item['id'],
                 array(
                     'uri' => $request->getRequestUri(),
-                    'display' => false
+                    'display' => false,
+                    'label' => $item['title']
                 )
             )
         );

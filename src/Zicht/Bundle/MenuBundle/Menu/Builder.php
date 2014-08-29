@@ -143,6 +143,7 @@ class Builder extends ContainerAware
     public function addMenuItem(Request $request, $item, \Knp\Menu\MenuItem $menu) {
         $attributes = array();
 
+        // if the menu item has a name, add it as a css class.
         if ($name = $item['name']) {
             $attributes['class'] = $name;
         }

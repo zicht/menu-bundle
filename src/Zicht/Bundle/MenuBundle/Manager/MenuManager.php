@@ -88,7 +88,7 @@ class MenuManager
      * Finds an item in the menu repository by specific property (either 'name' or 'path')
      *
      * @param array $parameters Array containing keys ':name' or ':path'
-     * @param MenuItem $ancestor Optional MenuItem whose children will be searched
+     * @param MenuItem $ancestor Optional MenuItem whose descendants will be searched
      * @return \Zicht\Bundle\MenuBundle\Entity\MenuItem
      *
      * @throws \Exception

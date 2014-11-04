@@ -9,12 +9,18 @@ namespace Zicht\Bundle\MenuBundle\Manager;
 use \Doctrine\Bundle\DoctrineBundle\Registry;
 use \Zicht\Bundle\MenuBundle\Entity\MenuItem;
 
+/**
+ * Class MenuManager
+ * @package Zicht\Bundle\MenuBundle\Manager
+ */
 class MenuManager
 {
     /**
+     * Constructor.
+     *
      * @param Registry $doctrine
      */
-    function __construct(Registry $doctrine)
+    public function __construct(Registry $doctrine)
     {
         $this->doctrine = $doctrine;
         $this->items = array();
@@ -23,27 +29,35 @@ class MenuManager
 
 
     /**
+     * Registers a menu item to add
+     *
      * @param MenuItem $item
+     * @return void
      */
-    function addItem(\Zicht\Bundle\MenuBundle\Entity\MenuItem $item)
+    public function addItem(MenuItem $item)
     {
         $this->items[]= $item;
     }
 
 
     /**
+     * Registers a menu item to remove
+     *
      * @param MenuItem $item
+     * @return void
      */
-    function removeItem(\Zicht\Bundle\MenuBundle\Entity\MenuItem $item)
+    public function removeItem(MenuItem $item)
     {
         $this->remove[]= $item;
     }
 
 
     /**
-     * @param bool $flush
+     * Registers a menu item to remove
+     *
+     * @param bool $flushEntityManager
      */
-    function flush($flush = false)
+    public function flush($flushEntityManager = false)
     {
         foreach ($this->items as $item) {
             $this->doctrine->getManager()->persist($item);
@@ -51,7 +65,7 @@ class MenuManager
         foreach ($this->remove as $item) {
             $this->doctrine->getManager()->remove($item);
         }
-        if ($flush) {
+        if ($flushEntityManager) {
             $this->doctrine->getManager()->flush();
         }
     }
@@ -69,12 +83,17 @@ class MenuManager
         return $this->doctrine->getManager()->getRepository('ZichtMenuBundle:MenuItem')->findOneByPath($path);
     }
 
+
     /**
+     * Finds an item in the menu repository by specific property (either 'name' or 'path')
+     *
      * @param array $parameters Array containing keys ':name' or ':path'
      * @param MenuItem $ancestor Optional MenuItem whose children will be searched
      * @return \Zicht\Bundle\MenuBundle\Entity\MenuItem
+     *
+     * @throws \Exception
      */
-    public function getItemBy(array $parameters, MenuItem $ancestor=null)
+    public function getItemBy(array $parameters, MenuItem $ancestor = null)
     {
         $where = array();
         foreach ($parameters as $key=>$value) {
@@ -99,7 +118,15 @@ class MenuManager
         }
 
         /** @var \Doctrine\Orm\Query $query */
-        $query = $this->doctrine->getManager()->createQuery(join(' ', array('SELECT m FROM ZichtMenuBundle:MenuItem m WHERE', join(' AND ', $where))));
+        $query = $this->doctrine->getManager()->createQuery(
+            join(
+                ' ',
+                array(
+                    'SELECT m FROM ZichtMenuBundle:MenuItem m WHERE',
+                    join(' AND ', $where)
+                )
+            )
+        );
         $query->setParameters($parameters);
         $query->setMaxResults(1);
         return current($query->getResult());

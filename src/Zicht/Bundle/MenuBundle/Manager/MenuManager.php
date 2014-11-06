@@ -89,9 +89,7 @@ class MenuManager
      *
      * @param array $parameters Array containing keys ':name' or ':path'
      * @param MenuItem $ancestor Optional MenuItem whose descendants will be searched
-     * @return \Zicht\Bundle\MenuBundle\Entity\MenuItem
-     *
-     * @throws \Exception
+     * @return null|\Zicht\Bundle\MenuBundle\Entity\MenuItem
      */
     public function getItemBy(array $parameters, MenuItem $ancestor = null)
     {
@@ -129,6 +127,12 @@ class MenuManager
         );
         $query->setParameters($parameters);
         $query->setMaxResults(1);
-        return current($query->getResult());
+
+        $result = $query->getResult();
+        if (empty($result)) {
+            return null;
+        }
+
+        return current($result);
     }
 }

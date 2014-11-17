@@ -6,8 +6,10 @@
 
 namespace Zicht\Bundle\MenuBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Mapping\Annotation as Gedmo;
+use \Doctrine\Common\Collections\ArrayCollection;
+use \Doctrine\Common\Collections\Collection;
+use \Doctrine\ORM\Mapping as ORM;
+use \Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * Zicht\Bundle\MenuBundle\Entity\MenuItem
@@ -111,7 +113,7 @@ class MenuItem
      */
     public function __construct($title = null, $path = null, $name = '')
     {
-        $this->children = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->children = new ArrayCollection();
 
         $this->setTitle($title);
         $this->setPath($path);
@@ -132,7 +134,7 @@ class MenuItem
      * Set title
      *
      * @param string $title
-     * @return Page
+     * @return MenuItem
      */
     public function setTitle($title)
     {
@@ -182,10 +184,10 @@ class MenuItem
     /**
      * Set parent
      *
-     * @param Zicht\Bundle\MenuBundle\Entity\MenuItem $parent
+     * @param MenuItem $parent
      * @return MenuItem
      */
-    public function setParent(\Zicht\Bundle\MenuBundle\Entity\MenuItem $parent = null)
+    public function setParent(MenuItem $parent = null)
     {
         $this->parent = $parent;
 
@@ -195,7 +197,7 @@ class MenuItem
     /**
      * Get parent
      *
-     * @return Zicht\Bundle\MenuBundle\Entity\MenuItem
+     * @return MenuItem
      */
     public function getParent()
     {
@@ -205,30 +207,54 @@ class MenuItem
     /**
      * Add children
      *
-     * @param Zicht\Bundle\MenuBundle\Entity\MenuItem $children
+     * @param MenuItem $children
      * @return MenuItem
+     * @deprecated addChildren (i.e. plural) is confusing, use addChild instead
      */
-    public function addChildren(\Zicht\Bundle\MenuBundle\Entity\MenuItem $children)
+    public function addChildren(MenuItem $children)
     {
-        $this->children[] = $children;
+        return $this->addChild($children);
+    }
 
+    /**
+     * Add a child menu item
+     *
+     * @param MenuItem $child
+     * @return $this
+     */
+    public function addChild(MenuItem $child)
+    {
+        $this->children[] = $child;
         return $this;
     }
 
     /**
      * Remove children
      *
-     * @param Zicht\Bundle\MenuBundle\Entity\MenuItem $children
+     * @param MenuItem $children
+     * @deprecated removeChildren (i.e. plural) is confusing, use removeChild instead
      */
-    public function removeChildren(\Zicht\Bundle\MenuBundle\Entity\MenuItem $children)
+    public function removeChildren(MenuItem $children)
     {
-        $this->children->removeElement($children);
+        return $this->removeChild($children);
+    }
+
+    /**
+     * Remove a child menu item
+     *
+     * @param MenuItem $child
+     * @return $this
+     */
+    public function removeChild(MenuItem $child)
+    {
+        $this->children->removeElement($child);
+        return $this;
     }
 
     /**
      * Get children
      *
-     * @return Doctrine\Common\Collections\Collection
+     * @return Collection
      */
     public function getChildren()
     {

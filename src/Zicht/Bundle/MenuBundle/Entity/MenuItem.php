@@ -6,8 +6,9 @@
 
 namespace Zicht\Bundle\MenuBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Mapping\Annotation as Gedmo;
+use \Doctrine\Common\Collections\ArrayCollection;
+use \Doctrine\ORM\Mapping as ORM;
+use \Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * Zicht\Bundle\MenuBundle\Entity\MenuItem
@@ -105,7 +106,7 @@ class MenuItem
      */
     public function __construct($title = null, $path = null, $name = '')
     {
-        $this->children = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->children = new ArrayCollection();
 
         $this->setTitle($title);
         $this->setPath($path);
@@ -144,6 +145,9 @@ class MenuItem
         return $this->title;
     }
 
+    /**
+     * @return string
+     */
     public function getLeveledTitle()
     {
         return str_repeat('-', $this->lvl) . $this->title;
@@ -176,10 +180,10 @@ class MenuItem
     /**
      * Set parent
      *
-     * @param Zicht\Bundle\MenuBundle\Entity\MenuItem $parent
+     * @param \Zicht\Bundle\MenuBundle\Entity\MenuItem $parent
      * @return MenuItem
      */
-    public function setParent(\Zicht\Bundle\MenuBundle\Entity\MenuItem $parent = null)
+    public function setParent(MenuItem $parent = null)
     {
         $this->parent = $parent;
 
@@ -189,7 +193,7 @@ class MenuItem
     /**
      * Get parent
      *
-     * @return Zicht\Bundle\MenuBundle\Entity\MenuItem
+     * @return \Zicht\Bundle\MenuBundle\Entity\MenuItem
      */
     public function getParent()
     {
@@ -199,10 +203,10 @@ class MenuItem
     /**
      * Add children
      *
-     * @param Zicht\Bundle\MenuBundle\Entity\MenuItem $children
+     * @param \Zicht\Bundle\MenuBundle\Entity\MenuItem $children
      * @return MenuItem
      */
-    public function addChildren(\Zicht\Bundle\MenuBundle\Entity\MenuItem $children)
+    public function addChildren(MenuItem $children)
     {
         $this->children[] = $children;
 
@@ -212,9 +216,9 @@ class MenuItem
     /**
      * Remove children
      *
-     * @param Zicht\Bundle\MenuBundle\Entity\MenuItem $children
+     * @param \Zicht\Bundle\MenuBundle\Entity\MenuItem $children
      */
-    public function removeChildren(\Zicht\Bundle\MenuBundle\Entity\MenuItem $children)
+    public function removeChildren(MenuItem $children)
     {
         $this->children->removeElement($children);
     }
@@ -222,13 +226,16 @@ class MenuItem
     /**
      * Get children
      *
-     * @return Doctrine\Common\Collections\Collection
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getChildren()
     {
         return $this->children;
     }
 
+    /**
+     * @return string
+     */
     public function __toString()
     {
         return (string)$this->title;
@@ -279,6 +286,10 @@ class MenuItem
     {
         return $this->lvl;
     }
+
+    /**
+     * @return mixed
+     */
     public function getLevel()
     {
         // TODO renamed "lvl" to level in the db, so tree_title.html.twig in ZichtFrameworkExtraBundle won't die on us.
@@ -332,41 +343,65 @@ class MenuItem
     }
 
 
+    /**
+     * @return bool
+     */
     public function isRoot()
     {
         return $this->root == $this->id;
     }
 
 
+    /**
+     * @param $name
+     */
     public function setName($name)
     {
         $this->name = $name;
     }
 
 
+    /**
+     * @return null
+     */
     public function getName()
     {
         return $this->name;
     }
 
 
+    /**
+     * @var bool
+     */
     protected $addToMenu = false;
 
+    /**
+     * @param $addToMenu
+     */
     public function setAddToMenu($addToMenu)
     {
         $this->addToMenu = $addToMenu;
     }
 
+    /**
+     * @return bool
+     */
     public function isAddToMenu()
     {
         return $this->addToMenu;
     }
 
+    /**
+     * @param $language
+     */
     public function setLanguage($language)
     {
         $this->language = $language;
     }
 
+    /**
+     * @return null
+     */
     public function getLanguage()
     {
         return $this->language;

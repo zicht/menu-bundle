@@ -1,6 +1,7 @@
 <?php
 /**
  * @author Jeroen Fiege <jeroenf@zicht.nl>
+ * @author Boudewijn Schoon <boudewijn@zicht.nl>
  * @copyright Zicht Online <http://www.zicht.nl>
  */
 
@@ -92,7 +93,6 @@ class MenuItem
      */
     private $path = null;
 
-
     /**
      * Optional menu item name, used to hook dynamic items into the menu.
      *
@@ -100,6 +100,12 @@ class MenuItem
      */
     private $name = null;
 
+    /**
+     * Optional menu item name, used to hook dynamic items into the menu.
+     *
+     * @ORM\Column(name="json_data", type="json_array", nullable=true)
+     */
+    private $json_data = null;
 
     /**
      * Constructor
@@ -405,5 +411,21 @@ class MenuItem
     public function getLanguage()
     {
         return $this->language;
+    }
+
+    /**
+     * @param mixed $json_data
+     */
+    public function setJsonData($json_data)
+    {
+        $this->json_data = $json_data;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getJsonData()
+    {
+        return $this->json_data;
     }
 }

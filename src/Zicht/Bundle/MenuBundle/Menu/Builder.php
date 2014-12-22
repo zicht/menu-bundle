@@ -7,6 +7,7 @@ namespace Zicht\Bundle\MenuBundle\Menu;
 
 use \Knp\Menu\FactoryInterface;
 use \InvalidArgumentException;
+use \Knp\Menu\MenuItem;
 use \Symfony\Component\DependencyInjection\ContainerAware;
 use \Symfony\Component\HttpFoundation\Request;
 use \Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -45,7 +46,6 @@ class Builder extends ContainerAware
         $this->menuItemEntity = $this->em->getRepository($entity);
     }
 
-
     /**
      * Create the menu based on the doctrine model.
      *
@@ -65,7 +65,6 @@ class Builder extends ContainerAware
 
         return $this->createMenu($request, $root);
     }
-
 
     /**
      * Get the root item based on the specified name and request.
@@ -96,7 +95,6 @@ class Builder extends ContainerAware
         return $ret;
     }
 
-
     /**
      * @param $request
      * @param $root
@@ -115,8 +113,6 @@ class Builder extends ContainerAware
         return $menu;
     }
 
-
-
     public function addMenuItemHierarchy($request, $children, $parent)
     {
         $ret = 0;
@@ -130,17 +126,16 @@ class Builder extends ContainerAware
         return $ret;
     }
 
-
     /**
      * Utility method to convert MenuItem's from the doctrine model to Knp MenuItems
      *
      * @param \Symfony\Component\HttpFoundation\Request $request
-     * @param \Zicht\Bundle\MenuBundle\Entity\MenuItem $item
-     * @param \Knp\Menu\MenuItem $menu
+     * @param array $item
+     * @param MenuItem $menu
      *
      * @return \Knp\Menu\ItemInterface
      */
-    public function addMenuItem(Request $request, $item, \Knp\Menu\MenuItem $menu) {
+    public function addMenuItem(Request $request, array $item, MenuItem $menu) {
         $attributes = array();
 
         // if the menu item has a name, add it as a css class.
@@ -163,10 +158,14 @@ class Builder extends ContainerAware
                 'label'      => $item['title']
             )
         );
+
+        if (isset($item['json_data'])) {
+            $item['json_data'] = json_decode($item['json_data']);
+        }
+
         $menuItem->setExtras($item);
         return $menuItem;
     }
-
 
     /**
      * Adds an item on the fly that was not originally in the menu.

@@ -3,8 +3,10 @@
  * @author Gerard van Helden <gerard@zicht.nl>
  * @copyright Zicht Online <http://zicht.nl>
  */
+
 namespace Zicht\Bundle\MenuBundle\Menu;
 
+use \Knp\Menu\Iterator\RecursiveItemIterator;
 use \Zicht\Bundle\UrlBundle\Entity\UrlAlias;
 
 class UrlAliasingAwareBuilder extends Builder
@@ -25,6 +27,7 @@ class UrlAliasingAwareBuilder extends Builder
                 menu_item.lvl,
                 menu_item.name,
                 menu_item.parent_id,
+                menu_item.json_data,
                 COALESCE(url_alias.internal_url, url_alias2.internal_url, menu_item.path) as internal_url
             FROM
                 menu_item
@@ -58,10 +61,7 @@ class UrlAliasingAwareBuilder extends Builder
         );
 
         /** @var $items \Knp\Menu\ItemInterface[] */
-        $items = new \RecursiveIteratorIterator(
-            new \Knp\Menu\Iterator\RecursiveItemIterator($menu),
-            \RecursiveIteratorIterator::CHILD_FIRST
-        );
+        $items = new \RecursiveIteratorIterator(new RecursiveItemIterator($menu), \RecursiveIteratorIterator::CHILD_FIRST);
 
         foreach ($items as $item) {
             if ($item->getUri() === $request->getRequestUri()) {

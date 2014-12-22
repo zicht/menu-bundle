@@ -1,6 +1,7 @@
 <?php
 /**
  * @author Jeroen Fiege <jeroenf@zicht.nl>
+ * @author Boudewijn Schoon <boudewijn@zicht.nl>
  * @copyright Zicht Online <http://www.zicht.nl>
  */
 
@@ -93,7 +94,6 @@ class MenuItem
      */
     private $path = null;
 
-
     /**
      * Optional menu item name, used to hook dynamic items into the menu.
      *
@@ -107,6 +107,13 @@ class MenuItem
      * @ORM\Column(name="is_collapsible", type="boolean", nullable=true)
      */
     private $is_collapsible = false;
+
+    /**
+     * Optional menu item name, used to hook dynamic items into the menu.
+     *
+     * @ORM\Column(name="json_data", type="json_array", nullable=true)
+     */
+    private $json_data = null;
 
     /**
      * Constructor
@@ -152,6 +159,9 @@ class MenuItem
         return $this->title;
     }
 
+    /**
+     * @return string
+     */
     public function getLeveledTitle()
     {
         return str_repeat('-', $this->lvl) . $this->title;
@@ -261,6 +271,9 @@ class MenuItem
         return $this->children;
     }
 
+    /**
+     * @return string
+     */
     public function __toString()
     {
         return (string)$this->title;
@@ -311,6 +324,10 @@ class MenuItem
     {
         return $this->lvl;
     }
+
+    /**
+     * @return mixed
+     */
     public function getLevel()
     {
         // TODO renamed "lvl" to level in the db, so tree_title.html.twig in ZichtFrameworkExtraBundle won't die on us.
@@ -364,41 +381,65 @@ class MenuItem
     }
 
 
+    /**
+     * @return bool
+     */
     public function isRoot()
     {
         return $this->root == $this->id;
     }
 
 
+    /**
+     * @param $name
+     */
     public function setName($name)
     {
         $this->name = $name;
     }
 
 
+    /**
+     * @return null
+     */
     public function getName()
     {
         return $this->name;
     }
 
 
+    /**
+     * @var bool
+     */
     protected $addToMenu = false;
 
+    /**
+     * @param $addToMenu
+     */
     public function setAddToMenu($addToMenu)
     {
         $this->addToMenu = $addToMenu;
     }
 
+    /**
+     * @return bool
+     */
     public function isAddToMenu()
     {
         return $this->addToMenu;
     }
 
+    /**
+     * @param $language
+     */
     public function setLanguage($language)
     {
         $this->language = $language;
     }
 
+    /**
+     * @return null
+     */
     public function getLanguage()
     {
         return $this->language;
@@ -418,5 +459,21 @@ class MenuItem
     public function getIsCollapsible()
     {
         return $this->is_collapsible;
+    }
+
+    /**
+     * @param mixed $json_data
+     */
+    public function setJsonData($json_data)
+    {
+        $this->json_data = $json_data;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getJsonData()
+    {
+        return $this->json_data;
     }
 }

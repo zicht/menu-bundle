@@ -5,7 +5,7 @@
  */
 namespace Zicht\Bundle\MenuBundle\Admin;
 
-use Sonata\AdminBundle\Datagrid\DatagridMapper;
+use \Sonata\AdminBundle\Datagrid\DatagridMapper;
 use \Sonata\AdminBundle\Form\FormMapper;
 use \Zicht\Bundle\MenuBundle\Entity;
 use \Zicht\Bundle\FrameworkExtraBundle\Admin\TreeAdmin;

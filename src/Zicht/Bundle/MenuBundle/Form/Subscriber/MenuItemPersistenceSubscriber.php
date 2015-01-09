@@ -22,7 +22,7 @@ class MenuItemPersistenceSubscriber implements EventSubscriberInterface
     {
         return array(
             FormEvents::POST_SET_DATA   => 'postSetData',
-            FormEvents::POST_BIND       => 'postBind'
+            FormEvents::POST_SUBMIT     => 'postSubmit'
         );
     }
 
@@ -38,27 +38,36 @@ class MenuItemPersistenceSubscriber implements EventSubscriberInterface
 
     function postSetData(FormEvent $e)
     {
-        if ($e->getData() === null) {
+        var_dump('postSetData');
+
+        if ($e->getForm()->getParent()->getData() === null) {
             return;
         }
-        if ($this->provider->supports($e->getData())) {
-            if ($item = $this->mm->getItem($this->provider->url($e->getData()))) {
+        if ($this->provider->supports($e->getForm()->getParent()->getData())) {
+            if ($item = $this->mm->getItem($this->provider->url($e->getForm()->getParent()->getData()))) {
                 $item->setAddToMenu(true);
-                $e->getForm()->get($this->builder->getName())->setData($item);
+                $e->getForm()->getParent()->get($this->builder->getName())->setData($item);
             }
         }
     }
 
 
-    function postBind(FormEvent $e)
+    function postSubmit(FormEvent $e)
     {
-        if ($e->getForm()->getRoot()->isValid()) {
-            $menuItem = $e->getForm()->get($this->builder->getName())->getData();
+        var_dump('postSubmit');
+        exit;
+
+        if ($e->getForm()->getParent()->getRoot()->isValid()) {
+
+            var_dump($e->getForm()->getParent()->getRoot()->isValid());
+            exit;
+
+            $menuItem = $e->getForm()->getParent()->get($this->builder->getName())->getData();
             if ($menuItem->isAddToMenu()) {
                 if (!$menuItem->getTitle()) {
-                    $menuItem->setTitle((string) $e->getData());
+                    $menuItem->setTitle((string) $e->getForm()->getParent()->getData());
                 }
-                $menuItem->setPath($this->provider->url($e->getData(), array('aliasing' => false)));
+                $menuItem->setPath($this->provider->url($e->getForm()->getParent()->getData(), array('aliasing' => false)));
                 $this->mm->addItem($menuItem);
             } elseif ($menuItem->getId()) {
                 $this->mm->removeItem($menuItem);

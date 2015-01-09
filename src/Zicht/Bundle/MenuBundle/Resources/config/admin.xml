@@ -11,7 +11,7 @@
             <tag name="sonata.admin" manager_type="orm" group="Structure" label="MenuItem"/>
             <argument/>
             <argument>Zicht\Bundle\MenuBundle\Entity\MenuItem</argument>
-            <argument>ZichtFrameworkExtraBundle:CRUD</argument>
+            <argument>ZichtAdminBundle:CRUD</argument>
             <call method="setTranslationDomain">
                 <argument>admin</argument>
             </call>

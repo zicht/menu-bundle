@@ -13,6 +13,11 @@ use \Symfony\Component\Form\FormBuilderInterface;
 use \Zicht\Bundle\MenuBundle\Manager\MenuManager;
 use \Zicht\Bundle\UrlBundle\Url\Provider;
 
+/**
+ * Class MenuItemPersistenceSubscriber
+ *
+ * @package Zicht\Bundle\MenuBundle\Form\Subscriber
+ */
 class MenuItemPersistenceSubscriber implements EventSubscriberInterface
 {
     /**
@@ -22,20 +27,30 @@ class MenuItemPersistenceSubscriber implements EventSubscriberInterface
     {
         return array(
             FormEvents::POST_SET_DATA   => 'postSetData',
-            FormEvents::POST_BIND       => 'postBind'
+            FormEvents::POST_SUBMIT     => 'postSubmit'
         );
     }
 
-
-    function __construct(MenuManager $mm, Provider $provider, FormBuilderInterface $builder)
+    /**
+     * Constructor
+     *
+     * @param MenuManager $mm
+     * @param Provider $provider
+     * @param string $property
+     */
+    function __construct(MenuManager $mm, Provider $provider, $property)
     {
         $this->mm = $mm;
         $this->provider = $provider;
-        $this->builder = $builder;
+        $this->property = $property;
     }
 
-
-
+    /**
+     * POST_SET_DATA event handler
+     *
+     * @param FormEvent $e
+     * @return void
+     */
     function postSetData(FormEvent $e)
     {
         if ($e->getData() === null) {
@@ -44,19 +59,24 @@ class MenuItemPersistenceSubscriber implements EventSubscriberInterface
         if ($this->provider->supports($e->getData())) {
             if ($item = $this->mm->getItem($this->provider->url($e->getData()))) {
                 $item->setAddToMenu(true);
-                $e->getForm()->get($this->builder->getName())->setData($item);
+                $e->getForm()->get($this->property)->setData($item);
             }
         }
     }
 
-
-    function postBind(FormEvent $e)
+    /**
+     * POST_SUBMIT handler
+     *
+     * @param FormEvent $e
+     * @return void
+     */
+    function postSubmit(FormEvent $e)
     {
         if ($e->getForm()->getRoot()->isValid()) {
-            $menuItem = $e->getForm()->get($this->builder->getName())->getData();
+            $menuItem = $e->getForm()->get($this->property)->getData();
             if ($menuItem->isAddToMenu()) {
                 if (!$menuItem->getTitle()) {
-                    $menuItem->setTitle((string) $e->getData());
+                    $menuItem->setTitle((string)$e->getData());
                 }
                 $menuItem->setPath($this->provider->url($e->getData(), array('aliasing' => false)));
                 $this->mm->addItem($menuItem);

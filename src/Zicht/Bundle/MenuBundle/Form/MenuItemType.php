@@ -5,11 +5,17 @@
  */
 namespace Zicht\Bundle\MenuBundle\Form;
 
+use \Symfony\Component\Form\AbstractType;
 use \Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use \Symfony\Component\Form\FormBuilderInterface;
 use \Zicht\Bundle\UrlBundle\Url\Provider;
 
-class MenuItemType extends \Symfony\Component\Form\AbstractType
+/**
+ * Class MenuItemType
+ *
+ * @package Zicht\Bundle\MenuBundle\Form
+ */
+class MenuItemType extends AbstractType
 {
     public function __construct($menuManager, Provider $urlProvider)
     {
@@ -22,7 +28,6 @@ class MenuItemType extends \Symfony\Component\Form\AbstractType
         parent::setDefaultOptions($resolver);
         $resolver
             ->setDefaults(array(
-                'disable_subscriber'    => false,
                 'mapped'                => false,
                 'data_class'            => 'Zicht\Bundle\MenuBundle\Entity\MenuItem',
             ));
@@ -37,19 +42,7 @@ class MenuItemType extends \Symfony\Component\Form\AbstractType
             ->add('parent', 'zicht_parent_choice', array('class' => 'Zicht\Bundle\MenuBundle\Entity\MenuItem', 'label' => 'parent'))
             ->add('title', 'text', array('required' => false, 'label' => 'title'))
         ;
-
-//       TODO: this breaks in Symfony >= 2.3 - since getParent() doesn't exist anymore
-//        if (!$options['disable_subscriber']) {
-//            $builder->getParent()addEventSubscriber(
-//                new Subscriber\MenuItemPersistenceSubscriber(
-//                    $this->menuManager,
-//                    $this->urlProvider,
-//                    $builder
-//                )
-//            );
-//        }
     }
-
 
     /**
      * Returns the name of this type.

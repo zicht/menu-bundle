@@ -70,20 +70,22 @@
             var checkbox_selector       = '#{{ form.add_to_menu.vars.id }}';
             var parent_field_selector   = '#{{ form.parent.vars.id }}';
 
+
             $(function() {
                 var $checkbox = $(checkbox_selector);
                 var $container = $(container_selector);
+                var $helper = $checkbox.siblings($('.iCheck-helper'));
 
                 var triggerHandler = function() {
                     if ($checkbox.is(':checked')) {
-//                        $container.slideDown();
+                        $container.slideDown();
                     } else {
-//                        $container.slideUp();
+                        $container.slideUp();
                     }
                 };
 
                 triggerHandler();
-                $checkbox.change(triggerHandler);
+                $helper.click(triggerHandler);
             });
         })(jQuery);
     </script>

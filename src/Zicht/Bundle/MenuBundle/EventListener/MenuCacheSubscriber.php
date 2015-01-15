@@ -61,7 +61,7 @@ class MenuCacheSubscriber implements EventSubscriber
     public function postLoad(LifecycleEventArgs $args)
     {
         if ($this->isValid($args->getEntity())) {
-            $this->cacheManager->writeFile($args->getEntityManager()->getConnection(), true);
+            $this->cacheManager->writeFile($args->getEntityManager()->getConnection());
         }
     }
 

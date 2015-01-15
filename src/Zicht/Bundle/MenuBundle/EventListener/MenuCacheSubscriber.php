@@ -35,8 +35,35 @@ class MenuCacheSubscriber implements EventSubscriber
             Events::postLoad,
             Events::preUpdate,
             Events::preRemove,
+            Events::postPersist,
         );
     }
+
+    /**
+     * simple helper to invalidate dependency
+     * cache file, this is needed when a new
+     * menu item is add/updated so the menu
+     * is compiled again.
+     *
+     */
+    protected function touchFile()
+    {
+        $file = __DIR__ . '/../Resources/config/services.xml';
+        @touch($file);
+    }
+
+    public function postPersist(LifecycleEventArgs $args)
+    {
+        $entity = $args->getEntity();
+
+        if ($this->isValid($entity)) {
+            $data = $this->cacheManager->loadFile();
+            $data['menus'][$entity->getId()] = $entity->getName();
+            $this->cacheManager->writeFile($data, true);
+            $this->touchFile();
+        }
+    }
+
 
     public function preRemove(LifecycleEventArgs $args)
     {
@@ -55,13 +82,14 @@ class MenuCacheSubscriber implements EventSubscriber
             $data = $this->cacheManager->loadFile();
             $data['menus'][$entity->getId()] = $entity->getName();
             $this->cacheManager->writeFile($data, true);
+            $this->touchFile();
         }
     }
 
     public function postLoad(LifecycleEventArgs $args)
     {
         if ($this->isValid($args->getEntity())) {
-            $this->cacheManager->writeFile($args->getEntityManager()->getConnection(), true);
+            $this->cacheManager->writeFile($args->getEntityManager()->getConnection());
         }
     }
 

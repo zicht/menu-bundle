@@ -104,7 +104,7 @@ class MenuItem
      *
      * @ORM\Column(name="is_collapsible", type="boolean", nullable=true)
      */
-    private $is_collapsible = 0;
+    private $is_collapsible = false;
 
     /**
      * Constructor

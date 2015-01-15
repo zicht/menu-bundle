@@ -7,6 +7,8 @@
     <parameters>
         <parameter key="zicht_menu.item_entity">Zicht\Bundle\MenuBundle\Entity\MenuItem</parameter>
         <parameter key="zicht_menu.menu_builder.class">Zicht\Bundle\MenuBundle\Entity\MenuItem</parameter>
+        <parameter key="menu.cache.subscriber.class">Zicht\Bundle\MenuBundle\EventListener\MenuCacheSubscriber</parameter>
+        <parameter key="zicht.menu.cache.manager.class">Zicht\Bundle\MenuBundle\Manager\CacheManager</parameter>EventListener
     </parameters>
     <services>
         <service id="zicht_menu.url_provider" class="Zicht\Bundle\MenuBundle\Url\MenuItemNameUrlProvider">
@@ -30,6 +32,14 @@
         </service>
         <service id="zicht_menu.twig.extension" class="Zicht\Bundle\MenuBundle\Twig\Extension">
             <tag name="twig.extension" />
+        </service>
+        <service id="zicht.menu.cache.manager" class="%zicht.menu.cache.manager.class%">
+            <argument>%kernel.cache_dir%</argument>
+            <argument>%zicht_menu_auto_build%</argument>
+        </service>
+        <service id="menu.cache.subscriber" class="%menu.cache.subscriber.class%">
+            <argument type="service" id="zicht.menu.cache.manager" />
+            <tag name="doctrine.event_subscriber" connection="default" />
         </service>
     </services>
 </container>

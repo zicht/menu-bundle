@@ -22,6 +22,9 @@ class Configuration implements ConfigurationInterface
 
         $rootNode
             ->children()
+                ->scalarNode('auto_build')
+                    ->defaultTrue()
+                ->end()
                 ->scalarNode('builder_service')->end()
                 ->arrayNode('menus')
                     ->prototype('scalar')->end()

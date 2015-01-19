@@ -474,6 +474,9 @@ class MenuItem
      */
     public function getJsonData()
     {
+        if (!$this->json_data) {
+            return array();
+        }
         return $this->json_data;
     }
 }

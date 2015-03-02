@@ -31,5 +31,10 @@
         <service id="zicht_menu.twig.extension" class="Zicht\Bundle\MenuBundle\Twig\Extension">
             <tag name="twig.extension" />
         </service>
+        <service id="zicht_menu.provider.database_menu_provider" class="Zicht\Bundle\MenuBundle\Menu\Provider\DatabaseMenuProvider">
+            <argument type="service" id="zicht_menu.menu_builder" />
+            <argument type="service" id="service_container" />
+            <tag name="knp_menu.provider" />
+        </service>
     </services>
 </container>

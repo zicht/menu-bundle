@@ -29,12 +29,10 @@ class ZichtMenuExtension extends Extension
 
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
-        $container->setParameter('zicht_menu_auto_build', $config['auto_build']);
 
         $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.xml');
         $loader->load('admin.xml');
-        $this->addCacheMenuConfig($config, $container);
 
         if (!empty($config['menus'])) {
             $service = new Definition('Knp\Menu\MenuItem');
@@ -56,22 +54,4 @@ class ZichtMenuExtension extends Extension
         $container->setParameter('twig.form.resources', $formResources);
     }
 
-    /**
-     * little helper tot merge configs
-     *
-     * @param array             $config
-     * @param ContainerBuilder  $container
-     * @throws \Exception
-     */
-    protected function addCacheMenuConfig(array &$config, ContainerBuilder $container)
-    {
-
-        if(!$container->has('zicht.menu.cache.manager')) {
-            return;
-        }
-
-        if ($config['auto_build'] && null !== $data = $container->get('zicht.menu.cache.manager')->loadFile()) {
-            $config['menus'] = array_values(array_unique(array_merge($config['menus'], $data['menus'])));
-        }
-    }
 }

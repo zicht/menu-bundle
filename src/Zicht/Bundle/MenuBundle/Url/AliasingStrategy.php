@@ -41,7 +41,7 @@ class AliasingStrategy extends DefaultAliasingStrategy
      * @param mixed $subject
      * @return string
      */
-    public function generatePublicAlias($subject)
+    public function generatePublicAlias($subject, $currentAlias = '')
     {
         $path = $this->urlProvider->url($subject, array('aliasing' => true));
         $menuItem = $this->menuManager->getItemBy(array(':path' => $path));

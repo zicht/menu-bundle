@@ -102,6 +102,9 @@ class MenuManager
                 case ':path':
                     $where [] = 'm.path = :path';
                     break;
+                case ':language':
+                    $where [] = 'm.language = :language';
+                    break;
                 default:
                     throw new \Exception("Unsupported parameter [$key].");
                     break;

@@ -124,7 +124,8 @@ class MenuManager
                 ' ',
                 array(
                     'SELECT m FROM ZichtMenuBundle:MenuItem m WHERE',
-                    join(' AND ', $where)
+                    join(' AND ', $where),
+                    'ORDER BY m.lft',
                 )
             )
         );

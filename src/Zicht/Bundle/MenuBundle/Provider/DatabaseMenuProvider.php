@@ -4,7 +4,7 @@
  * @copyright Zicht Online <http://zicht.nl>
  */
 
-namespace Zicht\Bundle\MenuBundle\Menu\Provider;
+namespace Zicht\Bundle\MenuBundle\Provider;
 
 use \Knp\Menu\Provider\MenuProviderInterface;
 use \Symfony\Component\DependencyInjection\ContainerInterface;

@@ -159,7 +159,7 @@ class Builder extends ContainerAware
             )
         );
 
-        if (isset($item['json_data'])) {
+        if (isset($item['json_data']) && is_string($item['json_data'])) {
             $item['json_data'] = json_decode($item['json_data']);
         }
 

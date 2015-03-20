@@ -72,7 +72,7 @@ class MenuItemPersistenceSubscriber implements EventSubscriberInterface
      */
     function postSubmit(FormEvent $e)
     {
-        if ($e->getForm()->getRoot()->isValid()) {
+        if ($e->getForm()->has($this->property) && $e->getForm()->getRoot()->isValid()) {
             $menuItem = $e->getForm()->get($this->property)->getData();
             if ($menuItem->isAddToMenu()) {
                 if (!$menuItem->getTitle()) {

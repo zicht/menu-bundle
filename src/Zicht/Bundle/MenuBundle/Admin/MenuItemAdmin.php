@@ -27,6 +27,7 @@ class MenuItemAdmin extends TreeAdmin
         $formMapper
             ->add('path', 'zicht_url', array('required' => false))
             ->add('name')
+            ->add('language')
             ->add('is_collapsible')
         ;
 

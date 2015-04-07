@@ -61,12 +61,15 @@ class MenuManager
     {
         foreach ($this->items as $item) {
             $this->doctrine->getManager()->persist($item);
+            if ($flushEntityManager) {
+                $this->doctrine->getManager()->flush($item);
+            }
         }
         foreach ($this->remove as $item) {
             $this->doctrine->getManager()->remove($item);
-        }
-        if ($flushEntityManager) {
-            $this->doctrine->getManager()->flush();
+            if ($flushEntityManager) {
+                $this->doctrine->getManager()->flush($item);
+            }
         }
     }
 

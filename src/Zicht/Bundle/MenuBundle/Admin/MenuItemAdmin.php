@@ -28,7 +28,6 @@ class MenuItemAdmin extends TreeAdmin
             ->add('path', 'zicht_url', array('required' => false))
             ->add('name')
             ->add('language')
-            ->add('is_collapsible')
         ;
 
         $formMapper->setHelps(array(
@@ -42,10 +41,10 @@ class MenuItemAdmin extends TreeAdmin
     public function configureListFields(ListMapper $listMapper)
     {
         $listMapper = parent::configureListFields($listMapper);
-        $listMapper->add('is_collapsible');
+        $listMapper->add('path');
         $listMapper->reorder(array(
             'title',
-            'is_collapsible'
+            'path'
         ));
         return $listMapper;
     }

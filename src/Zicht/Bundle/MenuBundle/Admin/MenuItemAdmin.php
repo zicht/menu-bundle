@@ -36,20 +36,31 @@ class MenuItemAdmin extends TreeAdmin
         ));
     }
 
+
     /**
      * @{inheritDoc}
      */
     public function configureListFields(ListMapper $listMapper)
     {
-        $listMapper = parent::configureListFields($listMapper);
-        $listMapper->add('is_collapsible');
-        $listMapper->reorder(array(
-            'title',
-            'is_collapsible'
-        ));
-        return $listMapper;
+        return $listMapper
+            ->addIdentifier('title', null, array('template' => 'ZichtAdminBundle:CRUD:tree_title.html.twig'))
+            ->add(
+                '_action',
+                'actions',
+                array(
+                    'actions' => array(
+                        'filter'   => array(
+                            'template' => 'ZichtAdminBundle:CRUD:actions/filter.html.twig',
+                        ),
+                        'move'   => array(
+                            'template' => 'ZichtAdminBundle:CRUD:actions/move.html.twig',
+                        ),
+                        'edit'   => array(),
+                        'delete' => array(),
+                    )
+                )
+            );
     }
-
 
     /**
      * @{inheritDoc}
@@ -61,6 +72,38 @@ class MenuItemAdmin extends TreeAdmin
         $filter
             ->add('title')
             ->add('path')
-        ;
+            ->add('id', 'doctrine_orm_callback', array(
+                'callback' => array($this, 'filterWithChildren')
+            ));
+    }
+
+
+    /**
+     * Get item plus children
+     *
+     * @param \Doctrine\ORM\QueryBuilder $queryBuilder
+     * @param string $alias
+     * @param string $field
+     * @param array $value
+     *
+     * @return bool
+     */
+    public function filterWithChildren($queryBuilder, $alias, $field, $value)
+    {
+        if (!$value['value']) {
+            return;
+        }
+
+        // Get the parent item, todo, check if necessary
+        $parentQb = clone $queryBuilder;
+        $parentItem =  $parentQb->where(sprintf('%s.id = %s', $alias, $value['value']))->getQuery()->getResult();
+        $currentItem = current($parentItem);
+
+        $queryBuilder->where(
+            $queryBuilder->expr()->between(sprintf('%s.lft', $alias), $currentItem->getLft(), $currentItem->getRgt()),
+            $queryBuilder->expr()->eq(sprintf('%s.root', $alias), $currentItem->getRoot())
+        );
+
+        return true;
     }
 }

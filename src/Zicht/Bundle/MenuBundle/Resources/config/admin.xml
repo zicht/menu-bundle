@@ -4,6 +4,7 @@
 
     <parameters>
         <parameter key="zicht_menu.admin.menu_item.class">Zicht\Bundle\MenuBundle\Admin\MenuItemAdmin</parameter>
+        <parameter key="zicht_menu.admin.menu_item.crud_controller">ZichtFrameworkExtraBundle:CRUD</parameter>
     </parameters>
 
     <services>
@@ -11,7 +12,7 @@
             <tag name="sonata.admin" manager_type="orm" group="Structure" label="MenuItem"/>
             <argument/>
             <argument>Zicht\Bundle\MenuBundle\Entity\MenuItem</argument>
-            <argument>ZichtFrameworkExtraBundle:CRUD</argument>
+            <argument>%zicht_menu.admin.menu_item.crud_controller%</argument>
             <call method="setTranslationDomain">
                 <argument>admin</argument>
             </call>

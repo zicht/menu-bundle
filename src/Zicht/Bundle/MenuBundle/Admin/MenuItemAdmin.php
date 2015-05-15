@@ -99,9 +99,18 @@ class MenuItemAdmin extends TreeAdmin
         $parentItem =  $parentQb->where(sprintf('%s.id = %s', $alias, $value['value']))->getQuery()->getResult();
         $currentItem = current($parentItem);
 
+        $expr = $queryBuilder->expr();
         $queryBuilder->where(
-            $queryBuilder->expr()->between(sprintf('%s.lft', $alias), $currentItem->getLft(), $currentItem->getRgt()),
-            $queryBuilder->expr()->eq(sprintf('%s.root', $alias), $currentItem->getRoot())
+            $expr->andX(
+                $expr->eq(sprintf('%s.root', $alias), $currentItem->getRoot()),
+                $expr->orX(
+                    $expr->andX(
+                        $expr->lt(sprintf('%s.lft', $alias), $currentItem->getLft()),
+                        $expr->gt(sprintf('%s.rgt', $alias), $currentItem->getRgt())
+                    ),
+                    $expr->between(sprintf('%s.lft', $alias), $currentItem->getLft(), $currentItem->getRgt())
+                )
+            )
         );
 
         return true;

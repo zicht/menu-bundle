@@ -5,11 +5,17 @@
  */
 namespace Zicht\Bundle\MenuBundle\Form;
 
+use \Symfony\Component\Form\AbstractType;
 use \Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use \Symfony\Component\Form\FormBuilderInterface;
 use \Zicht\Bundle\UrlBundle\Url\Provider;
 
-class MenuItemType extends \Symfony\Component\Form\AbstractType
+/**
+ * Class MenuItemType
+ *
+ * @package Zicht\Bundle\MenuBundle\Form
+ */
+class MenuItemType extends AbstractType
 {
     public function __construct($menuManager, Provider $urlProvider)
     {
@@ -17,19 +23,15 @@ class MenuItemType extends \Symfony\Component\Form\AbstractType
         $this->urlProvider = $urlProvider;
     }
 
-
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         parent::setDefaultOptions($resolver);
         $resolver
             ->setDefaults(array(
-                'disable_subscriber'    => false,
-                'property_path'         => false,
+                'mapped'                => false,
                 'data_class'            => 'Zicht\Bundle\MenuBundle\Entity\MenuItem',
             ));
     }
-
-
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -40,18 +42,7 @@ class MenuItemType extends \Symfony\Component\Form\AbstractType
             ->add('parent', 'zicht_parent_choice', array('class' => 'Zicht\Bundle\MenuBundle\Entity\MenuItem', 'label' => 'form.label_parent'))
             ->add('title', 'text', array('required' => false, 'label' => 'form.label_title'))
         ;
-
-        if (!$options['disable_subscriber']) {
-            $builder->getParent()->addEventSubscriber(
-                new Subscriber\MenuItemPersistenceSubscriber(
-                    $this->menuManager,
-                    $this->urlProvider,
-                    $builder
-                )
-            );
-        }
     }
-
 
     /**
      * Returns the name of this type.

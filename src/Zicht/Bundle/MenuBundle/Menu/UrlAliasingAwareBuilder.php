@@ -27,7 +27,6 @@ class UrlAliasingAwareBuilder extends Builder
                 menu_item.lvl,
                 menu_item.name,
                 menu_item.parent_id,
-                menu_item.is_collapsible,
                 menu_item.json_data,
                 COALESCE(url_alias.internal_url, url_alias2.internal_url, menu_item.path) as internal_url
             FROM

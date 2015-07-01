@@ -28,9 +28,8 @@ class MenuItemAdmin extends TreeAdmin
             ->tab('admin.tab.menu_item')
                 ->add('path', 'zicht_url', array('required' => false))
                 ->add('name')
-                ->setHelps(array('name' => 'admin.help.menu_item_name'))
-                ->add('is_collapsible')
             ->end()
+            ->setHelps(array('name' => 'admin.help.menu_item_name'))
         ;
     }
 
@@ -40,10 +39,10 @@ class MenuItemAdmin extends TreeAdmin
     public function configureListFields(ListMapper $listMapper)
     {
         $listMapper = parent::configureListFields($listMapper);
-        $listMapper->add('is_collapsible');
+        $listMapper->add('path');
         $listMapper->reorder(array(
             'title',
-            'is_collapsible'
+            'path'
         ));
         return $listMapper;
     }

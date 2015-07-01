@@ -102,13 +102,6 @@ class MenuItem
     private $name = null;
 
     /**
-     * @var boolean
-     *
-     * @ORM\Column(name="is_collapsible", type="boolean", nullable=true)
-     */
-    private $is_collapsible = false;
-
-    /**
      * Optional menu item name, used to hook dynamic items into the menu.
      *
      * @ORM\Column(name="json_data", type="json_array", nullable=true)
@@ -446,22 +439,6 @@ class MenuItem
     }
 
     /**
-     * @param boolean $is_collapsible
-     */
-    public function setIsCollapsible($is_collapsible)
-    {
-        $this->is_collapsible = $is_collapsible;
-    }
-
-    /**
-     * @return boolean
-     */
-    public function getIsCollapsible()
-    {
-        return $this->is_collapsible;
-    }
-
-    /**
      * @param mixed $json_data
      */
     public function setJsonData($json_data)
@@ -474,6 +451,9 @@ class MenuItem
      */
     public function getJsonData()
     {
+        if (!$this->json_data) {
+            return array();
+        }
         return $this->json_data;
     }
 }

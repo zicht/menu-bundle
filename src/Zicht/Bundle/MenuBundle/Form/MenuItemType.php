@@ -36,9 +36,9 @@ class MenuItemType extends \Symfony\Component\Form\AbstractType
         parent::buildForm($builder, $options);
 
         $builder
-            ->add('add_to_menu', 'checkbox', array('required' => false, 'label' => 'add_to_menu'))
-            ->add('parent', 'zicht_parent_choice', array('class' => 'Zicht\Bundle\MenuBundle\Entity\MenuItem', 'label' => 'parent'))
-            ->add('title', 'text', array('required' => false, 'label' => 'title'))
+            ->add('add_to_menu', 'checkbox', array('required' => false, 'label' => 'form.label_add_to_menu'))
+            ->add('parent', 'zicht_parent_choice', array('class' => 'Zicht\Bundle\MenuBundle\Entity\MenuItem', 'label' => 'form.label_parent'))
+            ->add('title', 'text', array('required' => false, 'label' => 'form.label_title'))
         ;
 
         if (!$options['disable_subscriber']) {

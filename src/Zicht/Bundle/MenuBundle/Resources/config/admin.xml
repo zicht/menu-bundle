@@ -8,7 +8,7 @@
 
     <services>
         <service id="zicht_menu.admin.menu_item" class="%zicht_menu.admin.menu_item.class%">
-            <tag name="sonata.admin" manager_type="orm" group="Structure" label="MenuItem"/>
+            <tag name="sonata.admin" manager_type="orm" label="admin.label.menu_item" label_translator_strategy="sonata.admin.label.strategy.underscore"/>
             <argument/>
             <argument>Zicht\Bundle\MenuBundle\Entity\MenuItem</argument>
             <argument>ZichtFrameworkExtraBundle:CRUD</argument>

@@ -1,5 +1,16 @@
-add_to_menu: Opnemen in navigatiestructuur
-parent: Hoofditem
-title: Titel
-
-help.name: Naam kan gebruikt worden als url referentie in code
+admin:
+    label:
+        menu_item: 'Menu'
+    tab:
+        menu_item: 'Menu item'
+    help:
+        menu_item_name: 'Naam kan gebruikt worden als url referentie in code'
+list:
+    label_is_collapsible: 'Opvouwbaar'
+form:
+    label_parent: 'Hoofditem'
+    label_title: 'Titel'
+    label_path: 'Pad'
+    label_name: 'Naam'
+    label_is_collapsible: 'Opvouwbaar'
+    label_add_to_menu: 'Toevoegen aan menu'

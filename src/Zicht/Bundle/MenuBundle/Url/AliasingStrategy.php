@@ -7,7 +7,7 @@ namespace Zicht\Bundle\MenuBundle\Url;
 
 use \Zicht\Bundle\MenuBundle\Manager\MenuManager;
 use \Zicht\Bundle\UrlBundle\Aliasing\DefaultAliasingStrategy;
-use \Zicht\Bundle\UrlBundle\Aliasing\ProviderDecorator;
+use \Zicht\Bundle\UrlBundle\Url\Provider;
 use \Zicht\Util\Str;
 
 /**
@@ -28,7 +28,7 @@ class AliasingStrategy extends DefaultAliasingStrategy
      */
     private $urlProvider;
 
-    public function __construct(MenuManager $menuManager, ProviderDecorator $urlProvider)
+    public function __construct(MenuManager $menuManager, Provider $urlProvider)
     {
         parent::__construct('/');
         $this->menuManager = $menuManager;
@@ -43,7 +43,7 @@ class AliasingStrategy extends DefaultAliasingStrategy
      */
     public function generatePublicAlias($subject, $currentAlias = '')
     {
-        $path = $this->urlProvider->url($subject, array('aliasing' => true));
+        $path = $this->urlProvider->url($subject);
         $menuItem = $this->menuManager->getItemBy(array(':path' => $path));
         if (!empty($menuItem)) {
             $parts = array();

@@ -159,10 +159,6 @@ class Builder extends ContainerAware
             )
         );
 
-        if (isset($item['json_data'])) {
-            $item['json_data'] = json_decode($item['json_data']);
-        }
-
         $menuItem->setExtras($item);
         return $menuItem;
     }

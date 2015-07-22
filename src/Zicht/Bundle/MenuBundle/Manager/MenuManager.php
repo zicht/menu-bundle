@@ -59,14 +59,24 @@ class MenuManager
      */
     public function flush($flushEntityManager = false)
     {
+        $itemsToFlush = array();
         foreach ($this->items as $item) {
             $this->doctrine->getManager()->persist($item);
+            if ($flushEntityManager) {
+                $itemsToFlush[]= $item;
+            }
         }
         foreach ($this->remove as $item) {
             $this->doctrine->getManager()->remove($item);
+            if ($flushEntityManager) {
+                $itemsToFlush[]= $item;
+            }
         }
-        if ($flushEntityManager) {
-            $this->doctrine->getManager()->flush();
+
+        if (count($itemsToFlush) > 0) {
+            foreach ($itemsToFlush as $item) {
+                $this->doctrine->getManager()->flush($item);
+            }
         }
     }
 

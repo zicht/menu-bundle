@@ -94,13 +94,27 @@ class MenuManager
     public function getItemBy(array $parameters, MenuItem $ancestor = null)
     {
         $where = array();
+        if (!is_null($ancestor)) {
+            $where [] = 'm.lft > :lft';
+            $where [] = 'm.rgt < :rgt';
+            $parameters[':lft'] = $ancestor->getLft();
+            $parameters[':rgt'] = $ancestor->getRgt();
+
+            if (!isset($parameters[':language']) && $language = $ancestor->getLanguage()) {
+                $parameters[':language']= $language;
+            }
+        }
+
         foreach ($parameters as $key=>$value) {
             switch ($key) {
                 case ':name':
-                    $where [] = 'm.name = :name';
+                    $where []= 'm.name = :name';
+                    break;
+                case ':language':
+                    $where []= '( m.language = :language OR ( m.language IS NULL AND root.language = :language) )';
                     break;
                 case ':path':
-                    $where [] = 'm.path = :path';
+                    $where []= 'm.path = :path';
                     break;
                 case ':language':
                     $where [] = 'm.language = :language';
@@ -111,19 +125,13 @@ class MenuManager
             }
         }
 
-        if (!is_null($ancestor)) {
-            $where [] = 'm.lft > :lft';
-            $where [] = 'm.rgt < :rgt';
-            $parameters[':lft'] = $ancestor->getLft();
-            $parameters[':rgt'] = $ancestor->getRgt();
-        }
 
         /** @var \Doctrine\Orm\Query $query */
         $query = $this->doctrine->getManager()->createQuery(
             join(
                 ' ',
                 array(
-                    'SELECT m FROM ZichtMenuBundle:MenuItem m WHERE',
+                    'SELECT m, root FROM ZichtMenuBundle:MenuItem m INNER JOIN ZichtMenuBundle:MenuItem root WITH m.root=root.id WHERE',
                     join(' AND ', $where),
                     'ORDER BY m.lft',
                 )
@@ -133,6 +141,7 @@ class MenuManager
         $query->setMaxResults(1);
 
         $result = $query->getResult();
+
         if (empty($result)) {
             return null;
         }

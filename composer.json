@@ -12,10 +12,11 @@
     "require": {
         "php": ">=5.3"
     },
-    "require": {
+    "require-dev": {
         "zicht/url-bundle": "*",
         "zicht/framework-extra-bundle": "*",
-        "doctrine/doctrine-bundle": "*"
+        "doctrine/doctrine-bundle": "*",
+	"symfony/symfony": "*"
     },
     "autoload": {
         "psr-0": { "": ["src/", "tests/"] }

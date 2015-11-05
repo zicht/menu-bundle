@@ -1,5 +1,16 @@
-add_to_menu: Add to menu
-parent: Parent
-title: Title
-
-help.name: Name can be used as an url reference in code
+admin:
+    label:
+        menu_item: 'Menu'
+    tab:
+        menu_item: 'Menu item'
+    help:
+        menu_item_name: 'Name can be used as an url reference in code'
+list:
+    label_is_collapsible: 'Foldable'
+form:
+    label_parent: 'Parent'
+    label_title: 'Title'
+    label_path: 'Path'
+    label_name: 'Name'
+    label_is_collapsible: 'Foldable'
+    label_add_to_menu: 'Add to menu'

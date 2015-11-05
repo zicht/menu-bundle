@@ -2,3 +2,8 @@ plugins: ['core', 'svn']
 
 vcs:
     url: svn://zon/projecten/zicht-libraries/ZichtMenuBundle
+
+tasks:
+    ci.phpunit:
+        pre: composer update
+

@@ -57,7 +57,7 @@ class MenuItemPersistenceSubscriber implements EventSubscriberInterface
             return;
         }
         if ($this->provider->supports($e->getData())) {
-            if ($item = $this->mm->getItem($this->provider->url($e->getData()))) {
+            if ($item = $this->mm->getItemBy(array(':path' => $this->provider->url($e->getData())))) {
                 $item->setAddToMenu(true);
                 $e->getForm()->get($this->property)->setData($item);
             }
@@ -74,6 +74,7 @@ class MenuItemPersistenceSubscriber implements EventSubscriberInterface
     {
         if ($e->getForm()->has($this->property) && $e->getForm()->getRoot()->isValid()) {
             $menuItem = $e->getForm()->get($this->property)->getData();
+
             if ($menuItem->isAddToMenu()) {
                 if (!$menuItem->getTitle()) {
                     $menuItem->setTitle((string)$e->getData());

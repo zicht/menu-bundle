@@ -12,6 +12,9 @@ use Zicht\Bundle\UrlBundle\Url\SuggestableProvider;
 use Doctrine\Bundle\DoctrineBundle\Registry;
 use Symfony\Component\Routing\RouterInterface;
 
+/**
+ * @package Zicht\Bundle\MenuBundle\Url
+ */
 class MenuItemNameUrlProvider extends StaticProvider implements SuggestableProvider
 {
     /**
@@ -23,35 +26,48 @@ class MenuItemNameUrlProvider extends StaticProvider implements SuggestableProvi
     function __construct(Registry $doctrine, RouterInterface $router)
     {
         parent::__construct($router);
+        $this->em = $doctrine->getManager();
         $this->repository = $doctrine->getManager()->getRepository('Zicht\Bundle\MenuBundle\Entity\MenuItem');
-        $this->loaded = false;
-        $this->mappings = array();
+        $this->loaded = [];
     }
 
 
     function supports($name)
     {
-        if (!$this->loaded) {
+        if (!isset($this->loaded[$this->router->getContext()->getParameter('_locale')])) {
             $this->loadMappings();
         }
         return parent::supports($name);
     }
 
-
+    /**
+     * Loads all mappings from the url, based on the current request locale.
+     */
     protected function loadMappings()
     {
-        $queryBuilder = $this->repository
-            ->createQueryBuilder('m')
-            ->select('m.name, m.path')
-            ->andWhere('m.path IS NOT NULL')
-            ->andWhere('m.name IS NOT NULL')
-        ;
-        $mappings = array();
-        foreach ($queryBuilder->getQuery()->execute() as $item) {
-            $mappings[$item['name']] = $item['path'];
-        }
-        $this->addAll($mappings);
-        $this->loaded = true;
+        // using a subquery to allow for FETCH_KEY_PAIR
+        $query = '
+            SELECT
+                name, path
+            FROM (
+                SELECT
+                    menu_item.name,
+                    menu_item.path,
+                    COALESCE(menu_item.language, root_item.language) language
+                FROM
+                    menu_item INNER JOIN menu_item root_item ON (menu_item.root=root_item.id)
+                WHERE
+                    menu_item.path IS NOT NULL
+                    AND menu_item.name IS NOT NULL AND LENGTH(menu_item.name) > 0
+                HAVING
+                    language IS NULL OR language=:lang
+            ) s
+            ORDER BY
+                language=:lang DESC
+        ';
+        $stmt = $this->em->getConnection()->prepare($query);
+        $stmt->execute([':lang' => $this->router->getContext()->getParameter('_locale')]);
+        $this->addAll($stmt->fetchAll(\PDO::FETCH_KEY_PAIR));
     }
 
     /**

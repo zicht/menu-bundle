@@ -59,14 +59,24 @@ class MenuManager
      */
     public function flush($flushEntityManager = false)
     {
+        $itemsToFlush = array();
         foreach ($this->items as $item) {
             $this->doctrine->getManager()->persist($item);
+            if ($flushEntityManager) {
+                $itemsToFlush[]= $item;
+            }
         }
         foreach ($this->remove as $item) {
             $this->doctrine->getManager()->remove($item);
+            if ($flushEntityManager) {
+                $itemsToFlush[]= $item;
+            }
         }
-        if ($flushEntityManager) {
-            $this->doctrine->getManager()->flush();
+
+        if (count($itemsToFlush) > 0) {
+            foreach ($itemsToFlush as $item) {
+                $this->doctrine->getManager()->flush($item);
+            }
         }
     }
 
@@ -94,16 +104,29 @@ class MenuManager
     public function getItemBy(array $parameters, MenuItem $ancestor = null)
     {
         $where = array();
+        if (!is_null($ancestor)) {
+            $where [] = 'm.lft > :lft';
+            $where [] = 'm.rgt < :rgt';
+            $parameters[':lft'] = $ancestor->getLft();
+            $parameters[':rgt'] = $ancestor->getRgt();
+
+            if (!isset($parameters[':language']) && $language = $ancestor->getLanguage()) {
+                $parameters[':language']= $language;
+            }
+        }
+
         foreach ($parameters as $key=>$value) {
             switch ($key) {
                 case ':name':
-                    $where [] = 'm.name = :name';
-                    break;
-                case ':path':
-                    $where [] = 'm.path = :path';
+                    $where []= 'm.name = :name';
                     break;
                 case ':language':
-                    $where [] = 'm.language = :language';
+                    $where []= '( m.language = :language OR ( m.language IS NULL AND root.language = :language) )';
+                    break;
+                case ':path':
+                    $where []= 'm.path = :path';
+                    break;
+                case ':lft':case ':rgt':
                     break;
                 default:
                     throw new \Exception("Unsupported parameter [$key].");
@@ -111,19 +134,14 @@ class MenuManager
             }
         }
 
-        if (!is_null($ancestor)) {
-            $where [] = 'm.lft > :lft';
-            $where [] = 'm.rgt < :rgt';
-            $parameters[':lft'] = $ancestor->getLft();
-            $parameters[':rgt'] = $ancestor->getRgt();
-        }
+
 
         /** @var \Doctrine\Orm\Query $query */
         $query = $this->doctrine->getManager()->createQuery(
             join(
                 ' ',
                 array(
-                    'SELECT m FROM ZichtMenuBundle:MenuItem m WHERE',
+                    'SELECT m, root FROM ZichtMenuBundle:MenuItem m INNER JOIN ZichtMenuBundle:MenuItem root WITH m.root=root.id WHERE',
                     join(' AND ', $where),
                     'ORDER BY m.lft',
                 )
@@ -133,6 +151,7 @@ class MenuManager
         $query->setMaxResults(1);
 
         $result = $query->getResult();
+
         if (empty($result)) {
             return null;
         }

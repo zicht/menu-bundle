@@ -1,0 +1,21 @@
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <parameters>
+        <parameter key="zicht_menu.admin.menu_item.class">Zicht\Bundle\MenuBundle\Admin\MenuItemAdmin</parameter>
+        <parameter key="zicht_menu.admin.menu_item.crud_controller">ZichtFrameworkExtraBundle:CRUD</parameter>
+    </parameters>
+
+    <services>
+        <service id="zicht_menu.admin.menu_item" class="%zicht_menu.admin.menu_item.class%">
+            <tag name="sonata.admin" manager_type="orm" group="Structure" label="MenuItem"/>
+            <argument/>
+            <argument>Zicht\Bundle\MenuBundle\Entity\MenuItem</argument>
+            <argument>%zicht_menu.admin.menu_item.crud_controller%</argument>
+            <call method="setTranslationDomain">
+                <argument>admin</argument>
+            </call>
+        </service>
+    </services>
+</container>

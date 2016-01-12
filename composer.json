@@ -16,6 +16,7 @@
         "zicht/url-bundle": "*",
         "zicht/framework-extra-bundle": "*",
         "doctrine/doctrine-bundle": "*",
+        "knplabs/knp-menu-bundle":  "*",
 	"symfony/symfony": "*"
     },
     "autoload": {

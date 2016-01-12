@@ -29,6 +29,7 @@
             <argument type="service" id="doctrine" />
         </service>
         <service id="zicht_menu.twig.extension" class="Zicht\Bundle\MenuBundle\Twig\Extension">
+            <argument type="service" id="knp_menu.menu_provider" />
             <tag name="twig.extension" />
         </service>
         <service id="zicht_menu.provider.database_menu_provider" class="Zicht\Bundle\MenuBundle\Provider\DatabaseMenuProvider">

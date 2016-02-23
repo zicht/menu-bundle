@@ -30,17 +30,22 @@ class Extension extends \Twig_Extension
         $this->menuProvider = $menuProvider;
     }
 
+    public function getFilters()
+    {
+        return [
+            new \Twig_SimpleFilter('zicht_menu_current', [$this, 'zicht_menu_current']),
+        ];
+    }
     /**
      * @return array
      */
     public function getFunctions()
     {
         return array(
-            'zicht_menu_active_trail' => new \Twig_Function_Method($this, 'menu_active_trail'),
-            'zicht_menu_exists' => new \Twig_Function_Method($this, 'menuExists')
+            'zicht_menu_active_trail' => new \Twig_Function_Method($this, 'zicht_menu_active_trail'),
+            'zicht_menu_exists' => new \Twig_Function_Method($this, 'zicht_menu_exists')
         );
     }
-
 
     /**
      * Returns if the given menuName exists
@@ -48,7 +53,7 @@ class Extension extends \Twig_Extension
      * @param string $menuName
      * @return bool
      */
-    public function menuExists($menuName)
+    public function menu_exists($menuName)
     {
         return $this->menuProvider->has($menuName);
     }
@@ -60,7 +65,7 @@ class Extension extends \Twig_Extension
      * @return array
      *
      */
-    public function menuActiveTrail(MenuItem $item)
+    public function zicht_menu_active_trail(MenuItem $item)
     {
         $stack = array();
         do {
@@ -69,6 +74,27 @@ class Extension extends \Twig_Extension
         return array_reverse($stack);
     }
 
+    /**
+     * Returns the current menu item given a root menu item
+     *
+     * @param MenuItem $item
+     * @return MenuItem|null
+     */
+    public function zicht_menu_current(MenuItem $item)
+    {
+        /** @var MenuItem $child */
+        foreach ($item->getChildren() as $child) {
+            if ($child->isCurrentAncestor()) {
+                return $this->zicht_menu_current($child);
+            }
+
+            if ($child->isCurrent()) {
+                return $child;
+            }
+        }
+
+        return null;
+    }
 
     /**
      * Returns the name of the extension.

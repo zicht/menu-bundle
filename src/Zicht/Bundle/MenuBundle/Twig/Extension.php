@@ -80,11 +80,14 @@ class Extension extends \Twig_Extension
      * @param MenuItem $item
      * @return MenuItem|null
      */
-    public function zicht_menu_current(MenuItem $item)
+    public function zicht_menu_current(MenuItem $item, $level = null)
     {
         /** @var MenuItem $child */
         foreach ($item->getChildren() as $child) {
             if ($child->isCurrentAncestor()) {
+                if ($level !== null and $level == $child->getLevel()) {
+                    return $child;
+                }
                 return $this->zicht_menu_current($child);
             }
 

@@ -34,6 +34,7 @@ class Extension extends \Twig_Extension
     {
         return [
             new \Twig_SimpleFilter('zicht_menu_current', [$this, 'zicht_menu_current']),
+            new \Twig_SimpleFilter('zicht_menu_active_trail', [$this, 'zicht_menu_active_trail']),
         ];
     }
     /**
@@ -61,12 +62,20 @@ class Extension extends \Twig_Extension
     /**
      * Returns the active trail for the given menuItem
      *
-     * @param \Knp\Menu\MenuItem $item
+     * @param MenuItem|null $item
      * @return array
      *
      */
-    public function zicht_menu_active_trail(MenuItem $item)
+    public function zicht_menu_active_trail($item)
     {
+        if (is_null($item)) {
+            return null;
+        }
+
+        if (!$item instanceof MenuItem) {
+            throw new \UnexpectedValueException(sprintf('$ITEM must be \Knp\Menu\MenuItem not "%s"', get_class($item)));
+        }
+
         $stack = array();
         do {
             $stack[]= $item;
@@ -77,11 +86,19 @@ class Extension extends \Twig_Extension
     /**
      * Returns the current menu item given a root menu item
      *
-     * @param MenuItem $item
+     * @param MenuItem|null $item
      * @return MenuItem|null
      */
-    public function zicht_menu_current(MenuItem $item, $level = null)
+    public function zicht_menu_current($item, $level = null)
     {
+        if (is_null($item)) {
+            return null;
+        }
+
+        if (!$item instanceof MenuItem) {
+            throw new \UnexpectedValueException(sprintf('$ITEM must be \Knp\Menu\MenuItem not "%s"', get_class($item)));
+        }
+
         /** @var MenuItem $child */
         foreach ($item->getChildren() as $child) {
             if ($child->isCurrentAncestor()) {

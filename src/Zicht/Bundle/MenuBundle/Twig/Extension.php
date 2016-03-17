@@ -54,7 +54,7 @@ class Extension extends \Twig_Extension
      * @param string $menuName
      * @return bool
      */
-    public function menu_exists($menuName)
+    public function zicht_menu_exists($menuName)
     {
         return $this->menuProvider->has($menuName);
     }

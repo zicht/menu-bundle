@@ -36,6 +36,7 @@ class MenuItemNameUrlProvider extends StaticProvider implements SuggestableProvi
     {
         if (!isset($this->loaded[$this->router->getContext()->getParameter('_locale')])) {
             $this->loadMappings();
+            $this->loaded[$this->router->getContext()->getParameter('_locale')] = true;
         }
         return parent::supports($name);
     }

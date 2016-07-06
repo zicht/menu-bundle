@@ -391,6 +391,6 @@ class MenuItem
      */
     public function getIsCollapsible()
     {
-        return $this->is_collapsible;
+        return (bool)$this->is_collapsible;
     }
 }

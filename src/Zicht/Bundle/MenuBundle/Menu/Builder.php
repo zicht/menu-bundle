@@ -10,7 +10,6 @@ use \InvalidArgumentException;
 use \Knp\Menu\MenuItem;
 use \Symfony\Component\DependencyInjection\ContainerAware;
 use \Symfony\Component\HttpFoundation\Request;
-use \Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 
 /**
@@ -108,7 +107,7 @@ class Builder extends ContainerAware
         }
         $menu = $this->factory->createItem('root');
         $this->addMenuItemHierarchy($request, $this->menuItemEntity->childrenHierarchy($root), $menu);
-        $menu->setCurrentUri($request->getRequestUri());
+        $menu->setUri($request->getRequestUri());
 
         return $menu;
     }
@@ -135,7 +134,8 @@ class Builder extends ContainerAware
      *
      * @return \Knp\Menu\ItemInterface
      */
-    public function addMenuItem(Request $request, array $item, MenuItem $menu) {
+    public function addMenuItem(Request $request, array $item, MenuItem $menu)
+    {
         $attributes = array();
 
         // if the menu item has a name, add it as a css class.
@@ -170,7 +170,7 @@ class Builder extends ContainerAware
      * @param \Knp\Menu\ItemInterface $item
      * @return void
      */
-    public function addGhostItem(Request $request, $item, $title = '')
+    public function addGhostItem(Request $request, $item)
     {
         $item->addChild(
             $this->factory->createItem(

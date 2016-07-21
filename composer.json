@@ -10,13 +10,13 @@
         }
     ],
     "require": {
-        "php": ">=5.3"
+        "php": ">=5.6"
     },
     "require-dev": {
         "zicht/url-bundle": "*",
         "zicht/framework-extra-bundle": "*",
         "doctrine/doctrine-bundle": "*",
-        "knplabs/knp-menu-bundle":  "*",
+        "knplabs/knp-menu-bundle":  "^2.1",
 	"symfony/symfony": "*"
     },
     "autoload": {

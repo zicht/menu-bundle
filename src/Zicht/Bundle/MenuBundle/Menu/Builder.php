@@ -5,18 +5,20 @@
  */
 namespace Zicht\Bundle\MenuBundle\Menu;
 
-use \Knp\Menu\FactoryInterface;
-use \InvalidArgumentException;
-use \Knp\Menu\MenuItem;
-use \Symfony\Component\DependencyInjection\ContainerAware;
-use \Symfony\Component\HttpFoundation\Request;
-
+use Knp\Menu\FactoryInterface;
+use InvalidArgumentException;
+use Knp\Menu\MenuItem;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
 /**
  *
  */
-class Builder extends ContainerAware
+class Builder implements ContainerAwareInterface
 {
+    use ContainerAwareTrait;
+
     /**
      * @var \Knp\Menu\FactoryInterface
      */

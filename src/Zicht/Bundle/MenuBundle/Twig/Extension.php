@@ -7,6 +7,8 @@ namespace Zicht\Bundle\MenuBundle\Twig;
  
 use Knp\Menu\MenuItem;
 use Knp\Menu\Provider\MenuProviderInterface;
+use Twig_SimpleFilter;
+use Twig_SimpleFunction;
 
 /**
  * Class Extension
@@ -33,8 +35,8 @@ class Extension extends \Twig_Extension
     public function getFilters()
     {
         return [
-            new \Twig_SimpleFilter('zicht_menu_current', [$this, 'zicht_menu_current']),
-            new \Twig_SimpleFilter('zicht_menu_active_trail', [$this, 'zicht_menu_active_trail']),
+            new Twig_SimpleFilter('zicht_menu_current', [$this, 'zicht_menu_current']),
+            new Twig_SimpleFilter('zicht_menu_active_trail', [$this, 'zicht_menu_active_trail']),
         ];
     }
     /**
@@ -43,8 +45,9 @@ class Extension extends \Twig_Extension
     public function getFunctions()
     {
         return array(
-            'zicht_menu_active_trail' => new \Twig_Function_Method($this, 'zicht_menu_active_trail'),
-            'zicht_menu_exists' => new \Twig_Function_Method($this, 'zicht_menu_exists')
+            'zicht_menu_active_trail' =>
+                new Twig_SimpleFunction('zicht_menu_active_trail', [$this, 'zicht_menu_active_trail']),
+            'zicht_menu_exists' => new Twig_SimpleFunction('zicht_menu_exists', [$this, 'zicht_menu_exists'])
         );
     }
 

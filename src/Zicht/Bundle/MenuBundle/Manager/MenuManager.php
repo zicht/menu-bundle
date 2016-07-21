@@ -6,8 +6,8 @@
 
 namespace Zicht\Bundle\MenuBundle\Manager;
 
-use \Doctrine\Bundle\DoctrineBundle\Registry;
-use \Zicht\Bundle\MenuBundle\Entity\MenuItem;
+use Doctrine\Bundle\DoctrineBundle\Registry;
+use Zicht\Bundle\MenuBundle\Entity\MenuItem;
 
 /**
  * Class MenuManager

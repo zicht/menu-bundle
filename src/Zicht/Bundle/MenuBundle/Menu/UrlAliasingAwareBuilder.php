@@ -6,7 +6,8 @@
 
 namespace Zicht\Bundle\MenuBundle\Menu;
 
-use \Knp\Menu\FactoryInterface;
+use Doctrine\Bundle\DoctrineBundle\Registry;
+use Knp\Menu\FactoryInterface;
 
 
 /**
@@ -20,7 +21,7 @@ class UrlAliasingAwareBuilder extends Builder
      * Overridden to provide a DEPRECATED warning
      *
      * @param FactoryInterface $factory
-     * @param \Doctrine\Bundle\DoctrineBundle\Registry $doctrine
+     * @param Registry $doctrine
      * @param string $entity
      */
     public function __construct(FactoryInterface $factory, $doctrine, $entity = 'ZichtMenuBundle:MenuItem')

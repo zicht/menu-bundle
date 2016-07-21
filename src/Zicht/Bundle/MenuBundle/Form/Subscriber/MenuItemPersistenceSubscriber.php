@@ -5,13 +5,12 @@
  */
 namespace Zicht\Bundle\MenuBundle\Form\Subscriber;
 
-use \Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use \Symfony\Component\Form\FormEvents;
-use \Symfony\Component\Form\FormEvent;
-use \Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\Form\FormEvents;
+use Symfony\Component\Form\FormEvent;
 
-use \Zicht\Bundle\MenuBundle\Manager\MenuManager;
-use \Zicht\Bundle\UrlBundle\Url\Provider;
+use Zicht\Bundle\MenuBundle\Manager\MenuManager;
+use Zicht\Bundle\UrlBundle\Url\Provider;
 
 /**
  * Class MenuItemPersistenceSubscriber

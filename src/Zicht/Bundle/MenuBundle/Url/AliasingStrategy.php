@@ -5,10 +5,10 @@
  */
 namespace Zicht\Bundle\MenuBundle\Url;
 
-use \Zicht\Bundle\MenuBundle\Manager\MenuManager;
-use \Zicht\Bundle\UrlBundle\Aliasing\DefaultAliasingStrategy;
-use \Zicht\Bundle\UrlBundle\Url\Provider;
-use \Zicht\Util\Str;
+use Zicht\Bundle\MenuBundle\Manager\MenuManager;
+use Zicht\Bundle\UrlBundle\Aliasing\DefaultAliasingStrategy;
+use Zicht\Bundle\UrlBundle\Url\Provider;
+use Zicht\Util\Str;
 
 /**
  * Menu AliasingStrategy

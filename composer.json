@@ -10,17 +10,18 @@
         }
     ],
     "require": {
-        "php": ">=5.6"
+        "php": "^5.6",
+        "sonata-project/admin-bundle": "^3.1",
+        "gedmo/doctrine-extensions": "^2.4",
+        "zicht/framework-extra-bundle": "^4.1",
+        "zicht/admin-bundle": "^3.3",
+        "zicht/url-bundle": "^2.4"
     },
     "require-dev": {
-        "zicht/url-bundle": "*",
-        "zicht/framework-extra-bundle": "*",
-        "doctrine/doctrine-bundle": "*",
-        "knplabs/knp-menu-bundle":  "^2.1",
-	"symfony/symfony": "*"
+        "phpunit/phpunit": "^4"
     },
     "autoload": {
         "psr-0": { "": ["src/", "tests/"] }
     },
-    "minimum-stability": "dev"
+    "minimum-stability": "stable"
 }

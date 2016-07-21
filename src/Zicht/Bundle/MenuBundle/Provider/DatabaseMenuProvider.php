@@ -6,9 +6,9 @@
 
 namespace Zicht\Bundle\MenuBundle\Provider;
 
-use \Knp\Menu\Provider\MenuProviderInterface;
-use \Symfony\Component\DependencyInjection\ContainerInterface;
-use \Zicht\Bundle\MenuBundle\Menu\Builder;
+use Knp\Menu\Provider\MenuProviderInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use Zicht\Bundle\MenuBundle\Menu\Builder;
 
 /**
  * Class DatabaseMenuProvider

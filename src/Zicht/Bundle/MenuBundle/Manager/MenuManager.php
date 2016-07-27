@@ -11,6 +11,7 @@ use Zicht\Bundle\MenuBundle\Entity\MenuItem;
 
 /**
  * Class MenuManager
+ *
  * @package Zicht\Bundle\MenuBundle\Manager
  */
 class MenuManager
@@ -90,11 +91,12 @@ class MenuManager
      * @param array $parameters Array containing keys ':name' or ':path'
      * @param MenuItem $ancestor Optional MenuItem whose descendants will be searched
      * @return null|\Zicht\Bundle\MenuBundle\Entity\MenuItem
+     * @throws \Exception
      */
     public function getItemBy(array $parameters, MenuItem $ancestor = null)
     {
         $where = array();
-        foreach ($parameters as $key=>$value) {
+        foreach ($parameters as $key => $value) {
             switch ($key) {
                 case ':name':
                     $where [] = 'm.name = :name';

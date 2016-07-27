@@ -109,7 +109,11 @@ class MenuItem
     private $json_data = null;
 
     /**
-     * Constructor
+     * MenuItem constructor.
+     *
+     * @param null $title
+     * @param null $path
+     * @param string $name
      */
     public function __construct($title = null, $path = null, $name = '')
     {
@@ -182,7 +186,6 @@ class MenuItem
     {
         return $this->path;
     }
-
 
     /**
      * Set parent
@@ -384,7 +387,7 @@ class MenuItem
 
 
     /**
-     * @param $name
+     * @param string $name
      */
     public function setName($name)
     {
@@ -407,7 +410,7 @@ class MenuItem
     protected $addToMenu = false;
 
     /**
-     * @param $addToMenu
+     * @param bool $addToMenu
      */
     public function setAddToMenu($addToMenu)
     {
@@ -423,7 +426,7 @@ class MenuItem
     }
 
     /**
-     * @param $language
+     * @param string $language
      */
     public function setLanguage($language)
     {
@@ -431,7 +434,7 @@ class MenuItem
     }
 
     /**
-     * @return null
+     * @return mixed
      */
     public function getLanguage()
     {

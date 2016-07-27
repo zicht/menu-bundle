@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * @author Muhammed Akbulut <muhammed@zicht.nl>
+ * @copyright Zicht Online <http://www.zicht.nl>
+ */
+
 namespace Zicht\Bundle\MenuBundle\Command;
 
 use Doctrine\ORM\EntityManagerInterface;
@@ -38,29 +43,30 @@ class PublicToInternalUriCommand extends Command
      */
     protected function configure()
     {
-        $this
-            ->setName('zicht:menu:public-to-internal')
+        $this->setName('zicht:menu:public-to-internal')
             ->setDescription('Convert public menu URI’s to internal URI’s');
     }
 
-
     /**
-     * {@inheritdoc}
+     * Execute
+     *
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     * @throws \Exception
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $this->entityManager->getConnection()->beginTransaction();
 
         try {
-            $query = $this->entityManager->getConnection()->exec('
-                UPDATE menu_item
-                INNER JOIN url_alias ON menu_item.path = url_alias.public_url
-                SET menu_item.path = url_alias.internal_url
-            ');
+            $this->entityManager->getConnection()->exec(
+                'UPDATE menu_item ' .
+                'INNER JOIN url_alias ON menu_item.path = url_alias.public_url ' .
+                'SET menu_item.path = url_alias.internal_url'
+            );
 
             $this->entityManager->getConnection()->commit();
-        }
-        catch(\Exception $exception) {
+        } catch (\Exception $exception) {
             $this->entityManager->getConnection()->rollBack();
 
             throw $exception;

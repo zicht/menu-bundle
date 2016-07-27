@@ -17,22 +17,49 @@ use Zicht\Bundle\UrlBundle\Url\Provider;
  */
 class MenuItemType extends AbstractType
 {
+    /**
+     * @var object
+     */
+    protected $menuManager;
+
+    /**
+     * @var Provider
+     */
+    protected $urlProvider;
+
+    /**
+     * MenuItemType constructor.
+     *
+     * @param object $menuManager
+     * @param Provider $urlProvider
+     */
     public function __construct($menuManager, Provider $urlProvider)
     {
         $this->menuManager = $menuManager;
         $this->urlProvider = $urlProvider;
     }
 
+    /**
+     * @param OptionsResolverInterface $resolver
+     */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         parent::setDefaultOptions($resolver);
         $resolver
-            ->setDefaults(array(
-                'mapped'                => false,
-                'data_class'            => 'Zicht\Bundle\MenuBundle\Entity\MenuItem',
-            ));
+            ->setDefaults(
+                array(
+                    'mapped'                => false,
+                    'data_class'            => 'Zicht\Bundle\MenuBundle\Entity\MenuItem',
+                )
+            );
     }
 
+    /**
+     * Build form
+     *
+     * @param FormBuilderInterface $builder
+     * @param array $options
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         parent::buildForm($builder, $options);
@@ -40,8 +67,7 @@ class MenuItemType extends AbstractType
         $builder
             ->add('add_to_menu', 'checkbox', array('required' => false, 'label' => 'form.label_add_to_menu'))
             ->add('parent', 'zicht_parent_choice', array('class' => 'Zicht\Bundle\MenuBundle\Entity\MenuItem', 'label' => 'form.label_parent'))
-            ->add('title', 'text', array('required' => false, 'label' => 'form.label_title'))
-        ;
+            ->add('title', 'text', array('required' => false, 'label' => 'form.label_title'));
     }
 
     /**

@@ -32,13 +32,17 @@ class Extension extends \Twig_Extension
         $this->menuProvider = $menuProvider;
     }
 
+    /**
+     * @return array
+     */
     public function getFilters()
     {
         return [
-            new Twig_SimpleFilter('zicht_menu_current', [$this, 'zicht_menu_current']),
-            new Twig_SimpleFilter('zicht_menu_active_trail', [$this, 'zicht_menu_active_trail']),
+            new Twig_SimpleFilter('zicht_menu_current', [$this, 'current']),
+            new Twig_SimpleFilter('zicht_menu_active_trail', [$this, 'activeTrail']),
         ];
     }
+
     /**
      * @return array
      */
@@ -46,8 +50,8 @@ class Extension extends \Twig_Extension
     {
         return array(
             'zicht_menu_active_trail' =>
-                new Twig_SimpleFunction('zicht_menu_active_trail', [$this, 'zicht_menu_active_trail']),
-            'zicht_menu_exists' => new Twig_SimpleFunction('zicht_menu_exists', [$this, 'zicht_menu_exists'])
+                new Twig_SimpleFunction('zicht_menu_active_trail', [$this, 'activeTrail']),
+            'zicht_menu_exists' => new Twig_SimpleFunction('zicht_menu_exists', [$this, 'exists'])
         );
     }
 
@@ -57,7 +61,7 @@ class Extension extends \Twig_Extension
      * @param string $menuName
      * @return bool
      */
-    public function zicht_menu_exists($menuName)
+    public function exists($menuName)
     {
         return $this->menuProvider->has($menuName);
     }
@@ -69,7 +73,7 @@ class Extension extends \Twig_Extension
      * @return array
      *
      */
-    public function zicht_menu_active_trail($item)
+    public function activeTrail($item)
     {
         if (is_null($item)) {
             return null;
@@ -80,9 +84,11 @@ class Extension extends \Twig_Extension
         }
 
         $stack = array();
+
         do {
             $stack[]= $item;
         } while ($item = $item->getParent());
+
         return array_reverse($stack);
     }
 
@@ -90,9 +96,10 @@ class Extension extends \Twig_Extension
      * Returns the current menu item given a root menu item
      *
      * @param MenuItem|null $item
+     * @param int $level
      * @return MenuItem|null
      */
-    public function zicht_menu_current($item, $level = null)
+    public function current($item, $level = null)
     {
         if (is_null($item)) {
             return null;

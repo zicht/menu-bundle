@@ -8,11 +8,12 @@ namespace Zicht\Bundle\MenuBundle\Url;
 
 use Zicht\Bundle\UrlBundle\Url\StaticProvider;
 use Zicht\Bundle\UrlBundle\Url\SuggestableProvider;
-
 use Doctrine\Bundle\DoctrineBundle\Registry;
 use Symfony\Component\Routing\RouterInterface;
 
 /**
+ * Class MenuItemNameUrlProvider
+ *
  * @package Zicht\Bundle\MenuBundle\Url
  */
 class MenuItemNameUrlProvider extends StaticProvider implements SuggestableProvider
@@ -22,8 +23,13 @@ class MenuItemNameUrlProvider extends StaticProvider implements SuggestableProvi
      */
     private $repository;
 
-
-    function __construct(Registry $doctrine, RouterInterface $router)
+    /**
+     * MenuItemNameUrlProvider constructor.
+     *
+     * @param Registry $doctrine
+     * @param RouterInterface $router
+     */
+    public function __construct(Registry $doctrine, RouterInterface $router)
     {
         parent::__construct($router);
         $this->em = $doctrine->getManager();
@@ -31,13 +37,19 @@ class MenuItemNameUrlProvider extends StaticProvider implements SuggestableProvi
         $this->loaded = [];
     }
 
-
-    function supports($name)
+    /**
+     * If it supports the given name
+     *
+     * @param mixed $name
+     * @return bool|mixed
+     */
+    public function supports($name)
     {
         if (!isset($this->loaded[$this->router->getContext()->getParameter('_locale')])) {
             $this->loadMappings();
             $this->loaded[$this->router->getContext()->getParameter('_locale')] = true;
         }
+
         return parent::supports($name);
     }
 
@@ -74,7 +86,7 @@ class MenuItemNameUrlProvider extends StaticProvider implements SuggestableProvi
     /**
      * Suggest url's based on the passed pattern. The return value must be an array containing "label" and "value" keys.
      *
-     * @param $pattern
+     * @param string $pattern
      * @return mixed
      */
     public function suggest($pattern)
@@ -82,8 +94,7 @@ class MenuItemNameUrlProvider extends StaticProvider implements SuggestableProvi
         $menuItems = $this->repository->createQueryBuilder('m')
             ->andWhere('m.name LIKE :pattern')
             ->getQuery()
-            ->execute(array('pattern' => '%' . $pattern . '%'))
-        ;
+            ->execute(array('pattern' => '%' . $pattern . '%'));
 
         $suggestions = array();
         foreach ($menuItems as $item) {

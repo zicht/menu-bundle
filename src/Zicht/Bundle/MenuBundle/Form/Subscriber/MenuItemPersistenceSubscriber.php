@@ -8,7 +8,6 @@ namespace Zicht\Bundle\MenuBundle\Form\Subscriber;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormEvent;
-
 use Zicht\Bundle\MenuBundle\Manager\MenuManager;
 use Zicht\Bundle\UrlBundle\Url\Provider;
 
@@ -22,7 +21,7 @@ class MenuItemPersistenceSubscriber implements EventSubscriberInterface
     /**
      * @{inheritDoc}
      */
-    static function getSubscribedEvents()
+    public static function getSubscribedEvents()
     {
         return array(
             FormEvents::POST_SET_DATA   => 'postSetData',
@@ -37,7 +36,7 @@ class MenuItemPersistenceSubscriber implements EventSubscriberInterface
      * @param Provider $provider
      * @param string $property
      */
-    function __construct(MenuManager $mm, Provider $provider, $property)
+    public function __construct(MenuManager $mm, Provider $provider, $property)
     {
         $this->mm = $mm;
         $this->provider = $provider;
@@ -50,7 +49,7 @@ class MenuItemPersistenceSubscriber implements EventSubscriberInterface
      * @param FormEvent $e
      * @return void
      */
-    function postSetData(FormEvent $e)
+    public function postSetData(FormEvent $e)
     {
         if ($e->getData() === null) {
             return;
@@ -69,7 +68,7 @@ class MenuItemPersistenceSubscriber implements EventSubscriberInterface
      * @param FormEvent $e
      * @return void
      */
-    function postSubmit(FormEvent $e)
+    public function postSubmit(FormEvent $e)
     {
         if ($e->getForm()->has($this->property) && $e->getForm()->getRoot()->isValid()) {
             $menuItem = $e->getForm()->get($this->property)->getData();

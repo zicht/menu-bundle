@@ -5,19 +5,25 @@
  */
 namespace Zicht\Bundle\MenuBundle\Menu;
 
+use Doctrine\Bundle\DoctrineBundle\Registry;
 use Knp\Menu\FactoryInterface;
 use InvalidArgumentException;
+use Knp\Menu\ItemInterface;
 use Knp\Menu\MenuItem;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
 /**
+ * Class Builder
  *
+ * @package Zicht\Bundle\MenuBundle\Menu
  */
 class Builder implements ContainerAwareInterface
 {
+    /* @codingStandardsIgnoreStart */
     use ContainerAwareTrait;
+    /* @codingStandardsIgnoreEnd */
 
     /**
      * @var \Knp\Menu\FactoryInterface
@@ -30,17 +36,18 @@ class Builder implements ContainerAwareInterface
     protected $menuItemEntity;
 
     /**
-     * @var \Doctrine\Bundle\DoctrineBundle\Registry
+     * @var Registry
      */
     protected $em;
 
-
     /**
+     * Builder constructor.
+     *
      * @param FactoryInterface $factory
-     * @param \Doctrine\Bundle\DoctrineBundle\Registry $doctrine
+     * @param Registry $doctrine
      * @param string $entity
      */
-    public function __construct(FactoryInterface $factory, $doctrine, $entity = 'ZichtMenuBundle:MenuItem')
+    public function __construct(FactoryInterface $factory, Registry $doctrine, $entity = 'ZichtMenuBundle:MenuItem')
     {
         $this->factory = $factory;
         $this->em = $doctrine->getManager();
@@ -52,7 +59,7 @@ class Builder implements ContainerAwareInterface
      *
      * @param string $name
      * @param \Symfony\Component\HttpFoundation\Request $request
-     * @return \Knp\Menu\ItemInterface
+     * @return ItemInterface
      *
      * @throws \InvalidArgumentException
      */
@@ -97,10 +104,12 @@ class Builder implements ContainerAwareInterface
     }
 
     /**
-     * @param $request
-     * @param $root
-     * @return \Knp\Menu\ItemInterface
-     * @throws \InvalidArgumentException
+     * Create menu
+     *
+     * @param Request $request
+     * @param ItemInterface $root
+     * @return ItemInterface
+     * @throws InvalidArgumentException
      */
     public function createMenu($request, $root)
     {
@@ -114,6 +123,14 @@ class Builder implements ContainerAwareInterface
         return $menu;
     }
 
+    /**
+     * Add menu item hierarchy
+     *
+     * @param Request $request
+     * @param mixed $children
+     * @param ItemInterface $parent
+     * @return int
+     */
     public function addMenuItemHierarchy($request, $children, $parent)
     {
         $ret = 0;
@@ -134,7 +151,7 @@ class Builder implements ContainerAwareInterface
      * @param array $item
      * @param MenuItem $menu
      *
-     * @return \Knp\Menu\ItemInterface
+     * @return ItemInterface
      */
     public function addMenuItem(Request $request, array $item, MenuItem $menu)
     {
@@ -169,7 +186,7 @@ class Builder implements ContainerAwareInterface
      * Adds an item on the fly that was not originally in the menu.
      *
      * @param \Symfony\Component\HttpFoundation\Request $request
-     * @param \Knp\Menu\ItemInterface $item
+     * @param ItemInterface $item
      * @return void
      */
     public function addGhostItem(Request $request, $item)

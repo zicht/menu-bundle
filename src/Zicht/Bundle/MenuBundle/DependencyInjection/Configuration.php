@@ -1,4 +1,8 @@
 <?php
+/**
+ * @author Muhammed Akbulut <muhammed@zicht.nl>
+ * @copyright Zicht Online <http://www.zicht.nl>
+ */
 
 namespace Zicht\Bundle\MenuBundle\DependencyInjection;
 
@@ -27,8 +31,7 @@ class Configuration implements ConfigurationInterface
                     ->prototype('scalar')->end()
                     ->end()
                 ->end()
-            ->end()
-        ;
+            ->end();
 
         // Here you should define the parameters that are allowed to
         // configure your bundle. See the documentation linked above for

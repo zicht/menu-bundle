@@ -52,5 +52,4 @@ class ZichtMenuExtension extends Extension
         $formResources[]= 'ZichtMenuBundle::form_theme.html.twig';
         $container->setParameter('twig.form.resources', $formResources);
     }
-
 }

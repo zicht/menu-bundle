@@ -8,7 +8,6 @@ namespace Zicht\Bundle\MenuBundle\Admin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
-use Zicht\Bundle\MenuBundle\Entity;
 use Zicht\Bundle\AdminBundle\Admin\TreeAdmin;
 
 /**
@@ -29,8 +28,7 @@ class MenuItemAdmin extends TreeAdmin
                 ->add('path', 'zicht_url', array('required' => false))
                 ->add('name')
             ->end()
-            ->setHelps(array('name' => 'admin.help.menu_item_name'))
-        ;
+            ->setHelps(array('name' => 'admin.help.menu_item_name'));
     }
 
     /**
@@ -40,10 +38,13 @@ class MenuItemAdmin extends TreeAdmin
     {
         $listMapper = parent::configureListFields($listMapper);
         $listMapper->add('path', 'string', array('template' => 'ZichtAdminBundle:CRUD:list_url.html.twig'));
-        $listMapper->reorder(array(
-            'title',
-            'path'
-        ));
+        $listMapper->reorder(
+            array(
+                'title',
+                'path'
+            )
+        );
+
         return $listMapper;
     }
 
@@ -57,7 +58,6 @@ class MenuItemAdmin extends TreeAdmin
 
         $filter
             ->add('title')
-            ->add('path')
-        ;
+            ->add('path');
     }
 }

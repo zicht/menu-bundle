@@ -9,9 +9,9 @@ namespace Zicht\Bundle\MenuBundle\Menu;
 use Doctrine\Bundle\DoctrineBundle\Registry;
 use Knp\Menu\FactoryInterface;
 
-
 /**
  * Class UrlAliasingAwareBuilder
+ *
  * @package Zicht\Bundle\MenuBundle\Menu
  * @deprecated The aliasing is now delegated to a response listener in the UrlBundle. Extend the regular Builder in stead
  */

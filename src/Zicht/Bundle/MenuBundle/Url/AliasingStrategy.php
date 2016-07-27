@@ -28,6 +28,12 @@ class AliasingStrategy extends DefaultAliasingStrategy
      */
     private $urlProvider;
 
+    /**
+     * AliasingStrategy constructor.
+     *
+     * @param MenuManager $menuManager
+     * @param Provider $urlProvider
+     */
     public function __construct(MenuManager $menuManager, Provider $urlProvider)
     {
         parent::__construct('/');
@@ -39,6 +45,7 @@ class AliasingStrategy extends DefaultAliasingStrategy
      * Generate a public alias for the passed object
      *
      * @param mixed $subject
+     * @param string $currentAlias
      * @return string
      */
     public function generatePublicAlias($subject, $currentAlias = '')

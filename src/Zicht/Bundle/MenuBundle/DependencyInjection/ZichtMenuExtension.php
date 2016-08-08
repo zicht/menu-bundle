@@ -51,5 +51,13 @@ class ZichtMenuExtension extends Extension
         $formResources = $container->getParameter('twig.form.resources');
         $formResources[]= 'ZichtMenuBundle::form_theme.html.twig';
         $container->setParameter('twig.form.resources', $formResources);
+
+        if (interface_exists('Knp\Menu\Matcher\Voter\VoterInterface')) {
+            $def = new Definition('Zicht\Bundle\MenuBundle\Voter\UriVoter');
+            $def->addTag('knp_menu.voter', ['request' => true]);
+            $def->addArgument(new Reference('request_stack'));
+
+            $container->setDefinition('zicht_menu.knp_menu.voter.uri', $def);
+        }
     }
 }

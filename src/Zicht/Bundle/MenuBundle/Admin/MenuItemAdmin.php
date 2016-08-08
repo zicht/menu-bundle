@@ -58,6 +58,7 @@ class MenuItemAdmin extends TreeAdmin
 
         $filter
             ->add('title')
+            ->add('name')
             ->add('path');
     }
 }

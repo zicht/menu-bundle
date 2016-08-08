@@ -162,7 +162,7 @@ class Builder implements ContainerAwareInterface
             $attributes['class'] = $name;
         }
 
-        if (null === $item['path']) {
+        if (empty($item['path'])) {
             $uri = null;
         } elseif (preg_match('!^(?:https?://|mailto:)!', $item['path'])) {
             $uri = $item['path'];

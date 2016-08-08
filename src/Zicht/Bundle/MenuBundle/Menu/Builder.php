@@ -143,7 +143,9 @@ class Builder extends ContainerAware
             $attributes['class'] = $name;
         }
 
-        if (preg_match('!^(?:https?://|mailto:)!', $item['path'])) {
+        if (null === $item['path']) {
+            $uri = null;
+        } elseif (preg_match('!^(?:https?://|mailto:)!', $item['path'])) {
             $uri = $item['path'];
         } else {
             $baseUrl = $request->getBaseUrl();

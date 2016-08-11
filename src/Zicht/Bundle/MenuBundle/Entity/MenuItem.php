@@ -1,7 +1,6 @@
 <?php
 /**
- * @author Jeroen Fiege <jeroenf@zicht.nl>
- * @author Boudewijn Schoon <boudewijn@zicht.nl>
+ * @author Muhammed Akbulut <muhammed@zicht.nl>
  * @copyright Zicht Online <http://www.zicht.nl>
  */
 

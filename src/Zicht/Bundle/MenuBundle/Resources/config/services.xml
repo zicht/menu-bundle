@@ -41,5 +41,9 @@
             <argument type="service" id="doctrine.orm.default_entity_manager" />
             <tag name="console.command" />
         </service>
+        <service id="zicht_menu.access.menu" class="Zicht\Bundle\MenuBundle\Security\Authorization\MenuVoter" public="false">
+            <argument type="service" id="security.role_hierarchy" />
+            <tag name="security.voter" />
+        </service>
     </services>
 </container>

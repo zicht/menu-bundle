@@ -12,7 +12,8 @@
     "require": {
         "php": "^5.6",
         "sonata-project/admin-bundle": "^3.1",
-        "gedmo/doctrine-extensions": "^2.4"
+        "gedmo/doctrine-extensions": "^2.4",
+        "zicht/framework-extra-bundle": "^4.1"
     },
     "suggest": {
         "zicht/admin-bundle": "To integrate with Sonata Admin",

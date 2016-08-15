@@ -1,0 +1,3 @@
+Zicht\Bundle\MenuBundle\Entity\MenuItem:
+  constraints:
+    - Callback: [Zicht\Bundle\FrameworkExtraBundle\Validator\ParentValidator, validate]

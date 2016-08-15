@@ -31,5 +31,10 @@
         <service id="zicht_menu.twig.extension" class="Zicht\Bundle\MenuBundle\Twig\Extension">
             <tag name="twig.extension" />
         </service>
+        <service id="zicht_menu.access.menu" class="Zicht\Bundle\MenuBundle\Security\Authorization\MenuVoter" public="false">
+            <argument type="service" id="security.role_hierarchy" />
+            <tag name="security.voter" />
+        </service>
+
     </services>
 </container>

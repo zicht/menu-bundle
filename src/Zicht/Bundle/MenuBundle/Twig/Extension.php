@@ -5,6 +5,7 @@
  */
 namespace Zicht\Bundle\MenuBundle\Twig;
  
+use Knp\Menu\Matcher\MatcherInterface;
 use Knp\Menu\MenuItem;
 use Knp\Menu\Provider\MenuProviderInterface;
 use Twig_SimpleFilter;
@@ -23,6 +24,11 @@ class Extension extends \Twig_Extension
     private $menuProvider;
 
     /**
+     * @var MatcherInterface
+     */
+    private $matcher;
+
+    /**
      * Constructor
      *
      * @param MenuProviderInterface $menuProvider
@@ -30,6 +36,14 @@ class Extension extends \Twig_Extension
     public function __construct(MenuProviderInterface $menuProvider)
     {
         $this->menuProvider = $menuProvider;
+    }
+
+    /**
+     * @param MatcherInterface $matcher
+     */
+    public function setMatcher($matcher = null)
+    {
+        $this->matcher = $matcher;
     }
 
     /**
@@ -111,14 +125,21 @@ class Extension extends \Twig_Extension
 
         /** @var MenuItem $child */
         foreach ($item->getChildren() as $child) {
-            if ($child->isCurrentAncestor()) {
+            if (
+                (null !== $this->matcher && $this->matcher->isAncestor($child))
+             || (null === $this->matcher && $child->isCurrentAncestor())
+            ) {
                 if ($level !== null and $level == $child->getLevel()) {
                     return $child;
                 }
-                return $this->zicht_menu_current($child);
+
+                return $this->current($child);
             }
 
-            if ($child->isCurrent()) {
+            if (
+                (null !== $this->matcher && $this->matcher->isCurrent($child))
+             || (null === $this->matcher && $child->isCurrent())
+            ) {
                 return $child;
             }
         }

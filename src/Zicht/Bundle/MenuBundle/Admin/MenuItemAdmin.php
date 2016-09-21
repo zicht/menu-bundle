@@ -25,10 +25,11 @@ class MenuItemAdmin extends TreeAdmin
         parent::configureFormFields($formMapper);
         $formMapper
             ->tab('admin.tab.menu_item')
-                ->add('path', 'zicht_url', array('required' => false))
-                ->add('name')
-            ->end()
-            ->setHelps(array('name' => 'admin.help.menu_item_name'));
+                ->with('admin.tab.menu_item')
+                    ->add('path', 'zicht_url', array('required' => false))
+                    ->add('name', null, array('help' => 'admin.help.menu_item_name'))
+                ->end()
+            ->end();
     }
 
     /**

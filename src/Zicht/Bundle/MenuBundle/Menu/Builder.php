@@ -23,6 +23,7 @@ class Builder implements ContainerAwareInterface
 {
     /* @codingStandardsIgnoreStart */
     use ContainerAwareTrait;
+
     /* @codingStandardsIgnoreEnd */
 
     /**
@@ -41,6 +42,18 @@ class Builder implements ContainerAwareInterface
     protected $em;
 
     /**
+     * Keep cache map of locales -> [root names -> [root_id, left_value, right_value]]
+     */
+    private $roots = [];
+
+    /**
+     * Previously (pre-)loaded menus, mapped by locale and name
+     *
+     * @var array
+     */
+    private $menus = [];
+
+    /**
      * Builder constructor.
      *
      * @param FactoryInterface $factory
@@ -52,6 +65,15 @@ class Builder implements ContainerAwareInterface
         $this->factory = $factory;
         $this->em = $doctrine->getManager();
         $this->menuItemEntity = $this->em->getRepository($entity);
+        $this->roots = [];
+    }
+
+    /**
+     * Set the menu names to preload
+     */
+    public function setPreloadMenus($menus)
+    {
+        $this->preloadMenus = $menus;
     }
 
     /**
@@ -65,13 +87,49 @@ class Builder implements ContainerAwareInterface
      */
     public function build($name, Request $request)
     {
-        $root = $this->getRootItemByName($name, $request);
+        $menus = $this->loadRoots($request);
 
-        if (null === $root) {
+        if (!isset($menus[$name])) {
             throw new \InvalidArgumentException("Could not find root item with name '$name'");
         }
 
-        return $this->createMenu($request, $root);
+        $requestLocale = $request->get('_locale');
+
+        if (!isset($this->menus[$requestLocale][$name])) {
+            $rootIdToNameMap = array_combine(array_column($menus, 0), array_keys($menus));
+
+            if (in_array($name, $this->preloadMenus)) {
+                $menusToLoad = [];
+                foreach ($this->preloadMenus as $preloadMenuName) {
+                    $menusToLoad[$preloadMenuName] = $menus[$preloadMenuName];
+                }
+            } else {
+                $menusToLoad[$name] = $menus[$name];
+            }
+
+            $query = 'SELECT root, menu_item.* FROM menu_item WHERE ';
+            $i = 0;
+            // `$vals` contains [id, lft, rgt]
+            foreach ($menusToLoad as $name => $vals) {
+                if ($i ++ > 0) {
+                    $query .= ' OR ';
+                }
+                $query .= vsprintf('(root=%d AND lft BETWEEN %d AND %d AND id <> root)', $vals);
+            }
+            $query .= ' ORDER BY root, lft';
+
+            foreach ($this->em->getConnection()->query($query)->fetchAll(\PDO::FETCH_GROUP) as $rootId => $menu) {
+                $menuName = $rootIdToNameMap[$rootId];
+                $this->menus[$requestLocale][$menuName]= $this->factory->createItem($menuName);
+
+                $this->addMenuItemHierarchy(
+                    $request,
+                    $this->menuItemEntity->buildTree($menu),
+                    $this->menus[$requestLocale][$menuName]
+                );
+            }
+        }
+        return $this->menus[$requestLocale][$name];
     }
 
     /**
@@ -83,24 +141,61 @@ class Builder implements ContainerAwareInterface
      */
     public function getRootItemByName($name, $request)
     {
-        $ret = null;
-        $params = array(
-            'parent' => null,
-            'name'   => $name
-        );
-        if ($request->get('_locale')) {
-            $params['language']= $request->get('_locale');
-            $ret = $this->menuItemEntity->findOneBy($params);
+        $menus = $this->loadRoots($request);
 
-            // Fallback to "no locale".
-            if (!$ret) {
-                unset($params['language']);
+        if (!isset($menus[$name])) {
+            return null;
+        }
+
+        return $this->menuItemEntity->find($menus[$name][0]);
+    }
+
+    /**
+     * Check if a root item exists.
+     *
+     * @param string $name
+     * @param Request $request
+     * @return bool
+     */
+    public function hasRootItemByName($name, $request)
+    {
+        $menus = $this->loadRoots($request);
+        return isset($menus[$name]);
+    }
+
+    /**
+     * Preload all roots for the specified locale.
+     *
+     * @param Request $request
+     * @return mixed
+     */
+    private function loadRoots(Request $request)
+    {
+        $locale = $request->get('_locale', '[null]');
+
+        if (!isset($this->roots[$locale])) {
+            $connection = $this->em->getConnection();
+
+            $where = 'lvl=0';
+
+            if ($locale) {
+                $where .= sprintf(' AND (language IS NULL OR language=%s)', $connection->quote($locale));
+            } else {
+                $where .= ' AND language IS NULL';
+            }
+
+            $rows = $connection->query('SELECT id, name, language, lft, rgt FROM menu_item WHERE ' . $where)->fetchAll(\PDO::FETCH_NUM);
+            foreach ($rows as list($id, $name, $language, $lft, $rgt)) {
+                // if the language is null, and the root items is already loaded; ignore it.
+                if (null === $language && isset($this->roots[$name])) {
+                    continue;
+                }
+
+                $this->roots[$locale][$name] = [$id, $lft, $rgt];
             }
         }
-        if (!$ret) {
-            $ret = $this->menuItemEntity->findOneBy($params);
-        }
-        return $ret;
+
+        return $this->roots[$locale];
     }
 
     /**
@@ -135,7 +230,7 @@ class Builder implements ContainerAwareInterface
     {
         $ret = 0;
         foreach ($children as $child) {
-            $ret ++;
+            $ret++;
             $item = $this->addMenuItem($request, $child, $parent);
             if (!empty($child['__children'])) {
                 $ret += $this->addMenuItemHierarchy($request, $child['__children'], $item);
@@ -174,9 +269,9 @@ class Builder implements ContainerAwareInterface
         $menuItem = $menu->addChild(
             $item['id'],
             array(
-                'uri'        => $uri,
+                'uri' => $uri,
                 'attributes' => $attributes,
-                'label'      => $item['title']
+                'label' => $item['title']
             )
         );
 

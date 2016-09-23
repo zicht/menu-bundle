@@ -33,19 +33,8 @@ class ZichtMenuExtension extends Extension
         $loader->load('services.xml');
         $loader->load('admin.xml');
 
-        if (!empty($config['menus'])) {
-            $service = new Definition('Knp\Menu\MenuItem');
-            $service->setScope('request');
-            $service->setFactoryMethod('build');
-            $service->setFactoryService($config['builder_service']);
-            $service->addArgument(null);
-            $service->addArgument(new Reference('request'));
-            foreach ($config['menus'] as $menuId) {
-                $instance = clone $service;
-                $instance->replaceArgument(0, $menuId);
-                $instance->addTag('knp_menu.menu', array('alias' => $menuId));
-                $container->setDefinition('zicht_menu.menus.' . $menuId, $instance);
-            }
+        if (!empty($config['preload_menus'])) {
+            $container->getDefinition('zicht_menu.menu_builder')->addMethodCall('setPreloadMenus', [$config['preload_menus']]);
         }
 
         $formResources = $container->getParameter('twig.form.resources');

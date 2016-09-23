@@ -61,7 +61,7 @@ class DatabaseMenuProvider implements MenuProviderInterface
      */
     public function has($name, array $options = array())
     {
-        $root = $this->builder->getRootItemByName($name, $this->container->get('request'));
+        $root = $this->builder->hasRootItemByName($name, $this->container->get('request'));
 
         return null !== $root;
     }

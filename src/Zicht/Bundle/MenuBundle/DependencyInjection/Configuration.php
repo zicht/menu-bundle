@@ -29,8 +29,8 @@ class Configuration implements ConfigurationInterface
                 ->scalarNode('builder_service')->end()
                 ->arrayNode('menus')
                     ->prototype('scalar')->end()
-                    ->end()
                 ->end()
+                ->arrayNode('preload_menus')->prototype('scalar')->end()->defaultValue(['service', 'main', 'footer'])->end()
             ->end();
 
         // Here you should define the parameters that are allowed to

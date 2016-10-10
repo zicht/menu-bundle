@@ -54,6 +54,13 @@ class Builder implements ContainerAwareInterface
     private $menus = [];
 
     /**
+     * List with menu names that should be loaded
+     *
+     * @var array
+     */
+    protected $preloadMenus = [];
+
+    /**
      * Builder constructor.
      *
      * @param FactoryInterface $factory
@@ -70,6 +77,8 @@ class Builder implements ContainerAwareInterface
 
     /**
      * Set the menu names to preload
+     *
+     * @param array $menus
      */
     public function setPreloadMenus($menus)
     {

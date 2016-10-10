@@ -24,8 +24,6 @@ class MenuManager
     public function __construct(Registry $doctrine)
     {
         $this->doctrine = $doctrine;
-        $this->items = array();
-        $this->remove = array();
     }
 
 
@@ -37,7 +35,9 @@ class MenuManager
      */
     public function addItem(MenuItem $item)
     {
-        $this->items[]= $item;
+        $manager = $this->doctrine->getManager();
+        $manager->persist($item);
+        $manager->flush();
     }
 
 
@@ -49,7 +49,9 @@ class MenuManager
      */
     public function removeItem(MenuItem $item)
     {
-        $this->remove[]= $item;
+        $manager = $this->doctrine->getManager();
+        $manager->remove($item);
+        $manager->flush();
     }
 
 
@@ -60,15 +62,7 @@ class MenuManager
      */
     public function flush($flushEntityManager = false)
     {
-        foreach ($this->items as $item) {
-            $this->doctrine->getManager()->persist($item);
-        }
-        foreach ($this->remove as $item) {
-            $this->doctrine->getManager()->remove($item);
-        }
-        if ($flushEntityManager) {
-            $this->doctrine->getManager()->flush();
-        }
+        // Do nothing, the items have already been flushed when addItem() and removeItem() were called
     }
 
 

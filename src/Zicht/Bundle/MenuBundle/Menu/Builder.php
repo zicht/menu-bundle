@@ -222,7 +222,11 @@ class Builder implements ContainerAwareInterface
         }
         $menu = $this->factory->createItem('root');
         $this->addMenuItemHierarchy($request, $this->menuItemEntity->childrenHierarchy($root), $menu);
-        $menu->setUri($request->getRequestUri());
+
+        // 1.x compatibility
+        if (is_callable($menu, 'setCurrentUri')) {
+            $menu->setCurrentUri($request->getRequestUri());
+        }
 
         return $menu;
     }

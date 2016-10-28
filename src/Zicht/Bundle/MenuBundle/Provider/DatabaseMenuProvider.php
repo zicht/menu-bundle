@@ -9,6 +9,7 @@ namespace Zicht\Bundle\MenuBundle\Provider;
 use Knp\Menu\Provider\MenuProviderInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Zicht\Bundle\MenuBundle\Menu\Builder;
+use Zicht\Bundle\MenuBundle\Menu\BuilderInterface;
 
 /**
  * Class DatabaseMenuProvider
@@ -33,7 +34,7 @@ class DatabaseMenuProvider implements MenuProviderInterface
      * @param Builder $builder
      * @param ContainerInterface $container
      */
-    public function __construct(Builder $builder, ContainerInterface $container)
+    public function __construct(BuilderInterface $builder, ContainerInterface $container)
     {
         $this->builder = $builder;
         $this->container = $container;

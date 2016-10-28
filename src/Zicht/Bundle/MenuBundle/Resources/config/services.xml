@@ -6,7 +6,7 @@
 
     <parameters>
         <parameter key="zicht_menu.item_entity">Zicht\Bundle\MenuBundle\Entity\MenuItem</parameter>
-        <parameter key="zicht_menu.menu_builder.class">Zicht\Bundle\MenuBundle\Entity\MenuItem</parameter>
+        <parameter key="zicht_menu.menu_builder.service">zicht_menu.menu_builder</parameter>
     </parameters>
     <services>
         <service id="zicht_menu.url_provider" class="Zicht\Bundle\MenuBundle\Url\MenuItemNameUrlProvider">
@@ -33,7 +33,7 @@
             <tag name="twig.extension" />
         </service>
         <service id="zicht_menu.provider.database_menu_provider" class="Zicht\Bundle\MenuBundle\Provider\DatabaseMenuProvider">
-            <argument type="service" id="zicht_menu.menu_builder" />
+            <argument /> <!-- Replaced in ReplaceMenuBuilderServicePass -->
             <argument type="service" id="service_container" />
             <tag name="knp_menu.provider" />
         </service>

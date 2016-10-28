@@ -6,7 +6,9 @@
 
 namespace Zicht\Bundle\MenuBundle;
 
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
+use Zicht\Bundle\MenuBundle\DependencyInjection\CompilerPass\ReplaceMenuBuilderServicePass;
 
 /**
  * Class ZichtMenuBundle
@@ -15,4 +17,12 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
  */
 class ZichtMenuBundle extends Bundle
 {
+    /**
+     * @{inheritDoc}
+     */
+    public function build(ContainerBuilder $container)
+    {
+        parent::build($container);
+        $container->addCompilerPass(new ReplaceMenuBuilderServicePass());
+    }
 }

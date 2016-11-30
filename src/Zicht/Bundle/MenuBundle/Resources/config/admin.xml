@@ -4,7 +4,7 @@
 
     <parameters>
         <parameter key="zicht_menu.admin.menu_item.class">Zicht\Bundle\MenuBundle\Admin\MenuItemAdmin</parameter>
-        <parameter key="zicht_menu.admin.menu_item.crud_controller">ZichtFrameworkExtraBundle:CRUD</parameter>
+        <parameter key="zicht_menu.admin.menu_item.crud_controller">ZichtAdminBundle:CRUD</parameter>
     </parameters>
 
     <services>

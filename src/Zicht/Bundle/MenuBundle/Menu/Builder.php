@@ -21,10 +21,7 @@ use Symfony\Component\DependencyInjection\ContainerAwareTrait;
  */
 class Builder implements ContainerAwareInterface, BuilderInterface
 {
-    /* @codingStandardsIgnoreStart */
     use ContainerAwareTrait;
-
-    /* @codingStandardsIgnoreEnd */
 
     /**
      * @var \Knp\Menu\FactoryInterface
@@ -139,7 +136,13 @@ class Builder implements ContainerAwareInterface, BuilderInterface
             }
         }
 
-        return $this->menus[$requestLocale][$name];
+        $menu =  $this->menus[$requestLocale][$name];
+
+        if (is_callable([$menu, 'setCurrentUri'])) {
+            $menu->setCurrentUri($request->getRequestUri());
+        }
+
+        return $menu;
     }
 
     /**

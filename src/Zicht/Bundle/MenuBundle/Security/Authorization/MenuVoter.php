@@ -63,7 +63,6 @@ class MenuVoter implements VoterInterface
      */
     public function vote(TokenInterface $token, $object, array $attributes)
     {
-
         foreach ($attributes as $attribute) {
             if (false === $this->supportsAttribute($attribute)) {
                 return self::ACCESS_ABSTAIN;

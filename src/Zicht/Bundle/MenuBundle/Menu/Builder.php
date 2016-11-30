@@ -119,7 +119,7 @@ class Builder implements ContainerAwareInterface, BuilderInterface
             $query = 'SELECT root, menu_item.* FROM menu_item WHERE ';
             $i = 0;
             // `$vals` contains [id, lft, rgt]
-            foreach ($menusToLoad as $name => $vals) {
+            foreach ($menusToLoad as $vals) {
                 if ($i ++ > 0) {
                     $query .= ' OR ';
                 }
@@ -138,6 +138,7 @@ class Builder implements ContainerAwareInterface, BuilderInterface
                 );
             }
         }
+
         return $this->menus[$requestLocale][$name];
     }
 
@@ -269,7 +270,6 @@ class Builder implements ContainerAwareInterface, BuilderInterface
         if ($name = $item['name']) {
             $attributes['class'] = $name;
         }
-
         if (empty($item['path'])) {
             $uri = null;
         } elseif (preg_match('!^(?:https?://|mailto:)!', $item['path'])) {
@@ -287,6 +287,10 @@ class Builder implements ContainerAwareInterface, BuilderInterface
                 'label' => $item['title']
             )
         );
+
+        if (!empty($item['json_data'])) {
+            $item['json_data'] = @json_decode($item['json_data']);
+        }
 
         $menuItem->setExtras($item);
         return $menuItem;

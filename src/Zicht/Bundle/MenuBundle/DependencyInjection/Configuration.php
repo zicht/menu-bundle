@@ -27,7 +27,6 @@ class Configuration implements ConfigurationInterface
                 ->arrayNode('menus')
                     ->prototype('scalar')->end()
                 ->end()
-                ->arrayNode('preload_menus')->prototype('scalar')->end()->defaultValue(['service', 'main', 'footer'])->end()
             ->end();
 
         return $treeBuilder;

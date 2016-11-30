@@ -123,7 +123,6 @@ class MenuManager
             }
         }
 
-
         /** @var \Doctrine\Orm\Query $query */
         $query = $this->doctrine->getManager()->createQuery(
             join(

@@ -93,10 +93,12 @@ class Builder implements ContainerAwareInterface, BuilderInterface
      */
     public function build($name, Request $request)
     {
+        $ret = $this->factory->createItem($name);
+
         $menus = $this->loadRoots($request);
 
         if (!isset($menus[$name])) {
-            throw new \InvalidArgumentException("Could not find root item with name '$name'");
+            return $ret;
         }
 
         $requestLocale = $request->get('_locale');
@@ -107,6 +109,10 @@ class Builder implements ContainerAwareInterface, BuilderInterface
             if (in_array($name, $this->preloadMenus)) {
                 $menusToLoad = [];
                 foreach ($this->preloadMenus as $preloadMenuName) {
+                    if (!isset($menus[$preloadMenuName])) {
+                        continue;
+                    }
+
                     $menusToLoad[$preloadMenuName] = $menus[$preloadMenuName];
                 }
             } else {
@@ -125,6 +131,9 @@ class Builder implements ContainerAwareInterface, BuilderInterface
             $query .= ' ORDER BY root, lft';
 
             foreach ($this->em->getConnection()->query($query)->fetchAll(\PDO::FETCH_GROUP) as $rootId => $menu) {
+                if (!isset($rootIdToNameMap)) {
+                    continue;
+                }
                 $menuName = $rootIdToNameMap[$rootId];
                 $this->menus[$requestLocale][$menuName]= $this->factory->createItem($menuName);
 
@@ -136,13 +145,15 @@ class Builder implements ContainerAwareInterface, BuilderInterface
             }
         }
 
-        $menu =  $this->menus[$requestLocale][$name];
+        if (isset($this->menus[$requestLocale][$name])) {
+            $ret = $this->menus[$requestLocale][$name];
 
-        if (is_callable([$menu, 'setCurrentUri'])) {
-            $menu->setCurrentUri($request->getRequestUri());
+            if (is_callable([$ret, 'setCurrentUri'])) {
+                $ret->setCurrentUri($request->getRequestUri());
+            }
         }
 
-        return $menu;
+        return $ret;
     }
 
     /**

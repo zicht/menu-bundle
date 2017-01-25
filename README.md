@@ -10,4 +10,5 @@ Provides an integration between SonataAdmin, KnpMenu and Doctrine.
 * Hook into zicht/page-bundle to easily add pages to a menu
 
 # Maintainer(s)
-* Gerard van Helden <gerard@zicht.nl>
+* Rik van der Kemp <rik@zicht.nl>
+* Muhammed Akbulut <muhammed@zicht.nl>

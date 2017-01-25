@@ -1,4 +1,4 @@
-# `zicht/menu-bundle1
+# `zicht/menu-bundle`
 
 Provides an integration between SonataAdmin, KnpMenu and Doctrine.
 

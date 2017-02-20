@@ -41,8 +41,10 @@ class ZichtMenuExtension extends Extension
         $container->setParameter('twig.form.resources', $formResources);
 
         $container->getDefinition('zicht_menu.provider.database_menu_provider')->replaceArgument(0, new Reference($config['builder_service']));
-        $container->removeDefinition('zicht_menu.menu_builder');
-        $container->setAlias('zicht_menu.menu_builder', $config['builder_service']);
+        if ($config['builder_service'] !== 'zicht_menu.menu_builder') {
+            $container->removeDefinition('zicht_menu.menu_builder');
+            $container->setAlias('zicht_menu.menu_builder', $config['builder_service']);
+        }
 
         // knp menu ^2:
         if (interface_exists('Knp\Menu\Matcher\Voter\VoterInterface')) {

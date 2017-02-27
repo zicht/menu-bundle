@@ -1,6 +1,6 @@
 # `zicht/menu-bundle`
 
-Provides an integration between SonataAdmin, KnpMenu and Doctrine.
+Provides an integration between [KnpMenuBundle](https://github.com/KnpLabs/KnpMenuBundle) and [Doctrine](http://doctrine.org) to store your menu in the database. Optionally you can integrate with [sonata project](https://sonata-project.org)).
 
 ## Features
 

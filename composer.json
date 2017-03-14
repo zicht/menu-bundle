@@ -2,7 +2,7 @@
     "name": "zicht/menu-bundle",
     "description": "Menu utilities for Symfony",
     "type": "symfony-bundle",
-    "repositories": { },
+    "repositories": [],
     "authors": [
         {
             "name": "Zicht online",
@@ -23,7 +23,13 @@
         "symfony/symfony": "^2"
     },
     "autoload": {
-        "psr-0": { "": ["src/", "tests/"] }
+        "psr-0": {
+            "": [
+                "src/",
+                "tests/"
+            ]
+        }
     },
-    "minimum-stability": "stable"
+    "minimum-stability": "stable",
+    "license": "MIT"
 }

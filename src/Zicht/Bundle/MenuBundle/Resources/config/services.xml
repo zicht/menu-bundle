@@ -45,5 +45,9 @@
             <argument type="service" id="security.role_hierarchy" />
             <tag name="security.voter" />
         </service>
+        <service id="zicht_bundle_menu.status_provider.validate_nested_tree_provider" class="Zicht\Bundle\MenuBundle\StatusProvider\ValidateNestedTreeProvider">
+            <argument type="service" id="doctrine" />
+            <tag name="zicht.status.provider" />
+        </service>
     </services>
 </container>

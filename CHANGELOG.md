@@ -48,3 +48,9 @@
 
 ## 2.8.3  -  Wed, 22 Feb 2017 11:32:03 GMT
 - default config (no builder_service) was broken
+
+## 2.8.4  -  Tue, 14 Mar 2017 13:39:11 GMT
+- add license
+- be defensive on non-existent menu's
+- fix call to is_callable: it expects an array as first argument.
+- Add status provider to check the state of the NestedTree

@@ -54,6 +54,12 @@ class MenuItemPersistenceSubscriber implements EventSubscriberInterface
         if ($e->getData() === null) {
             return;
         }
+
+        // Checks if the form has a given property
+        // A property can be removed in a child class but the eventSubscriber still exists
+        if (!$e->getForm()->has($this->property)) {
+            return;
+        }
         if ($this->provider->supports($e->getData())) {
             if ($item = $this->mm->getItemBy(array(':path' => $this->provider->url($e->getData())))) {
                 $item->setAddToMenu(true);

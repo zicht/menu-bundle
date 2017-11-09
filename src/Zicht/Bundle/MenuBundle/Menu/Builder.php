@@ -191,32 +191,37 @@ class Builder implements ContainerAwareInterface, BuilderInterface
      * Preload all roots for the specified locale.
      *
      * @param Request $request
-     * @return mixed
+     * @return array
      */
     private function loadRoots(Request $request)
     {
         $locale = $request->get('_locale', '[null]');
 
+        if (isset($this->roots[$locale])) {
+            return $this->roots[$locale];
+        }
+
+        $connection = $this->em->getConnection();
+        $where = 'lvl=0';
+
+        if ($locale) {
+            $where .= sprintf(' AND (language IS NULL OR language=%s)', $connection->quote($locale));
+        } else {
+            $where .= ' AND language IS NULL';
+        }
+
+        $rows = $connection->query('SELECT id, name, language, lft, rgt FROM menu_item WHERE ' . $where)->fetchAll(\PDO::FETCH_NUM);
+        foreach ($rows as list($id, $name, $language, $lft, $rgt)) {
+            // if the language is null, and the root items is already loaded; ignore it.
+            if (null === $language && isset($this->roots[$name])) {
+                continue;
+            }
+
+            $this->roots[$locale][$name] = [$id, $lft, $rgt];
+        }
+
         if (!isset($this->roots[$locale])) {
-            $connection = $this->em->getConnection();
-
-            $where = 'lvl=0';
-
-            if ($locale) {
-                $where .= sprintf(' AND (language IS NULL OR language=%s)', $connection->quote($locale));
-            } else {
-                $where .= ' AND language IS NULL';
-            }
-
-            $rows = $connection->query('SELECT id, name, language, lft, rgt FROM menu_item WHERE ' . $where)->fetchAll(\PDO::FETCH_NUM);
-            foreach ($rows as list($id, $name, $language, $lft, $rgt)) {
-                // if the language is null, and the root items is already loaded; ignore it.
-                if (null === $language && isset($this->roots[$name])) {
-                    continue;
-                }
-
-                $this->roots[$locale][$name] = [$id, $lft, $rgt];
-            }
+            return [];
         }
 
         return $this->roots[$locale];

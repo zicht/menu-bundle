@@ -197,7 +197,7 @@ class Builder implements ContainerAwareInterface, BuilderInterface
     {
         $locale = $request->get('_locale', '[null]');
 
-        if (!isset($this->roots[$locale])) {
+        if (isset($this->roots[$locale])) {
             $connection = $this->em->getConnection();
 
             $where = 'lvl=0';
@@ -219,7 +219,7 @@ class Builder implements ContainerAwareInterface, BuilderInterface
             }
         }
 
-        return $this->roots[$locale];
+        return empty($this->roots) ? null : !$this->roots[$locale];
     }
 
     /**

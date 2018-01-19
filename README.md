@@ -16,5 +16,6 @@ Read the contents of the
 a feel of how you can use this bundle in combination with the other 
 zicht/cms libraries.
 
-# Maintainer(s)
-* Muhammed Akbulut <muhammed@zicht.nl>
+# Maintainers
+* Boudewijn Schoon <boudewijn@zicht.nl>
+* Erik Trapman <erik@zicht.nl>

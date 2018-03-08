@@ -70,7 +70,7 @@ class Builder implements ContainerAwareInterface, BuilderInterface
      * @param FactoryInterface $factory
      * @param Registry $doctrine
      * @param string $entity
-     * @param string $defaultLocale
+     * @param string $defaultLocale      The [null] variable was inherited from old code, and will always be overwritten with a valid locale.
      */
     public function __construct(FactoryInterface $factory, Registry $doctrine, $entity = 'ZichtMenuBundle:MenuItem', $defaultLocale = '[null]')
     {

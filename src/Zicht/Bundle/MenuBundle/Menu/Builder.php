@@ -58,17 +58,25 @@ class Builder implements ContainerAwareInterface, BuilderInterface
     protected $preloadMenus = [];
 
     /**
+     * The default locale from the application
+     *
+     * @var string
+     */
+    protected $defaultLocale;
+
+    /**
      * Builder constructor.
      *
      * @param FactoryInterface $factory
      * @param Registry $doctrine
      * @param string $entity
      */
-    public function __construct(FactoryInterface $factory, Registry $doctrine, $entity = 'ZichtMenuBundle:MenuItem')
+    public function __construct(FactoryInterface $factory, Registry $doctrine, $entity = 'ZichtMenuBundle:MenuItem', $defaultLocale = '[null]')
     {
         $this->factory = $factory;
         $this->em = $doctrine->getManager();
         $this->menuItemEntity = $this->em->getRepository($entity);
+        $this->defaultLocale = $defaultLocale;
         $this->roots = [];
     }
 
@@ -195,7 +203,7 @@ class Builder implements ContainerAwareInterface, BuilderInterface
      */
     private function loadRoots(Request $request)
     {
-        $locale = $request->get('_locale', '[null]');
+        $locale = $request->get('_locale', $this->defaultLocale);
 
         if (isset($this->roots[$locale])) {
             return $this->roots[$locale];

@@ -27,6 +27,8 @@
         <service id="zicht_menu.menu_builder" class="Zicht\Bundle\MenuBundle\Menu\Builder">
             <argument type="service" id="knp_menu.factory" />
             <argument type="service" id="doctrine" />
+            <argument>ZichtMenuBundle:MenuItem</argument>
+            <argument>%kernel.default_locale%</argument>
         </service>
         <service id="zicht_menu.twig.extension" class="Zicht\Bundle\MenuBundle\Twig\Extension">
             <argument type="service" id="knp_menu.menu_provider" />

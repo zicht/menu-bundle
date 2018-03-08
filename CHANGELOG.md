@@ -54,3 +54,6 @@
 - be defensive on non-existent menu's
 - fix call to is_callable: it expects an array as first argument.
 - Add status provider to check the state of the NestedTree
+
+## 2.8.5  -  Wed, 8 Mar 2018 13:40 GMT
+- Refactored the default fallback from `[none]` to `%kernel.default_locale%` to make behavior valid in donner 3.0.

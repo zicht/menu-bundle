@@ -55,5 +55,19 @@
 - fix call to is_callable: it expects an array as first argument.
 - Add status provider to check the state of the NestedTree
 
-## 2.8.5  -  Wed, 8 Mar 2018 13:40 GMT
+## 2.8.5
+- update readme
+- hotfix in MenuItemPersistenceSubscriber. Checking if a given property exists in the form.
+
+## 2.8.6
+- return null if root is empty
+
+## 2.8.7
+- symfony 2.8 fixes
+- symfony 3.4 fixes
+- `getBlockPrefix` to replace `getName`
+- dependencies update 
+
+## 2.8.8  -  Wed, 8 Mar 2018 13:40 GMT
 - Refactored the default fallback from `[none]` to `%kernel.default_locale%` to make behavior valid in donner 3.0.
+- Updated previous missing changelog entries

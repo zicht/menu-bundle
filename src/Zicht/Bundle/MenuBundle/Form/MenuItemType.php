@@ -3,11 +3,16 @@
  * @author Gerard van Helden <gerard@zicht.nl>
  * @copyright Zicht Online <http://zicht.nl>
  */
+
 namespace Zicht\Bundle\MenuBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Form\FormBuilderInterface;
+use Zicht\Bundle\DynamicFormsBundle\Form\CheckboxType;
+use Zicht\Bundle\FrameworkExtraBundle\Form\ParentChoiceType;
 use Zicht\Bundle\UrlBundle\Url\Provider;
 
 /**
@@ -40,16 +45,15 @@ class MenuItemType extends AbstractType
     }
 
     /**
-     * @param OptionsResolverInterface $resolver
+     * {@inheritdoc}
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
-        parent::setDefaultOptions($resolver);
         $resolver
             ->setDefaults(
                 array(
-                    'mapped'                => false,
-                    'data_class'            => 'Zicht\Bundle\MenuBundle\Entity\MenuItem',
+                    'mapped' => false,
+                    'data_class' => 'Zicht\Bundle\MenuBundle\Entity\MenuItem',
                 )
             );
     }
@@ -65,9 +69,9 @@ class MenuItemType extends AbstractType
         parent::buildForm($builder, $options);
 
         $builder
-            ->add('add_to_menu', 'checkbox', array('required' => false, 'label' => 'form.label_add_to_menu'))
-            ->add('parent', 'zicht_parent_choice', array('class' => 'Zicht\Bundle\MenuBundle\Entity\MenuItem', 'label' => 'form.label_parent'))
-            ->add('title', 'text', array('required' => false, 'label' => 'form.label_title'));
+            ->add('add_to_menu', \Symfony\Component\Form\Extension\Core\Type\CheckboxType::class, array('required' => false, 'label' => 'form.label_add_to_menu'))
+            ->add('parent', ParentChoiceType::class, array('class' => 'Zicht\Bundle\MenuBundle\Entity\MenuItem', 'label' => 'form.label_parent'))
+            ->add('title', TextType::class, array('required' => false, 'label' => 'form.label_title'));
     }
 
     /**
@@ -76,6 +80,14 @@ class MenuItemType extends AbstractType
      * @return string The name of this type
      */
     public function getName()
+    {
+        return 'zicht_menu_item';
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getBlockPrefix()
     {
         return 'zicht_menu_item';
     }

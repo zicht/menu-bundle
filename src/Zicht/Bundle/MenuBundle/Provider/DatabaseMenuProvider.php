@@ -50,7 +50,7 @@ class DatabaseMenuProvider implements MenuProviderInterface
      */
     public function get($name, array $options = array())
     {
-        return $this->builder->build($name, $this->container->get('request'));
+        return $this->builder->build($name, $this->container->get('request_stack')->getCurrentRequest());
     }
 
     /**
@@ -62,7 +62,7 @@ class DatabaseMenuProvider implements MenuProviderInterface
      */
     public function has($name, array $options = array())
     {
-        $root = $this->builder->hasRootItemByName($name, $this->container->get('request'));
+        $root = $this->builder->hasRootItemByName($name, $this->container->get('request_stack')->getCurrentRequest());
 
         return null !== $root;
     }

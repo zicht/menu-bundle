@@ -10,6 +10,7 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Zicht\Bundle\AdminBundle\Admin\TreeAdmin;
 use Zicht\Bundle\MenuBundle\Security\Authorization\MenuVoter;
+use Zicht\Bundle\UrlBundle\Type\UrlType;
 
 /**
  * Class MenuItemAdmin
@@ -28,12 +29,12 @@ class MenuItemAdmin extends TreeAdmin
         $formMapper
             ->tab('admin.tab.menu_item')
                 ->with('admin.tab.menu_item')
-                    ->add('path', 'zicht_url', array('required' => false))
+                    ->add('path', UrlType::class, array('required' => false))
                     ->add(
                         'name',
                         null,
                         array(
-                            'read_only' => !$this->hasNameFieldAccess(),
+                            'attr' => ['read_only' => !$this->hasNameFieldAccess()],
                             'disabled'  => !$this->hasNameFieldAccess(),
                             'help' => 'admin.help.menu_item_name'
                         )
@@ -83,7 +84,7 @@ class MenuItemAdmin extends TreeAdmin
         return $this
             ->getConfigurationPool()
             ->getContainer()
-            ->get("security.context")
+            ->get('security.authorization_checker')
             ->isGranted(
                 MenuVoter::ROLE_NAME_FIELD_ACCESS,
                 $this->getSubject()

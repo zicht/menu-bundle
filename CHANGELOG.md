@@ -1,4 +1,18 @@
-# Changelog
+# Change Log
+All notable changes to this project will be documented in this file.
+
+The format is based on [Keep a Changelog](http://keepachangelog.com/)
+and this project adheres to [Semantic Versioning](http://semver.org/).
+
+## [Unreleased]
+### Added|Changed|Deprecated|Removed|Fixed|Security
+Nothing so far
+
+## 3.0.0 - 2018-06-29
+### Added
+- Support for Symfony 3.x and Twig 2.x
+### Removed
+- Support for Symfony 2.x and Twig 1.x
 
 ## 2.3
 - adds a command to rewrite public urls in the menu to internal urls ("unalias" them)

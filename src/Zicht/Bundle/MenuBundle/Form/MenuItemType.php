@@ -7,11 +7,10 @@
 namespace Zicht\Bundle\MenuBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Form\FormBuilderInterface;
-use Zicht\Bundle\DynamicFormsBundle\Form\CheckboxType;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Zicht\Bundle\FrameworkExtraBundle\Form\ParentChoiceType;
 use Zicht\Bundle\UrlBundle\Url\Provider;
 
@@ -69,7 +68,7 @@ class MenuItemType extends AbstractType
         parent::buildForm($builder, $options);
 
         $builder
-            ->add('add_to_menu', \Symfony\Component\Form\Extension\Core\Type\CheckboxType::class, array('required' => false, 'label' => 'form.label_add_to_menu'))
+            ->add('add_to_menu', CheckboxType::class, array('required' => false, 'label' => 'form.label_add_to_menu'))
             ->add('parent', ParentChoiceType::class, array('class' => 'Zicht\Bundle\MenuBundle\Entity\MenuItem', 'label' => 'form.label_parent'))
             ->add('title', TextType::class, array('required' => false, 'label' => 'form.label_title'));
     }

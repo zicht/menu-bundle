@@ -8,6 +8,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added|Changed|Deprecated|Removed|Fixed|Security
 Nothing so far
 
+## 3.0.1 - 2018-07-12
+### Changed
+- Update encapsulation in MenuBuilder
+
 ## 3.0.0 - 2018-06-29
 ### Added
 - Support for Symfony 3.x and Twig 2.x

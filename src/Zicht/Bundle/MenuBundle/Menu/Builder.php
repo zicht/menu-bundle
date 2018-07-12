@@ -41,14 +41,14 @@ class Builder implements ContainerAwareInterface, BuilderInterface
     /**
      * Keep cache map of locales -> [root names -> [root_id, left_value, right_value]]
      */
-    private $roots = [];
+    protected $roots = [];
 
     /**
      * Previously (pre-)loaded menus, mapped by locale and name
      *
      * @var array
      */
-    private $menus = [];
+    protected $menus = [];
 
     /**
      * List with menu names that should be loaded
@@ -202,7 +202,7 @@ class Builder implements ContainerAwareInterface, BuilderInterface
      * @param Request $request
      * @return array
      */
-    private function loadRoots(Request $request)
+    protected function loadRoots(Request $request)
     {
         $locale = $request->get('_locale', $this->defaultLocale);
 

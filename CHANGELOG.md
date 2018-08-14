@@ -8,6 +8,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added|Changed|Deprecated|Removed|Fixed|Security
 Nothing so far
 
+## 3.0.02 - 2018-08-14
+### Fixed
+- Prevent some case(s) of `get_class` to be called with `null`, this will give a warning in PHP 7.2
+
 ## 3.0.1 - 2018-07-12
 ### Changed
 - Update encapsulation in MenuBuilder

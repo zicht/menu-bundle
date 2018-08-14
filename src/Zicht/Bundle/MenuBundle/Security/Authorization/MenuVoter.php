@@ -3,6 +3,7 @@
  * @author    Philip Bergman <philip@zicht.nl>
  * @copyright Zicht Online <http://www.zicht.nl>
  */
+
 namespace Zicht\Bundle\MenuBundle\Security\Authorization;
 
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
@@ -69,7 +70,7 @@ class MenuVoter implements VoterInterface
             }
         }
 
-        if ($this->supportsClass(get_class($object))) {
+        if (!is_null($object) && $this->supportsClass(get_class($object))) {
             if ($this->userIsAllowed($token)) {
                 return self::ACCESS_GRANTED;
             } else {

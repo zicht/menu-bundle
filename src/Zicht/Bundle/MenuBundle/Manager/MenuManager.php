@@ -7,6 +7,8 @@
 namespace Zicht\Bundle\MenuBundle\Manager;
 
 use Doctrine\Bundle\DoctrineBundle\Registry;
+use Doctrine\Common\Persistence\ObjectRepository;
+use Gedmo\Tree\Entity\Repository\NestedTreeRepository;
 use Zicht\Bundle\MenuBundle\Entity\MenuItem;
 
 /**
@@ -16,14 +18,24 @@ use Zicht\Bundle\MenuBundle\Entity\MenuItem;
  */
 class MenuManager
 {
+    /** @var int */
+    const REMOVE = 0x01;
+    /** @var int */
+    const ADD = 0x02;
+    /** @var \SplQueue  */
+    private $queue;
+    /** @var Registry  */
+    protected $doctrine;
+
     /**
-     * Constructor.
+     * MenuManager constructor.
      *
      * @param Registry $doctrine
      */
     public function __construct(Registry $doctrine)
     {
         $this->doctrine = $doctrine;
+        $this->queue = new \SplQueue();
     }
 
 
@@ -35,9 +47,7 @@ class MenuManager
      */
     public function addItem(MenuItem $item)
     {
-        $manager = $this->doctrine->getManager();
-        $manager->persist($item);
-        $manager->flush();
+        $this->queue->enqueue([$item, self::ADD]);
     }
 
 
@@ -49,9 +59,7 @@ class MenuManager
      */
     public function removeItem(MenuItem $item)
     {
-        $manager = $this->doctrine->getManager();
-        $manager->remove($item);
-        $manager->flush();
+        $this->queue->enqueue([$item, self::REMOVE]);
     }
 
 
@@ -62,9 +70,42 @@ class MenuManager
      */
     public function flush($flushEntityManager = false)
     {
-        // Do nothing, the items have already been flushed when addItem() and removeItem() were called
+        $this->queue->rewind();
+
+        while ($this->queue->valid()) {
+            list($item, $mode) = $this->queue->dequeue();
+            switch ($mode) {
+                case self::REMOVE:
+                    if (($repo = $this->getRepository(get_class($item))) && $repo instanceof NestedTreeRepository) {
+                        $repo->removeFromTree($item);
+                    } else {
+                        $this->doctrine->getManager()->remove($item);
+                    }
+                    break;
+                case self::ADD:
+                    $this->doctrine->getManager()->persist($item);
+                    break;
+            }
+            $this->queue->next();
+        }
+
+        if ($flushEntityManager) {
+            $this->doctrine->getManager()->flush();
+        }
     }
 
+    /**
+     * @param string $className
+     * @return ObjectRepository
+     */
+    private function getRepository($className)
+    {
+        if (null !== $manager = $this->doctrine->getManagerForClass($className)) {
+            return $manager->getRepository($className);
+        }
+
+        return null;
+    }
 
     /**
      * Find an item by a path

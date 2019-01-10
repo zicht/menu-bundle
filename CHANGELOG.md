@@ -71,3 +71,6 @@
 ## 2.8.8  -  Wed, 8 Mar 2018 13:40 GMT
 - Refactored the default fallback from `[none]` to `%kernel.default_locale%` to make behavior valid in donner 3.0.
 - Updated previous missing changelog entries
+
+## 2.8.10
+- bug fix for the `duplicate on tree root` bug when removing pages (with linked menu items)  

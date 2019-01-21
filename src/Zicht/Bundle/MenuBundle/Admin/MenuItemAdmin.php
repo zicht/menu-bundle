@@ -9,6 +9,7 @@ use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Zicht\Bundle\AdminBundle\Admin\TreeAdmin;
+use Zicht\Bundle\MenuBundle\Security\Authorization\MenuVoter;
 
 /**
  * Class MenuItemAdmin
@@ -23,13 +24,23 @@ class MenuItemAdmin extends TreeAdmin
     public function configureFormFields(FormMapper $formMapper)
     {
         parent::configureFormFields($formMapper);
+
         $formMapper
             ->tab('admin.tab.menu_item')
                 ->with('admin.tab.menu_item')
-                    ->add('path', 'zicht_url', array('required' => false, 'no_transform_public' => true))
-                    ->add('name', null, array('help' => 'admin.help.menu_item_name'))
+                    ->add('path', 'zicht_url', array('required' => false))
+                    ->add(
+                        'name',
+                        null,
+                        array(
+                            'read_only' => !$this->hasNameFieldAccess(),
+                            'disabled'  => !$this->hasNameFieldAccess(),
+                            'help' => 'admin.help.menu_item_name'
+                        )
+                    )
                 ->end()
             ->end();
+        ;
     }
 
     /**
@@ -50,8 +61,9 @@ class MenuItemAdmin extends TreeAdmin
     }
 
 
+
     /**
-     * @{inheritDoc}
+     * @param DatagridMapper $filter
      */
     protected function configureDatagridFilters(DatagridMapper $filter)
     {
@@ -61,5 +73,21 @@ class MenuItemAdmin extends TreeAdmin
             ->add('title')
             ->add('name')
             ->add('path');
+    }
+
+    /**
+     * @return bool
+     */
+    protected function hasNameFieldAccess()
+    {
+        return $this
+            ->getConfigurationPool()
+            ->getContainer()
+            ->get("security.context")
+            ->isGranted(
+                MenuVoter::ROLE_NAME_FIELD_ACCESS,
+                $this->getSubject()
+            )
+        ;
     }
 }

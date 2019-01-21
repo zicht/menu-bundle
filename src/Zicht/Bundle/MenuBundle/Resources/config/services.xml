@@ -6,7 +6,7 @@
 
     <parameters>
         <parameter key="zicht_menu.item_entity">Zicht\Bundle\MenuBundle\Entity\MenuItem</parameter>
-        <parameter key="zicht_menu.menu_builder.class">Zicht\Bundle\MenuBundle\Entity\MenuItem</parameter>
+        <parameter key="zicht_menu.menu_builder.service">zicht_menu.menu_builder</parameter>
     </parameters>
     <services>
         <service id="zicht_menu.url_provider" class="Zicht\Bundle\MenuBundle\Url\MenuItemNameUrlProvider">
@@ -27,19 +27,29 @@
         <service id="zicht_menu.menu_builder" class="Zicht\Bundle\MenuBundle\Menu\Builder">
             <argument type="service" id="knp_menu.factory" />
             <argument type="service" id="doctrine" />
+            <argument>ZichtMenuBundle:MenuItem</argument>
+            <argument>%kernel.default_locale%</argument>
         </service>
         <service id="zicht_menu.twig.extension" class="Zicht\Bundle\MenuBundle\Twig\Extension">
             <argument type="service" id="knp_menu.menu_provider" />
             <tag name="twig.extension" />
         </service>
         <service id="zicht_menu.provider.database_menu_provider" class="Zicht\Bundle\MenuBundle\Provider\DatabaseMenuProvider">
-            <argument type="service" id="zicht_menu.menu_builder" />
+            <argument /> <!-- Replaced in ReplaceMenuBuilderServicePass -->
             <argument type="service" id="service_container" />
             <tag name="knp_menu.provider" />
         </service>
         <service id="zicht_menu.command.public_to_interal_uri" class="Zicht\Bundle\MenuBundle\Command\PublicToInternalUriCommand">
             <argument type="service" id="doctrine.orm.default_entity_manager" />
             <tag name="console.command" />
+        </service>
+        <service id="zicht_menu.access.menu" class="Zicht\Bundle\MenuBundle\Security\Authorization\MenuVoter" public="false">
+            <argument type="service" id="security.role_hierarchy" />
+            <tag name="security.voter" />
+        </service>
+        <service id="zicht_bundle_menu.status_provider.validate_nested_tree_provider" class="Zicht\Bundle\MenuBundle\StatusProvider\ValidateNestedTreeProvider">
+            <argument type="service" id="doctrine" />
+            <tag name="zicht.status.provider" />
         </service>
     </services>
 </container>

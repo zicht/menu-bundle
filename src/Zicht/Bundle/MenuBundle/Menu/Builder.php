@@ -19,12 +19,9 @@ use Symfony\Component\DependencyInjection\ContainerAwareTrait;
  *
  * @package Zicht\Bundle\MenuBundle\Menu
  */
-class Builder implements ContainerAwareInterface
+class Builder implements ContainerAwareInterface, BuilderInterface
 {
-    /* @codingStandardsIgnoreStart */
     use ContainerAwareTrait;
-
-    /* @codingStandardsIgnoreEnd */
 
     /**
      * @var \Knp\Menu\FactoryInterface
@@ -61,17 +58,26 @@ class Builder implements ContainerAwareInterface
     protected $preloadMenus = [];
 
     /**
+     * The default locale from the application
+     *
+     * @var string
+     */
+    protected $defaultLocale;
+
+    /**
      * Builder constructor.
      *
      * @param FactoryInterface $factory
      * @param Registry $doctrine
      * @param string $entity
+     * @param string $defaultLocale      The [null] variable was inherited from old code, and will always be overwritten with a valid locale.
      */
-    public function __construct(FactoryInterface $factory, Registry $doctrine, $entity = 'ZichtMenuBundle:MenuItem')
+    public function __construct(FactoryInterface $factory, Registry $doctrine, $entity = 'ZichtMenuBundle:MenuItem', $defaultLocale = '[null]')
     {
         $this->factory = $factory;
         $this->em = $doctrine->getManager();
         $this->menuItemEntity = $this->em->getRepository($entity);
+        $this->defaultLocale = $defaultLocale;
         $this->roots = [];
     }
 
@@ -96,10 +102,12 @@ class Builder implements ContainerAwareInterface
      */
     public function build($name, Request $request)
     {
+        $ret = $this->factory->createItem($name);
+
         $menus = $this->loadRoots($request);
 
         if (!isset($menus[$name])) {
-            throw new \InvalidArgumentException("Could not find root item with name '$name'");
+            return $ret;
         }
 
         $requestLocale = $request->get('_locale');
@@ -110,6 +118,10 @@ class Builder implements ContainerAwareInterface
             if (in_array($name, $this->preloadMenus)) {
                 $menusToLoad = [];
                 foreach ($this->preloadMenus as $preloadMenuName) {
+                    if (!isset($menus[$preloadMenuName])) {
+                        continue;
+                    }
+
                     $menusToLoad[$preloadMenuName] = $menus[$preloadMenuName];
                 }
             } else {
@@ -119,7 +131,7 @@ class Builder implements ContainerAwareInterface
             $query = 'SELECT root, menu_item.* FROM menu_item WHERE ';
             $i = 0;
             // `$vals` contains [id, lft, rgt]
-            foreach ($menusToLoad as $name => $vals) {
+            foreach ($menusToLoad as $vals) {
                 if ($i ++ > 0) {
                     $query .= ' OR ';
                 }
@@ -128,6 +140,9 @@ class Builder implements ContainerAwareInterface
             $query .= ' ORDER BY root, lft';
 
             foreach ($this->em->getConnection()->query($query)->fetchAll(\PDO::FETCH_GROUP) as $rootId => $menu) {
+                if (!isset($rootIdToNameMap)) {
+                    continue;
+                }
                 $menuName = $rootIdToNameMap[$rootId];
                 $this->menus[$requestLocale][$menuName]= $this->factory->createItem($menuName);
 
@@ -138,7 +153,16 @@ class Builder implements ContainerAwareInterface
                 );
             }
         }
-        return $this->menus[$requestLocale][$name];
+
+        if (isset($this->menus[$requestLocale][$name])) {
+            $ret = $this->menus[$requestLocale][$name];
+
+            if (is_callable([$ret, 'setCurrentUri'])) {
+                $ret->setCurrentUri($request->getRequestUri());
+            }
+        }
+
+        return $ret;
     }
 
     /**
@@ -176,32 +200,37 @@ class Builder implements ContainerAwareInterface
      * Preload all roots for the specified locale.
      *
      * @param Request $request
-     * @return mixed
+     * @return array
      */
     private function loadRoots(Request $request)
     {
-        $locale = $request->get('_locale', '[null]');
+        $locale = $request->get('_locale', $this->defaultLocale);
+
+        if (isset($this->roots[$locale])) {
+            return $this->roots[$locale];
+        }
+
+        $connection = $this->em->getConnection();
+        $where = 'lvl=0';
+
+        if ($locale) {
+            $where .= sprintf(' AND (language IS NULL OR language=%s)', $connection->quote($locale));
+        } else {
+            $where .= ' AND language IS NULL';
+        }
+
+        $rows = $connection->query('SELECT id, name, language, lft, rgt FROM menu_item WHERE ' . $where)->fetchAll(\PDO::FETCH_NUM);
+        foreach ($rows as list($id, $name, $language, $lft, $rgt)) {
+            // if the language is null, and the root items is already loaded; ignore it.
+            if (null === $language && isset($this->roots[$name])) {
+                continue;
+            }
+
+            $this->roots[$locale][$name] = [$id, $lft, $rgt];
+        }
 
         if (!isset($this->roots[$locale])) {
-            $connection = $this->em->getConnection();
-
-            $where = 'lvl=0';
-
-            if ($locale) {
-                $where .= sprintf(' AND (language IS NULL OR language=%s)', $connection->quote($locale));
-            } else {
-                $where .= ' AND language IS NULL';
-            }
-
-            $rows = $connection->query('SELECT id, name, language, lft, rgt FROM menu_item WHERE ' . $where)->fetchAll(\PDO::FETCH_NUM);
-            foreach ($rows as list($id, $name, $language, $lft, $rgt)) {
-                // if the language is null, and the root items is already loaded; ignore it.
-                if (null === $language && isset($this->roots[$name])) {
-                    continue;
-                }
-
-                $this->roots[$locale][$name] = [$id, $lft, $rgt];
-            }
+            return [];
         }
 
         return $this->roots[$locale];
@@ -224,7 +253,7 @@ class Builder implements ContainerAwareInterface
         $this->addMenuItemHierarchy($request, $this->menuItemEntity->childrenHierarchy($root), $menu);
 
         // 1.x compatibility
-        if (is_callable($menu, 'setCurrentUri')) {
+        if (is_callable([$menu, 'setCurrentUri'])) {
             $menu->setCurrentUri($request->getRequestUri());
         }
 
@@ -269,7 +298,6 @@ class Builder implements ContainerAwareInterface
         if ($name = $item['name']) {
             $attributes['class'] = $name;
         }
-
         if (empty($item['path'])) {
             $uri = null;
         } elseif (preg_match('!^(?:https?://|mailto:)!', $item['path'])) {
@@ -287,6 +315,10 @@ class Builder implements ContainerAwareInterface
                 'label' => $item['title']
             )
         );
+
+        if (!empty($item['json_data'])) {
+            $item['json_data'] = @json_decode($item['json_data']);
+        }
 
         $menuItem->setExtras($item);
         return $menuItem;

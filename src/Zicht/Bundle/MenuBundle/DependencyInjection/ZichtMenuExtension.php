@@ -29,17 +29,22 @@ class ZichtMenuExtension extends Extension
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
 
+        $container->setParameter('zicht_menu.builder_service', $config['builder_service']);
+        $container->setParameter('zicht_menu.preload_menus', $config['menus']);
+
         $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.xml');
         $loader->load('admin.xml');
 
-        if (!empty($config['preload_menus'])) {
-            $container->getDefinition('zicht_menu.menu_builder')->addMethodCall('setPreloadMenus', [$config['preload_menus']]);
-        }
-
         $formResources = $container->getParameter('twig.form.resources');
         $formResources[]= 'ZichtMenuBundle::form_theme.html.twig';
         $container->setParameter('twig.form.resources', $formResources);
+
+        $container->getDefinition('zicht_menu.provider.database_menu_provider')->replaceArgument(0, new Reference($config['builder_service']));
+        if ($config['builder_service'] !== 'zicht_menu.menu_builder') {
+            $container->removeDefinition('zicht_menu.menu_builder');
+            $container->setAlias('zicht_menu.menu_builder', $config['builder_service']);
+        }
 
         // knp menu ^2:
         if (interface_exists('Knp\Menu\Matcher\Voter\VoterInterface')) {

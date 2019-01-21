@@ -8,6 +8,7 @@
 
 namespace ZichtTest\Bundle\MenuBundle\Manager;
 
+use Doctrine\ORM\EntityManager;
 use Zicht\Bundle\MenuBundle\Manager\MenuManager;
 use Zicht\Bundle\MenuBundle\Entity\MenuItem;
 
@@ -16,7 +17,7 @@ class MenuManagerTest extends \PHPUnit_Framework_TestCase
     function testAddItem()
     {
         $doctrine = $this->getMockBuilder('\Doctrine\Bundle\DoctrineBundle\Registry')->disableOriginalConstructor()->setMethods(array('getManager'))->getMock();
-        $em = $this->getMockBuilder('Doctrine\Persistence\EntityManager')->setMethods(array('persist'))->getMock();
+        $em = $this->getMockBuilder(EntityManager::class)->setMethods(array('persist', 'flush'))->getMock();
         $doctrine->expects($this->any())->method('getManager')->will($this->returnValue($em));
 
         $mgr = new MenuManager($doctrine);
@@ -27,18 +28,18 @@ class MenuManagerTest extends \PHPUnit_Framework_TestCase
             new MenuItem()
         );
 
+        $em->expects($this->exactly(count($items)))->method('persist');
+
         foreach ($items as $item) {
             $mgr->addItem($item);
         }
-        $em->expects($this->exactly(count($items)))->method('persist');
-        $mgr->flush();
     }
 
 
     function testRemoveItem()
     {
         $doctrine = $this->getMockBuilder('\Doctrine\Bundle\DoctrineBundle\Registry')->disableOriginalConstructor()->setMethods(array('getManager'))->getMock();
-        $em = $this->getMockBuilder('Doctrine\Persistence\EntityManager')->setMethods(array('remove'))->getMock();
+        $em = $this->getMockBuilder(EntityManager::class)->setMethods(array('remove', 'flush'))->getMock();
         $doctrine->expects($this->any())->method('getManager')->will($this->returnValue($em));
 
         $mgr = new MenuManager($doctrine);
@@ -49,12 +50,10 @@ class MenuManagerTest extends \PHPUnit_Framework_TestCase
             new MenuItem()
         );
 
+        $em->expects($this->exactly(count($items)))->method('remove');
+        
         foreach ($items as $item) {
             $mgr->removeItem($item);
         }
-        $em->expects($this->exactly(count($items)))->method('remove');
-        $mgr->flush();
     }
-
-
 }

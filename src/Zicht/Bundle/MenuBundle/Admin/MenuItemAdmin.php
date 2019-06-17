@@ -86,8 +86,7 @@ class MenuItemAdmin extends TreeAdmin
             ->getContainer()
             ->get('security.authorization_checker')
             ->isGranted(
-                MenuVoter::ROLE_NAME_FIELD_ACCESS,
-                $this->getSubject()
+                MenuVoter::ROLE_NAME_FIELD_ACCESS
             )
         ;
     }

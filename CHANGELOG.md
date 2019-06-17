@@ -8,7 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added|Changed|Deprecated|Removed|Fixed|Security
 Nothing so far
 
-## 3.0.3 - 2019-06-17
+## 3.0.4 - 2019-06-17
 ### Fixed
 - Fixed a bug that would never allow the menu item `name` property to be changed, as it was dependant on ACL checking of the menu item's `DELETE` attribute, but which was never implemented. 
 

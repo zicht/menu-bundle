@@ -8,7 +8,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added|Changed|Deprecated|Removed|Fixed|Security
 Nothing so far
 
-## 3.0.02 - 2018-08-14
+## 3.0.3 - 2019-06-17
+### Fixed
+- Fixed a bug that would never allow the menu item `name` property to be changed, as it was dependant on ACL checking of the menu item's `DELETE` attribute, but which was never implemented. 
+
+## 3.0.2 - 2018-08-14
 ### Fixed
 - Prevent some case(s) of `get_class` to be called with `null`, this will give a warning in PHP 7.2
 

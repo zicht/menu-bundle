@@ -50,7 +50,7 @@ class MenuItemAdmin extends TreeAdmin
     public function configureListFields(ListMapper $listMapper)
     {
         $listMapper = parent::configureListFields($listMapper);
-        $listMapper->add('path', 'string', array('template' => 'ZichtAdminBundle:CRUD:list_url.html.twig'));
+        $listMapper->add('path', 'string', array('template' => '@ZichtAdmin/CRUD/list_url.html.twig'));
         $listMapper->reorder(
             array(
                 'title',

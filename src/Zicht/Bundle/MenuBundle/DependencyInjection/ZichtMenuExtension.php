@@ -37,7 +37,7 @@ class ZichtMenuExtension extends Extension
         $loader->load('admin.xml');
 
         $formResources = $container->getParameter('twig.form.resources');
-        $formResources[]= 'ZichtMenuBundle::form_theme.html.twig';
+        $formResources[]= '@ZichtMenu/form_theme.html.twig';
         $container->setParameter('twig.form.resources', $formResources);
 
         $container->getDefinition('zicht_menu.provider.database_menu_provider')->replaceArgument(0, new Reference($config['builder_service']));

@@ -9,14 +9,14 @@
         }
     ],
     "require": {
-        "php": "^7.0",
+        "php": "^7.1",
         "gedmo/doctrine-extensions": "^2.3",
-        "symfony/symfony": "^3.4",
-        "zicht/framework-extra-bundle": "^8.0"
+        "symfony/console": "^4.4",
+        "zicht/framework-extra-bundle": "^9",
+        "zicht/url-bundle": "^5"
     },
     "suggest": {
-        "zicht/admin-bundle": "To integrate with Sonata Admin",
-        "zicht/url-bundle": "To leverage aliasing based on menu structure"
+        "zicht/admin-bundle": "To integrate with Sonata Admin"
     },
     "require-dev": {
         "phpunit/phpunit": "^4"

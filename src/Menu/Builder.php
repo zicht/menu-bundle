@@ -3,16 +3,18 @@
  * @author Gerard van Helden <gerard@zicht.nl>
  * @copyright Zicht Online <http://zicht.nl>
  */
+
 namespace Zicht\Bundle\MenuBundle\Menu;
 
 use Doctrine\Bundle\DoctrineBundle\Registry;
-use Knp\Menu\FactoryInterface;
+use Doctrine\Persistence\ManagerRegistry;
 use InvalidArgumentException;
+use Knp\Menu\FactoryInterface;
 use Knp\Menu\ItemInterface;
 use Knp\Menu\MenuItem;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Class Builder
@@ -70,9 +72,9 @@ class Builder implements ContainerAwareInterface, BuilderInterface
      * @param FactoryInterface $factory
      * @param Registry $doctrine
      * @param string $entity
-     * @param string $defaultLocale      The [null] variable was inherited from old code, and will always be overwritten with a valid locale.
+     * @param string $defaultLocale The [null] variable was inherited from old code, and will always be overwritten with a valid locale.
      */
-    public function __construct(FactoryInterface $factory, Registry $doctrine, $entity = 'ZichtMenuBundle:MenuItem', $defaultLocale = '[null]')
+    public function __construct(FactoryInterface $factory, ManagerRegistry $doctrine, $entity = 'ZichtMenuBundle:MenuItem', $defaultLocale = '[null]')
     {
         $this->factory = $factory;
         $this->em = $doctrine->getManager();
@@ -132,7 +134,7 @@ class Builder implements ContainerAwareInterface, BuilderInterface
             $i = 0;
             // `$vals` contains [id, lft, rgt]
             foreach ($menusToLoad as $vals) {
-                if ($i ++ > 0) {
+                if ($i++ > 0) {
                     $query .= ' OR ';
                 }
                 $query .= vsprintf('(root=%d AND lft BETWEEN %d AND %d AND id <> root)', $vals);
@@ -144,7 +146,7 @@ class Builder implements ContainerAwareInterface, BuilderInterface
                     continue;
                 }
                 $menuName = $rootIdToNameMap[$rootId];
-                $this->menus[$requestLocale][$menuName]= $this->factory->createItem($menuName);
+                $this->menus[$requestLocale][$menuName] = $this->factory->createItem($menuName);
 
                 $this->addMenuItemHierarchy(
                     $request,

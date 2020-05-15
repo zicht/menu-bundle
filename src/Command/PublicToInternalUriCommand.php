@@ -24,6 +24,7 @@ class PublicToInternalUriCommand extends Command
      */
     protected $entityManager;
 
+    protected static $defaultName = 'zicht:menu:public-to-internal';
 
     /**
      * Initializes a new instance of the PublicToInternalUriCommand class.
@@ -43,7 +44,7 @@ class PublicToInternalUriCommand extends Command
      */
     protected function configure()
     {
-        $this->setName('zicht:menu:public-to-internal')
+        $this
             ->setDescription('Convert public menu URI’s to internal URI’s');
     }
 

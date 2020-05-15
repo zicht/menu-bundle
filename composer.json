@@ -2,7 +2,6 @@
     "name": "zicht/menu-bundle",
     "description": "Menu utilities for Symfony",
     "type": "symfony-bundle",
-    "repositories": [],
     "authors": [
         {
             "name": "Zicht online",
@@ -23,10 +22,16 @@
         "phpunit/phpunit": "^4"
     },
     "autoload": {
-        "psr-0": {
-            "": [
-                "src/",
-                "tests/"
+        "psr-4": {
+            "Zicht\\Bundle\\MenuBundle\\": [
+                "src/Zicht/Bundle/MenuBundle/"
+            ]
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "ZichtTest\\Bundle\\MenuBundle\\": [
+                "tests/ZichtTest/Bundle/MenuBundle/"
             ]
         }
     },

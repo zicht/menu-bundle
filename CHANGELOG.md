@@ -8,6 +8,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added|Changed|Deprecated|Removed|Fixed|Security
 Nothing so far
 
+## 3.0.5 - 2020-05-15
+### Changed
+- Switched from PSR-0 to PSR-4 autoloading
+
 ## 3.0.4 - 2019-06-17
 ### Fixed
 - Fixed a bug that would never allow the menu item `name` property to be changed, as it was dependant on ACL checking of the menu item's `DELETE` attribute, but which was never implemented. 

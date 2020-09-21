@@ -4,13 +4,13 @@ admin:
     tab:
         menu_item: 'Menu item'
     help:
-        menu_item_name: 'Name can be used as an url reference in code'
+        menu_item_name: 'Optional. Name is used as reference in code. Do not fill if unknown with workings!'
 list:
     label_is_collapsible: 'Foldable'
 form:
     label_parent: 'Parent'
     label_title: 'Title'
     label_path: 'Path'
-    label_name: 'Name'
+    label_name: 'Technical name'
     label_is_collapsible: 'Foldable'
     label_add_to_menu: 'Add to menu'

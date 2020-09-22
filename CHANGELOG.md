@@ -8,6 +8,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added|Changed|Deprecated|Removed|Fixed|Security
 Nothing so far
 
+## 4.0.1 - 2020-09-21
+### Added
+- `Zicht\Bundle\MenuBundle\Admin\Extension\TreeAdminExtension` to allow language and name fields.
+
 ## 4.0.0 - 2020-05-15
 ### Added
 - Support for Symfony 4.x
@@ -22,7 +26,7 @@ Nothing so far
 
 ## 3.0.4 - 2019-06-17
 ### Fixed
-- Fixed a bug that would never allow the menu item `name` property to be changed, as it was dependant on ACL checking of the menu item's `DELETE` attribute, but which was never implemented. 
+- Fixed a bug that would never allow the menu item `name` property to be changed, as it was dependant on ACL checking of the menu item's `DELETE` attribute, but which was never implemented.
 
 ## 3.0.2 - 2018-08-14
 ### Fixed
@@ -69,7 +73,7 @@ Nothing so far
 ## 2.8.0  -  Wed, 30 Nov 2016 14:17:38 GMT
 - fixes issue where the flush triggered a flush for other items than the items managed by the menu manager
 - [DON-282] URI should be null when there is no path
-  
+
   The bug in Donner was caused by the URI defaulting to '/' when the
   path (in the database) was null.  This is not intended.
 
@@ -104,11 +108,11 @@ Nothing so far
 - symfony 2.8 fixes
 - symfony 3.4 fixes
 - `getBlockPrefix` to replace `getName`
-- dependencies update 
+- dependencies update
 
 ## 2.8.8  -  Wed, 8 Mar 2018 13:40 GMT
 - Refactored the default fallback from `[none]` to `%kernel.default_locale%` to make behavior valid in donner 3.0.
 - Updated previous missing changelog entries
 
 ## 2.8.10
-- bug fix for the `duplicate on tree root` bug when removing pages (with linked menu items)  
+- bug fix for the `duplicate on tree root` bug when removing pages (with linked menu items)

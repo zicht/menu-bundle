@@ -6,7 +6,7 @@
 
 namespace Zicht\Bundle\MenuBundle\StatusProvider;
 
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Persistence\ManagerRegistry;
 use Zicht\Bundle\MenuBundle\Entity\MenuItem;
 use Zicht\Bundle\StatusBundle\StatusProvider\StatusProviderInterface;
 
@@ -26,9 +26,9 @@ class ValidateNestedTreeProvider implements StatusProviderInterface
     /**
      * ValidateNestedTreeProvider constructor.
      *
-     * @param RegistryInterface $doctrine
+     * @param ManagerRegistry $doctrine
      */
-    public function __construct(RegistryInterface $doctrine)
+    public function __construct(ManagerRegistry $doctrine)
     {
         $repository = $doctrine->getRepository(MenuItem::class);
         $result = $repository->verify();

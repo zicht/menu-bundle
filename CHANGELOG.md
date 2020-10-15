@@ -8,6 +8,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added|Changed|Deprecated|Removed|Fixed|Security
 Nothing so far
 
+## 4.0.2 - 2020-10-20
+### Changed
+- Introduce `Doctrine\Persistence\ManagerRegistry`, fixing deprecated use of `RegistryInterface`.
+
 ## 4.0.1 - 2020-09-21
 ### Added
 - `Zicht\Bundle\MenuBundle\Admin\Extension\TreeAdminExtension` to allow language and name fields.

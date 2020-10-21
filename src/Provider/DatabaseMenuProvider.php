@@ -6,8 +6,10 @@
 
 namespace Zicht\Bundle\MenuBundle\Provider;
 
+use Knp\Menu\Matcher\MatcherInterface;
 use Knp\Menu\Provider\MenuProviderInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Zicht\Bundle\MenuBundle\Menu\Builder;
 use Zicht\Bundle\MenuBundle\Menu\BuilderInterface;
 
@@ -50,7 +52,17 @@ class DatabaseMenuProvider implements MenuProviderInterface
      */
     public function get($name, array $options = array())
     {
-        return $this->builder->build($name, $this->container->get('request_stack')->getCurrentRequest());
+        /** @var RequestStack $requestStack */
+        $requestStack = $this->container->get('request_stack');
+        /** @var MatcherInterface $matcher */
+        $matcher = $this->container->get('knp_menu.matcher');
+
+        $menu = $this->builder->build($name, $requestStack->getCurrentRequest());
+        foreach ($menu->getChildren() as $child) {
+            $child->setCurrent($matcher->isCurrent($child));
+        }
+
+        return $menu;
     }
 
     /**

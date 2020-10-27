@@ -8,6 +8,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added|Changed|Deprecated|Removed|Fixed|Security
 Nothing so far
 
+## 4.1.0 - 2020-10-26
+### Changed
+- The ```DatabaseMenuProvider``` now expects a requestStack as its second argument instead of the whole Container and a matcher as its third argument which implements the ```MatcherInterface```. This will be used to match the uri to set the current menu item.
+
 ## 4.0.2 - 2020-10-20
 ### Changed
 - Introduce `Doctrine\Persistence\ManagerRegistry`, fixing deprecated use of `RegistryInterface`.

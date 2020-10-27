@@ -29,7 +29,7 @@ class DatabaseMenuProvider implements MenuProviderInterface
      */
     protected $matcher;
 
-    public function __construct(BuilderInterface $builder, RequestStack $requestStack, MatcherInterface $matcher = null)
+    public function __construct(BuilderInterface $builder, RequestStack $requestStack, MatcherInterface $matcher)
     {
         $this->builder = $builder;
         $this->requestStack = $requestStack;
@@ -48,10 +48,8 @@ class DatabaseMenuProvider implements MenuProviderInterface
     {
         $menu = $this->builder->build($name, $this->requestStack->getCurrentRequest());
 
-        if ($this->matcher !== null) {
-            foreach ($menu->getChildren() as $child) {
-                $child->setCurrent($this->matcher->isCurrent($child));
-            }
+        foreach ($menu->getChildren() as $child) {
+            $child->setCurrent($this->matcher->isCurrent($child));
         }
 
         return $menu;

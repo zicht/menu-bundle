@@ -8,20 +8,19 @@ namespace Zicht\Bundle\MenuBundle\StatusProvider;
 
 use Doctrine\Persistence\ManagerRegistry;
 use Zicht\Bundle\MenuBundle\Entity\MenuItem;
+use Zicht\Bundle\StatusBundle\StatusProvider\StatusProviderHelper;
 use Zicht\Bundle\StatusBundle\StatusProvider\StatusProviderInterface;
 
-/**
- * Class ValidateNestedTreeProvider
- *
- * @package Zicht\Bundle\MenuBundle\StatusProvider
- */
-class ValidateNestedTreeProvider implements StatusProviderInterface
+class ValidateNestedTreeProvider extends StatusProviderHelper implements StatusProviderInterface
 {
     /** @var boolean */
     protected $isValid;
 
     /** @var array */
     protected $values;
+
+    /** @var ManagerRegistry */
+    private $doctrine;
 
     /**
      * ValidateNestedTreeProvider constructor.
@@ -30,7 +29,12 @@ class ValidateNestedTreeProvider implements StatusProviderInterface
      */
     public function __construct(ManagerRegistry $doctrine)
     {
-        $repository = $doctrine->getRepository(MenuItem::class);
+        $this->doctrine = $doctrine;
+    }
+
+    protected function check()
+    {
+        $repository = $this->doctrine->getRepository(MenuItem::class);
         $result = $repository->verify();
 
         if (true === $result) {

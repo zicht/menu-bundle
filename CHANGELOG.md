@@ -8,6 +8,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added|Changed|Deprecated|Removed|Fixed|Security
 Nothing so far
 
+## 4.1.1 - 2020-02-11
+### Fixed
+- `ValidateNestedTreeProvider` now extends `StatusProviderHelper` so the `check` method can be utilized and this Provider
+  no longer has its workload implemented in the `__construct`
+
 ## 4.1.0 - 2020-10-26
 ### Changed
 - The `DatabaseMenuProvider` now expects a requestStack as its second argument instead of the whole Container and a matcher as its third argument which implements the `MatcherInterface`. This will be used to match the uri to set the current menu item.

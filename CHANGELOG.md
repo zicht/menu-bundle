@@ -1,4 +1,18 @@
-# Changelog
+# Change Log
+All notable changes to this project will be documented in this file.
+
+The format is based on [Keep a Changelog](http://keepachangelog.com/)
+and this project adheres to [Semantic Versioning](http://semver.org/).
+
+## [Unreleased]
+### Added|Changed|Deprecated|Removed|Fixed|Security
+Nothing so far
+
+## 2.8.12 - 2020-10-11
+### Fixed
+- `ValidateNestedTreeProvider` now extends `StatusProviderHelper` so the `check` method can be utilized and this Provider
+  no longer has its workload implemented in the `__construct`
+  This is a backport from 4.1.1.
 
 ## 2.3
 - adds a command to rewrite public urls in the menu to internal urls ("unalias" them)
@@ -31,7 +45,7 @@
 ## 2.8.0  -  Wed, 30 Nov 2016 14:17:38 GMT
 - fixes issue where the flush triggered a flush for other items than the items managed by the menu manager
 - [DON-282] URI should be null when there is no path
-  
+
   The bug in Donner was caused by the URI defaulting to '/' when the
   path (in the database) was null.  This is not intended.
 
@@ -66,11 +80,11 @@
 - symfony 2.8 fixes
 - symfony 3.4 fixes
 - `getBlockPrefix` to replace `getName`
-- dependencies update 
+- dependencies update
 
 ## 2.8.8  -  Wed, 8 Mar 2018 13:40 GMT
 - Refactored the default fallback from `[none]` to `%kernel.default_locale%` to make behavior valid in donner 3.0.
 - Updated previous missing changelog entries
 
 ## 2.8.10
-- bug fix for the `duplicate on tree root` bug when removing pages (with linked menu items)  
+- bug fix for the `duplicate on tree root` bug when removing pages (with linked menu items)

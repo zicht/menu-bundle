@@ -8,7 +8,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added|Changed|Deprecated|Removed|Fixed|Security
 Nothing so far
 
-## 4.1.1 - 2020-02-11
+## 4.1.2 - 2020-11-16
+### Changed
+- Introduced the missing dependency on `knplabs/knp-menu-bundle` and updated existing code to be compatible with version 3.
+
+## 4.1.1 - 2020-11-02
 ### Fixed
 - `ValidateNestedTreeProvider` now extends `StatusProviderHelper` so the `check` method can be utilized and this Provider
   no longer has its workload implemented in the `__construct`

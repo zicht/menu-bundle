@@ -33,16 +33,9 @@ class UriVoter implements VoterInterface
     }
 
     /**
-     * Checks whether an item is current.
-     *
-     * If the voter is not able to determine a result,
-     * it should return null to let other voters do the job.
-     *
-     * @param ItemInterface $item
-     *
-     * @return bool|null
+     * {@inheritDoc}
      */
-    public function matchItem(ItemInterface $item)
+    public function matchItem(ItemInterface $item): ?bool
     {
         return ($this->requestStack->getMasterRequest()->getPathInfo() === $item->getUri() ? true : null);
     }

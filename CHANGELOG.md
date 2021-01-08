@@ -8,6 +8,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added|Changed|Deprecated|Removed|Fixed|Security
 Nothing so far
 
+## 4.1.3 - 2021-01-08
+### Fixed
+- Translation for `form.label_name` replaced with specific one as it interferes with the normal usage of the "name" label.
+
 ## 4.1.2 - 2020-11-16
 ### Changed
 - Introduced the missing dependency on `knplabs/knp-menu-bundle` and updated existing code to be compatible with version 3.

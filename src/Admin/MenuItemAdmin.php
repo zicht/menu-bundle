@@ -34,6 +34,7 @@ class MenuItemAdmin extends TreeAdmin
                         'name',
                         null,
                         array(
+                            'label' => 'form.label_name_technical',
                             'attr' => ['read_only' => !$this->hasNameFieldAccess()],
                             'disabled'  => !$this->hasNameFieldAccess(),
                             'help' => 'admin.help.menu_item_name'

@@ -11,6 +11,6 @@ form:
     label_parent: 'Hoofditem'
     label_title: 'Titel'
     label_path: 'Pad'
-    label_name: 'Technische naam'
+    label_name_technical: 'Technische naam'
     label_is_collapsible: 'Opvouwbaar'
     label_add_to_menu: 'Toevoegen aan menu'

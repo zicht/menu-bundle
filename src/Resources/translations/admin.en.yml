@@ -11,6 +11,6 @@ form:
     label_parent: 'Parent'
     label_title: 'Title'
     label_path: 'Path'
-    label_name: 'Technical name'
+    label_name_technical: 'Technical name'
     label_is_collapsible: 'Foldable'
     label_add_to_menu: 'Add to menu'

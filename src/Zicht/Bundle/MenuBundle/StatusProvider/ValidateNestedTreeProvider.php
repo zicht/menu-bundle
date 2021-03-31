@@ -8,6 +8,7 @@ namespace Zicht\Bundle\MenuBundle\StatusProvider;
 
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Zicht\Bundle\MenuBundle\Entity\MenuItem;
+use Zicht\Bundle\StatusBundle\StatusProvider\StatusProviderHelper;
 use Zicht\Bundle\StatusBundle\StatusProvider\StatusProviderInterface;
 
 /**
@@ -15,13 +16,10 @@ use Zicht\Bundle\StatusBundle\StatusProvider\StatusProviderInterface;
  *
  * @package Zicht\Bundle\MenuBundle\StatusProvider
  */
-class ValidateNestedTreeProvider implements StatusProviderInterface
+class ValidateNestedTreeProvider extends StatusProviderHelper implements StatusProviderInterface
 {
-    /** @var boolean */
-    protected $isValid;
-
-    /** @var array */
-    protected $values;
+    /** @var RegistryInterface */
+    protected $doctrine;
 
     /**
      * ValidateNestedTreeProvider constructor.
@@ -30,16 +28,21 @@ class ValidateNestedTreeProvider implements StatusProviderInterface
      */
     public function __construct(RegistryInterface $doctrine)
     {
-        $repository = $doctrine->getRepository(MenuItem::class);
+        $this->doctrine = $doctrine;
+    }
+
+    /**
+     * @{inheritDoc}
+     */
+    protected function check()
+    {
+        $repository = $this->doctrine->getRepository(MenuItem::class);
         $result = $repository->verify();
 
         if (true === $result) {
-            $this->isValid = true;
-            $this->values = ['error_count' => 0];
-        } else {
-            $this->isValid = false;
-            $this->values = ['error_count' => sizeof($result)];
+            return [true, ['error_count' => 0]];
         }
+        return [false, ['error_count' => count($result)]];
     }
 
     /**
@@ -72,21 +75,5 @@ class ValidateNestedTreeProvider implements StatusProviderInterface
     public function getDescription()
     {
         return sprintf('Check that the menu stored in entity "%s" is valid', MenuItem::class);
-    }
-
-    /**
-     * @{inheritDoc}
-     */
-    public function getValues()
-    {
-        return $this->values;
-    }
-
-    /**
-     * @{inheritDoc}
-     */
-    public function isValid()
-    {
-        return $this->isValid;
     }
 }

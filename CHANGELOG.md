@@ -8,6 +8,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added|Changed|Deprecated|Removed|Fixed|Security
 Nothing so far
 
+## 3.0.6 - 2021-03-21
+### Fixed
+- `ValidateNestedTreeProvider` now extends `StatusProviderHelper` so the `check` method can be utilized and this Provider
+  no longer has its workload implemented in the `__construct` as previously fixed in `4.1.1`
+
 ## 3.0.5 - 2020-05-15
 ### Changed
 - Switched from PSR-0 to PSR-4 autoloading

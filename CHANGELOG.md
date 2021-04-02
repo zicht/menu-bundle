@@ -8,6 +8,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added|Changed|Deprecated|Removed|Fixed|Security
 Nothing so far
 
+## 4.1.4 - 2021-04-01
+### Fixed
+- Forward merge from `3.0.6` including fixes for code updated in `4.1.1`
+
 ## 4.1.3 - 2021-01-08
 ### Fixed
 - Translation for `form.label_name` replaced with specific one as it interferes with the normal usage of the "name" label.
@@ -40,6 +44,11 @@ Nothing so far
 - Support for Symfony 3.x
 ### Changed
 - Removed Zicht(Test)/Bundle/MenuBundle/ directory depth: moved all code up directly into src/ and test/
+
+## 3.0.6 - 2021-03-21
+### Fixed
+- `ValidateNestedTreeProvider` now extends `StatusProviderHelper` so the `check` method can be utilized and this Provider
+  no longer has its workload implemented in the `__construct` as previously fixed in `4.1.1`
 
 ## 3.0.5 - 2020-05-15
 ### Changed

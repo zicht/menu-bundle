@@ -13,6 +13,7 @@
         "gedmo/doctrine-extensions": "^2.3",
         "knplabs/knp-menu-bundle": "^3",
         "symfony/console": "^4.4",
+        "zicht/admin-bundle": "^6.2.1",
         "zicht/framework-extra-bundle": "^9",
         "zicht/url-bundle": "^5"
     },

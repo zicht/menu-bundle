@@ -8,8 +8,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added|Changed|Deprecated|Removed|Fixed|Security
 Nothing so far
 
-## 4.1.4 - 2021-04-01
+## 4.1.4 - 2021-04-30
 ### Fixed
+- Do not expect return value from `parent::configureListFields()` in `MenuItemAdmin::configureListFields()`
 - Forward merge from `3.0.6` including fixes for code updated in `4.1.1`
 
 ## 4.1.3 - 2021-01-08

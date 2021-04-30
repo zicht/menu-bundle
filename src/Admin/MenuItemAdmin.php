@@ -50,19 +50,16 @@ class MenuItemAdmin extends TreeAdmin
      */
     public function configureListFields(ListMapper $listMapper)
     {
-        $listMapper = parent::configureListFields($listMapper);
-        $listMapper->add('path', 'string', array('template' => '@ZichtAdmin/CRUD/list_url.html.twig'));
+        parent::configureListFields($listMapper);
+
+        $listMapper->add('path', 'string', ['template' => '@ZichtAdmin/CRUD/list_url.html.twig']);
         $listMapper->reorder(
-            array(
+            [
                 'title',
-                'path'
-            )
+                'path',
+            ]
         );
-
-        return $listMapper;
     }
-
-
 
     /**
      * @param DatagridMapper $filter

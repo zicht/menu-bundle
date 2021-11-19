@@ -72,7 +72,7 @@ class MenuManager
     {
         $this->queue->rewind();
 
-        while ($this->queue->valid()) {
+        while (!$this->queue->isEmpty()) {
             list($item, $mode) = $this->queue->dequeue();
             switch ($mode) {
                 case self::REMOVE:
@@ -86,7 +86,6 @@ class MenuManager
                     $this->doctrine->getManager()->persist($item);
                     break;
             }
-            $this->queue->next();
         }
 
         if ($flushEntityManager) {

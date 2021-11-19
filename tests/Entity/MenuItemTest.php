@@ -7,9 +7,10 @@
  */
 namespace ZichtTest\Bundle\MenuBundle\Entity;
 
+use PHPUnit\Framework\TestCase;
 use Zicht\Bundle\MenuBundle\Entity\MenuItem;
 
-class MenuItemTest extends \PHPUnit_Framework_TestCase
+class MenuItemTest extends TestCase
 {
     function testGettersSetters()
     {

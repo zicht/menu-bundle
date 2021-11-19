@@ -7,14 +7,15 @@
  */
 namespace ZichtTest\Bundle\MenuBundle\Manager;
 
+use PHPUnit\Framework\TestCase;
 use Zicht\Bundle\MenuBundle\Form\Subscriber\MenuItemPersistenceSubscriber;
 
-class MenuItemPersistenceSubscriberTest extends \PHPUnit_Framework_TestCase
+class MenuItemPersistenceSubscriberTest extends TestCase
 {
     function testSubscribedEvents()
     {
         $mm = $this->getMockBuilder('Zicht\Bundle\MenuBundle\Manager\MenuManager')->disableOriginalConstructor()->getMock();
-        $provider = $this->getMock('Zicht\Bundle\UrlBundle\Url\Provider');
+        $provider = $this->createMock('Zicht\Bundle\UrlBundle\Url\Provider');
         $builder = $this->getMockBuilder('Symfony\Component\Form\FormBuilder')->disableOriginalConstructor()->getMock();
         $e = new MenuItemPersistenceSubscriber($mm, $provider, $builder);
 

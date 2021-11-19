@@ -1,16 +1,16 @@
 admin:
-    label:
-        menu_item: 'Menu'
-    tab:
-        menu_item: 'Menu item'
     help:
-        menu_item_name: 'Optioneel. Naam wordt gebruikt als referentie in code. Niet invullen indien onbekend met de werking hiervan!'
-list:
-    label_is_collapsible: 'Opvouwbaar'
+        menu_item_name: Optioneel. Naam wordt gebruikt als referentie in code. Niet invullen indien onbekend met de werking hiervan!
+    label:
+        menu_item: Menu
+    tab:
+        menu_item: Menu item
 form:
-    label_parent: 'Hoofditem'
-    label_title: 'Titel'
-    label_path: 'Pad'
-    label_name_technical: 'Technische naam'
-    label_is_collapsible: 'Opvouwbaar'
-    label_add_to_menu: 'Toevoegen aan menu'
+    label_add_to_menu: Toevoegen aan menu
+    label_is_collapsible: Opvouwbaar
+    label_name_technical: Technische naam
+    label_parent: Hoofditem
+    label_path: Pad
+    label_title: Titel
+list:
+    label_is_collapsible: Opvouwbaar

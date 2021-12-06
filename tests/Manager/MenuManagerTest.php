@@ -8,16 +8,16 @@
 
 namespace ZichtTest\Bundle\MenuBundle\Manager;
 
-use Doctrine\ORM\EntityManager;
+use PHPUnit\Framework\TestCase;
 use Zicht\Bundle\MenuBundle\Manager\MenuManager;
 use Zicht\Bundle\MenuBundle\Entity\MenuItem;
 
-class MenuManagerTest extends \PHPUnit_Framework_TestCase
+class MenuManagerTest extends TestCase
 {
     function testAddItem()
     {
         $doctrine = $this->getMockBuilder('\Doctrine\Bundle\DoctrineBundle\Registry')->disableOriginalConstructor()->setMethods(array('getManager'))->getMock();
-        $em = $this->getMockBuilder(EntityManager::class)->setMethods(array('persist', 'flush'))->getMock();
+        $em = $this->getMockBuilder('Doctrine\ORM\EntityManager')->setMethods(array('persist', 'flush'))->disableOriginalConstructor()->getMock();
         $doctrine->expects($this->any())->method('getManager')->will($this->returnValue($em));
 
         $mgr = new MenuManager($doctrine);
@@ -29,18 +29,21 @@ class MenuManagerTest extends \PHPUnit_Framework_TestCase
         );
 
         $em->expects($this->exactly(count($items)))->method('persist');
+        $em->expects($this->once())->method('flush');
 
         foreach ($items as $item) {
             $mgr->addItem($item);
         }
+        $mgr->flush(true);
     }
 
 
     function testRemoveItem()
     {
-        $doctrine = $this->getMockBuilder('\Doctrine\Bundle\DoctrineBundle\Registry')->disableOriginalConstructor()->setMethods(array('getManager'))->getMock();
-        $em = $this->getMockBuilder(EntityManager::class)->setMethods(array('remove', 'flush'))->getMock();
+        $doctrine = $this->getMockBuilder('\Doctrine\Bundle\DoctrineBundle\Registry')->disableOriginalConstructor()->setMethods(array('getManager', 'getManagerForClass'))->getMock();
+        $em = $this->getMockBuilder('Doctrine\ORM\EntityManager')->setMethods(array('remove', 'flush'))->disableOriginalConstructor()->getMock();
         $doctrine->expects($this->any())->method('getManager')->will($this->returnValue($em));
+        $doctrine->expects($this->any())->method('getManagerForClass')->will($this->returnValue(null));
 
         $mgr = new MenuManager($doctrine);
 
@@ -51,9 +54,11 @@ class MenuManagerTest extends \PHPUnit_Framework_TestCase
         );
 
         $em->expects($this->exactly(count($items)))->method('remove');
+        $em->expects($this->once())->method('flush');
         
         foreach ($items as $item) {
             $mgr->removeItem($item);
         }
+        $mgr->flush(true);
     }
 }

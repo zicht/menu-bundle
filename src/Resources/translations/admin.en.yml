@@ -1,16 +1,16 @@
 admin:
-    label:
-        menu_item: 'Menu'
-    tab:
-        menu_item: 'Menu item'
     help:
-        menu_item_name: 'Optional. Name is used as reference in code. Do not fill if unknown with workings!'
-list:
-    label_is_collapsible: 'Foldable'
+        menu_item_name: Optional. Name is used as reference in code. Do not fill if unknown with workings!
+    label:
+        menu_item: Menu
+    tab:
+        menu_item: Menu item
 form:
-    label_parent: 'Parent'
-    label_title: 'Title'
-    label_path: 'Path'
-    label_name_technical: 'Technical name'
-    label_is_collapsible: 'Foldable'
-    label_add_to_menu: 'Add to menu'
+    label_add_to_menu: Add to menu
+    label_is_collapsible: Foldable
+    label_name_technical: Technical name
+    label_parent: Parent
+    label_path: Path
+    label_title: Title
+list:
+    label_is_collapsible: Foldable

@@ -8,6 +8,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added|Changed|Deprecated|Removed|Fixed|Security
 Nothing so far
 
+## 4.2.1 - 2021-12-07
+### Removed
+- Support for `gedmo/doctrine-extensions^3` as it is a BC-break in disguise.
+
 ## 4.2.0 - 2021-12-02
 ### Added
 - Support for PHP 8

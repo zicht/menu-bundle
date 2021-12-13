@@ -3,20 +3,22 @@
  * @author Gerard van Helden <gerard@zicht.nl>
  * @copyright Zicht Online <http://zicht.nl>
  */
+
 namespace Zicht\Bundle\MenuBundle\Twig;
- 
+
 use Knp\Menu\Matcher\MatcherInterface;
 use Knp\Menu\MenuItem;
 use Knp\Menu\Provider\MenuProviderInterface;
-use Twig_SimpleFilter;
-use Twig_SimpleFunction;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFilter;
+use Twig\TwigFunction;
 
 /**
  * Class Extension
  *
  * @package Zicht\Bundle\MenuBundle\Twig
  */
-class Extension extends \Twig_Extension
+class Extension extends AbstractExtension
 {
     /**
      * @var MenuProviderInterface
@@ -52,8 +54,8 @@ class Extension extends \Twig_Extension
     public function getFilters()
     {
         return [
-            new Twig_SimpleFilter('zicht_menu_current', [$this, 'current']),
-            new Twig_SimpleFilter('zicht_menu_active_trail', [$this, 'activeTrail']),
+            new TwigFilter('zicht_menu_current', [$this, 'current']),
+            new TwigFilter('zicht_menu_active_trail', [$this, 'activeTrail']),
         ];
     }
 
@@ -63,9 +65,8 @@ class Extension extends \Twig_Extension
     public function getFunctions()
     {
         return array(
-            'zicht_menu_active_trail' =>
-                new Twig_SimpleFunction('zicht_menu_active_trail', [$this, 'activeTrail']),
-            'zicht_menu_exists' => new Twig_SimpleFunction('zicht_menu_exists', [$this, 'exists'])
+            'zicht_menu_active_trail' => new TwigFunction('zicht_menu_active_trail', [$this, 'activeTrail']),
+            'zicht_menu_exists' => new TwigFunction('zicht_menu_exists', [$this, 'exists'])
         );
     }
 
@@ -100,7 +101,7 @@ class Extension extends \Twig_Extension
         $stack = array();
 
         do {
-            $stack[]= $item;
+            $stack[] = $item;
         } while ($item = $item->getParent());
 
         return array_reverse($stack);
@@ -127,7 +128,7 @@ class Extension extends \Twig_Extension
         foreach ($item->getChildren() as $child) {
             if (
                 (null !== $this->matcher && $this->matcher->isAncestor($child))
-             || (null === $this->matcher && $child->isCurrentAncestor())
+                || (null === $this->matcher && $child->isCurrentAncestor())
             ) {
                 if ($level !== null and $level == $child->getLevel()) {
                     return $child;
@@ -138,7 +139,7 @@ class Extension extends \Twig_Extension
 
             if (
                 (null !== $this->matcher && $this->matcher->isCurrent($child))
-             || (null === $this->matcher && $child->isCurrent())
+                || (null === $this->matcher && $child->isCurrent())
             ) {
                 return $child;
             }

@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added|Changed|Deprecated|Removed|Fixed|Security
 Nothing so far
 
+## 4.3.0 - 2021-12-13
+### Added
+- Support for Twig 3
+### Removed
+- Support for Twig < 2.7
+
 ## 4.2.2 - 2021-12-13
 ### Fixed
 - Missing translation of form label `name` and CMS breadcrumbs.

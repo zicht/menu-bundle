@@ -5,9 +5,13 @@ admin:
         menu_item: Menu
     tab:
         menu_item: Menu item
+breadcrumb:
+    link_menu_item_create: Toevoegen
+    link_menu_item_list: Menu items
 form:
     label_add_to_menu: Toevoegen aan menu
     label_is_collapsible: Opvouwbaar
+    label_name: Naam
     label_name_technical: Technische naam
     label_parent: Hoofditem
     label_path: Pad

@@ -8,6 +8,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added|Changed|Deprecated|Removed|Fixed|Security
 Nothing so far
 
+## 4.3.1 - 2022-02-16
+### Changed
+- Slightly optimized `Builder::loadRoots` to not repeatedly check on empty root-menu's for a given locale.
+
 ## 4.3.0 - 2021-12-13
 ### Added
 - Support for Twig 3

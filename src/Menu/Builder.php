@@ -208,7 +208,7 @@ class Builder implements ContainerAwareInterface, BuilderInterface
     {
         $locale = $request->get('_locale', $this->defaultLocale);
 
-        if (isset($this->roots[$locale])) {
+        if (array_key_exists($locale, $this->roots)) {
             return $this->roots[$locale];
         }
 
@@ -232,7 +232,8 @@ class Builder implements ContainerAwareInterface, BuilderInterface
         }
 
         if (!isset($this->roots[$locale])) {
-            return [];
+            // Apparently the query returned empty. We can safely mark this too.
+            $this->roots[$locale] = null;
         }
 
         return $this->roots[$locale];

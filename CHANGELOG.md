@@ -8,6 +8,25 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added|Changed|Deprecated|Removed|Fixed|Security
 Nothing so far
 
+## 5.0.0 - 2022-03-09
+### Added
+- Support for `gedmo/doctrine-extensions^3`. This requires the following changes in your configuration
+
+#### Before
+```
+doctrine:
+  orm:
+    tree:
+      type: annotation
+      alias: Gedmo
+      prefix: Gedmo\Tree\Entity
+      dir: '%kernel.project_dir%/vendor/gedmo/doctrine-extensions/lib/Gedmo/Tree/Entity'
+```
+#### After
+```
+      dir: '%kernel.project_dir%/vendor/gedmo/doctrine-extensions/src/Tree/Entity'
+```
+
 ## 4.3.1 - 2022-02-16
 ### Changed
 - Slightly optimized `Builder::loadRoots` to not repeatedly check on empty root-menu's for a given locale.

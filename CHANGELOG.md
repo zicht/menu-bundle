@@ -8,6 +8,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added|Changed|Deprecated|Removed|Fixed|Security
 Nothing so far
 
+## 5.0.1 - 2022-04-04
+### Added
+- Forward merge of 4.3.2: Added FQCN service aliases for auto-wiring
+
 ## 5.0.0 - 2022-03-09
 ### Added
 - Support for `gedmo/doctrine-extensions^3`. This requires the following changes in your configuration
@@ -26,6 +30,10 @@ doctrine:
 ```
       dir: '%kernel.project_dir%/vendor/gedmo/doctrine-extensions/src/Tree/Entity'
 ```
+
+## 4.3.2 - 2022-04-04
+### Added
+- Added FQCN service aliases for auto-wiring
 
 ## 4.3.1 - 2022-02-16
 ### Changed

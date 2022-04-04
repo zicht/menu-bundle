@@ -24,12 +24,14 @@
         <service id="zicht_menu.menu_manager" class="Zicht\Bundle\MenuBundle\Manager\MenuManager">
             <argument type="service" id="doctrine" />
         </service>
+        <service id="Zicht\Bundle\MenuBundle\Manager\MenuManager" alias="zicht_menu.menu_manager" />
         <service id="zicht_menu.menu_builder" class="Zicht\Bundle\MenuBundle\Menu\Builder">
             <argument type="service" id="knp_menu.factory" />
             <argument type="service" id="doctrine" />
             <argument>ZichtMenuBundle:MenuItem</argument>
             <argument>%kernel.default_locale%</argument>
         </service>
+        <service id="Zicht\Bundle\MenuBundle\Menu\Builder" alias="zicht_menu.menu_builder" />
         <service id="zicht_menu.twig.extension" class="Zicht\Bundle\MenuBundle\Twig\Extension">
             <argument type="service" id="knp_menu.menu_provider" />
             <tag name="twig.extension" />

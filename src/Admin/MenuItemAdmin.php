@@ -14,7 +14,7 @@ use Zicht\Bundle\UrlBundle\Type\UrlType;
 
 class MenuItemAdmin extends TreeAdmin
 {
-    public function configureFormFields(FormMapper $formMapper)
+    public function configureFormFields(FormMapper $formMapper): void
     {
         parent::configureFormFields($formMapper);
 
@@ -36,7 +36,7 @@ class MenuItemAdmin extends TreeAdmin
             ->end();
     }
 
-    public function configureListFields(ListMapper $listMapper)
+    public function configureListFields(ListMapper $listMapper): void
     {
         parent::configureListFields($listMapper);
 
@@ -49,7 +49,7 @@ class MenuItemAdmin extends TreeAdmin
         );
     }
 
-    protected function configureDatagridFilters(DatagridMapper $filter)
+    protected function configureDatagridFilters(DatagridMapper $filter): void
     {
         parent::configureDatagridFilters($filter);
 

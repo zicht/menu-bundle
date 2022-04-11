@@ -338,12 +338,12 @@ class Builder implements ContainerAwareInterface, BuilderInterface
     {
         $item->addChild(
             $this->factory->createItem(
-                $item['id'],
-                array(
+                (string)$item->getExtra('id'),
+                [
                     'uri' => $request->getRequestUri(),
                     'display' => false,
-                    'label' => $item['title']
-                )
+                    'label' => $item->getExtra('title'),
+                ]
             )
         );
     }

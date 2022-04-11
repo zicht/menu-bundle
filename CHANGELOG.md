@@ -8,6 +8,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added|Changed|Deprecated|Removed|Fixed|Security
 Nothing so far
 
+## 5.0.2 - 2022-04-12
+### Fixed
+- Forward merge of 4.3.3: addGhostItem tried to obtain ID and title trough array access on the object, but
+  this will be looking for children 'id' and 'title' instead of the (extra) properties 'id' and 'title'.
+
 ## 5.0.1 - 2022-04-04
 ### Added
 - Forward merge of 4.3.2: Added FQCN service aliases for auto-wiring

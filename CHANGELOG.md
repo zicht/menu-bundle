@@ -8,6 +8,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added|Changed|Deprecated|Removed|Fixed|Security
 Nothing so far
 
+## 5.0.3 - 2022-05-03
+### Fixed
+- Pass root name to TreeBuilder constructor and call `getRootNode` instead of deprecated `->root()`
+
 ## 5.0.2 - 2022-04-12
 ### Fixed
 - Forward merge of 4.3.3: addGhostItem tried to obtain ID and title trough array access on the object, but

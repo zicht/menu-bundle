@@ -8,6 +8,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added|Changed|Deprecated|Removed|Fixed|Security
 Nothing so far
 
+## 5.0.4 - 2022-05-20
+### Changed
+- Forward merge of v4.3.4: Require symfony/security-core instead of bundled package symfony/security
+
 ## 5.0.3 - 2022-05-03
 ### Fixed
 - Pass root name to TreeBuilder constructor and call `getRootNode` instead of deprecated `->root()`

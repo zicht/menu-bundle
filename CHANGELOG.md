@@ -40,6 +40,10 @@ doctrine:
       dir: '%kernel.project_dir%/vendor/gedmo/doctrine-extensions/src/Tree/Entity'
 ```
 
+## 4.3.4 - 2022-05-20
+### Changed
+- Require symfony/security-core instead of bundled package symfony/security
+
 ## 4.3.3 - 2022-04-12
 ### Fixed
 - addGhostItem tried to obtain ID and title trough array access on the object, but this will be looking for

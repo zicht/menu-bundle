@@ -16,6 +16,9 @@
             <call method="setTranslationDomain">
                 <argument>admin</argument>
             </call>
+            <call method="setAuthorizationChecker">
+                <argument type="service" id="Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface"/>
+            </call>
         </service>
 
         <service id="Zicht\Bundle\MenuBundle\Admin\Extension\TreeAdminExtension">

@@ -17,7 +17,7 @@
         "symfony/http-kernel": "^4.4",
         "symfony/security-core": "^4.4",
         "twig/twig": "^2.7 || ^3",
-        "zicht/admin-bundle": "^6.0",
+        "zicht/admin-bundle": "^6 || ^7",
         "zicht/framework-extra-bundle": "^9.0",
         "zicht/url-bundle": "^5.0"
     },

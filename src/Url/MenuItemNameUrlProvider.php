@@ -1,34 +1,21 @@
 <?php
 /**
- * @author Gerard van Helden <gerard@zicht.nl>
  * @copyright Zicht Online <http://zicht.nl>
  */
 
 namespace Zicht\Bundle\MenuBundle\Url;
 
+use Doctrine\Bundle\DoctrineBundle\Registry;
+use Doctrine\ORM\EntityRepository;
+use Symfony\Component\Routing\RouterInterface;
 use Zicht\Bundle\UrlBundle\Url\StaticProvider;
 use Zicht\Bundle\UrlBundle\Url\SuggestableProvider;
-use Doctrine\Bundle\DoctrineBundle\Registry;
-use Symfony\Component\Routing\RouterInterface;
 
-/**
- * Class MenuItemNameUrlProvider
- *
- * @package Zicht\Bundle\MenuBundle\Url
- */
 class MenuItemNameUrlProvider extends StaticProvider implements SuggestableProvider
 {
-    /**
-     * @var \Doctrine\ORM\EntityRepository
-     */
+    /** @var EntityRepository */
     private $repository;
 
-    /**
-     * MenuItemNameUrlProvider constructor.
-     *
-     * @param Registry $doctrine
-     * @param RouterInterface $router
-     */
     public function __construct(Registry $doctrine, RouterInterface $router)
     {
         parent::__construct($router);
@@ -38,8 +25,6 @@ class MenuItemNameUrlProvider extends StaticProvider implements SuggestableProvi
     }
 
     /**
-     * If it supports the given name
-     *
      * @param mixed $name
      * @return bool|mixed
      */
@@ -94,14 +79,14 @@ class MenuItemNameUrlProvider extends StaticProvider implements SuggestableProvi
         $menuItems = $this->repository->createQueryBuilder('m')
             ->andWhere('m.name LIKE :pattern')
             ->getQuery()
-            ->execute(array('pattern' => '%' . $pattern . '%'));
+            ->execute(['pattern' => '%' . $pattern . '%']);
 
-        $suggestions = array();
+        $suggestions = [];
         foreach ($menuItems as $item) {
-            $suggestions[]= array(
+            $suggestions[] = [
                 'value' => $item->getName(),
-                'label' => sprintf('%s (menu item)', $item)
-            );
+                'label' => sprintf('%s (menu item)', $item),
+            ];
         }
 
         return $suggestions;

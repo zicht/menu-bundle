@@ -1,6 +1,5 @@
 <?php
 /**
- * @author Muhammed Akbulut <muhammed@zicht.nl>
  * @copyright Zicht Online <http://www.zicht.nl>
  */
 
@@ -12,8 +11,6 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
- * Zicht\Bundle\MenuBundle\Entity\MenuItem
- *
  * @ORM\Entity
  * @ORM\Table(
  *      name="menu_item",
@@ -29,7 +26,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 class MenuItem
 {
     /**
-     * @var integer $id
+     * @var int
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
@@ -75,7 +72,7 @@ class MenuItem
     private $children;
 
     /**
-     * @var string $title
+     * @var string
      *
      * @ORM\Column(name="title", type="string", length=255)
      */
@@ -87,7 +84,7 @@ class MenuItem
     private $language = null;
 
     /**
-     * @var string $path
+     * @var string
      *
      * @ORM\Column(name="path", type="string", length=255, nullable=true)
      */
@@ -107,9 +104,10 @@ class MenuItem
      */
     private $json_data = null;
 
+    /** @var bool */
+    protected $addToMenu = false;
+
     /**
-     * MenuItem constructor.
-     *
      * @param null $title
      * @param null $path
      * @param string $name
@@ -124,9 +122,7 @@ class MenuItem
     }
 
     /**
-     * Get id
-     *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -134,8 +130,6 @@ class MenuItem
     }
 
     /**
-     * Set title
-     *
      * @param string $title
      * @return MenuItem
      */
@@ -146,8 +140,6 @@ class MenuItem
     }
 
     /**
-     * Get title
-     *
      * @return string
      */
     public function getTitle()
@@ -164,8 +156,6 @@ class MenuItem
     }
 
     /**
-     * Set path
-     *
      * @param string $path
      * @return MenuItem
      */
@@ -177,8 +167,6 @@ class MenuItem
     }
 
     /**
-     * Get path
-     *
      * @return string
      */
     public function getPath()
@@ -187,8 +175,6 @@ class MenuItem
     }
 
     /**
-     * Set parent
-     *
      * @param MenuItem $parent
      * @return MenuItem
      */
@@ -200,8 +186,6 @@ class MenuItem
     }
 
     /**
-     * Get parent
-     *
      * @return MenuItem
      */
     public function getParent()
@@ -210,9 +194,6 @@ class MenuItem
     }
 
     /**
-     * Add children
-     *
-     * @param MenuItem $children
      * @return MenuItem
      * @deprecated addChildren (i.e. plural) is confusing, use addChild instead
      */
@@ -222,9 +203,6 @@ class MenuItem
     }
 
     /**
-     * Add a child menu item
-     *
-     * @param MenuItem $child
      * @return $this
      */
     public function addChild(MenuItem $child)
@@ -234,9 +212,6 @@ class MenuItem
     }
 
     /**
-     * Remove children
-     *
-     * @param MenuItem $children
      * @deprecated removeChildren (i.e. plural) is confusing, use removeChild instead
      */
     public function removeChildren(MenuItem $children)
@@ -245,9 +220,6 @@ class MenuItem
     }
 
     /**
-     * Remove a child menu item
-     *
-     * @param MenuItem $child
      * @return $this
      */
     public function removeChild(MenuItem $child)
@@ -257,8 +229,6 @@ class MenuItem
     }
 
     /**
-     * Get children
-     *
      * @return Collection
      */
     public function getChildren()
@@ -275,9 +245,7 @@ class MenuItem
     }
 
     /**
-     * Set lft
-     *
-     * @param integer $lft
+     * @param int $lft
      * @return MenuItem
      */
     public function setLft($lft)
@@ -288,9 +256,7 @@ class MenuItem
     }
 
     /**
-     * Get lft
-     *
-     * @return integer
+     * @return int
      */
     public function getLft()
     {
@@ -298,9 +264,7 @@ class MenuItem
     }
 
     /**
-     * Set lvl
-     *
-     * @param integer $lvl
+     * @param int $lvl
      * @return MenuItem
      */
     public function setLvl($lvl)
@@ -311,9 +275,7 @@ class MenuItem
     }
 
     /**
-     * Get lvl
-     *
-     * @return integer
+     * @return int
      */
     public function getLvl()
     {
@@ -330,9 +292,7 @@ class MenuItem
     }
 
     /**
-     * Set rgt
-     *
-     * @param integer $rgt
+     * @param int $rgt
      * @return MenuItem
      */
     public function setRgt($rgt)
@@ -343,9 +303,7 @@ class MenuItem
     }
 
     /**
-     * Get rgt
-     *
-     * @return integer
+     * @return int
      */
     public function getRgt()
     {
@@ -353,9 +311,7 @@ class MenuItem
     }
 
     /**
-     * Set root
-     *
-     * @param integer $root
+     * @param int $root
      * @return MenuItem
      */
     public function setRoot($root)
@@ -366,15 +322,12 @@ class MenuItem
     }
 
     /**
-     * Get root
-     *
-     * @return integer
+     * @return int
      */
     public function getRoot()
     {
         return $this->root;
     }
-
 
     /**
      * @return bool
@@ -384,7 +337,6 @@ class MenuItem
         return $this->root == $this->id;
     }
 
-
     /**
      * @param string $name
      */
@@ -393,7 +345,6 @@ class MenuItem
         $this->name = $name;
     }
 
-
     /**
      * @return null
      */
@@ -401,12 +352,6 @@ class MenuItem
     {
         return $this->name;
     }
-
-
-    /**
-     * @var bool
-     */
-    protected $addToMenu = false;
 
     /**
      * @param bool $addToMenu
@@ -454,7 +399,7 @@ class MenuItem
     public function getJsonData()
     {
         if (!$this->json_data) {
-            return array();
+            return [];
         }
         return $this->json_data;
     }

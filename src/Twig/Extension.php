@@ -1,6 +1,5 @@
 <?php
 /**
- * @author Gerard van Helden <gerard@zicht.nl>
  * @copyright Zicht Online <http://zicht.nl>
  */
 
@@ -13,28 +12,14 @@ use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 use Twig\TwigFunction;
 
-/**
- * Class Extension
- *
- * @package Zicht\Bundle\MenuBundle\Twig
- */
 class Extension extends AbstractExtension
 {
-    /**
-     * @var MenuProviderInterface
-     */
+    /** @var MenuProviderInterface */
     private $menuProvider;
 
-    /**
-     * @var MatcherInterface
-     */
+    /** @var MatcherInterface */
     private $matcher;
 
-    /**
-     * Constructor
-     *
-     * @param MenuProviderInterface $menuProvider
-     */
     public function __construct(MenuProviderInterface $menuProvider)
     {
         $this->menuProvider = $menuProvider;
@@ -64,15 +49,13 @@ class Extension extends AbstractExtension
      */
     public function getFunctions()
     {
-        return array(
+        return [
             'zicht_menu_active_trail' => new TwigFunction('zicht_menu_active_trail', [$this, 'activeTrail']),
-            'zicht_menu_exists' => new TwigFunction('zicht_menu_exists', [$this, 'exists'])
-        );
+            'zicht_menu_exists' => new TwigFunction('zicht_menu_exists', [$this, 'exists']),
+        ];
     }
 
     /**
-     * Returns if the given menuName exists
-     *
      * @param string $menuName
      * @return bool
      */
@@ -82,11 +65,8 @@ class Extension extends AbstractExtension
     }
 
     /**
-     * Returns the active trail for the given menuItem
-     *
      * @param MenuItem|null $item
      * @return array
-     *
      */
     public function activeTrail($item)
     {
@@ -98,7 +78,7 @@ class Extension extends AbstractExtension
             throw new \UnexpectedValueException(sprintf('$ITEM must be \Knp\Menu\MenuItem not "%s"', get_class($item)));
         }
 
-        $stack = array();
+        $stack = [];
 
         do {
             $stack[] = $item;
@@ -108,8 +88,6 @@ class Extension extends AbstractExtension
     }
 
     /**
-     * Returns the current menu item given a root menu item
-     *
      * @param MenuItem|null $item
      * @param int $level
      * @return MenuItem|null
@@ -146,15 +124,5 @@ class Extension extends AbstractExtension
         }
 
         return null;
-    }
-
-    /**
-     * Returns the name of the extension.
-     *
-     * @return string The extension name
-     */
-    public function getName()
-    {
-        return 'zicht_menu';
     }
 }

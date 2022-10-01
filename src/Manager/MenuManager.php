@@ -1,6 +1,5 @@
 <?php
 /**
- * @author Gerard van Helden <gerard@zicht.nl>
  * @copyright Zicht Online <http://zicht.nl>
  */
 
@@ -11,38 +10,26 @@ use Doctrine\Common\Persistence\ObjectRepository;
 use Gedmo\Tree\Entity\Repository\NestedTreeRepository;
 use Zicht\Bundle\MenuBundle\Entity\MenuItem;
 
-/**
- * Class MenuManager
- *
- * @package Zicht\Bundle\MenuBundle\Manager
- */
 class MenuManager
 {
     /** @var int */
     const REMOVE = 0x01;
     /** @var int */
     const ADD = 0x02;
-    /** @var \SplQueue  */
+
+    /** @var \SplQueue */
     private $queue;
-    /** @var Registry  */
+
+    /** @var Registry */
     protected $doctrine;
 
-    /**
-     * MenuManager constructor.
-     *
-     * @param Registry $doctrine
-     */
     public function __construct(Registry $doctrine)
     {
         $this->doctrine = $doctrine;
         $this->queue = new \SplQueue();
     }
 
-
     /**
-     * Registers a menu item to add
-     *
-     * @param MenuItem $item
      * @return void
      */
     public function addItem(MenuItem $item)
@@ -50,11 +37,7 @@ class MenuManager
         $this->queue->enqueue([$item, self::ADD]);
     }
 
-
     /**
-     * Registers a menu item to remove
-     *
-     * @param MenuItem $item
      * @return void
      */
     public function removeItem(MenuItem $item)
@@ -62,10 +45,7 @@ class MenuManager
         $this->queue->enqueue([$item, self::REMOVE]);
     }
 
-
     /**
-     * Registers a menu item to remove
-     *
      * @param bool $flushEntityManager
      */
     public function flush($flushEntityManager = false)
@@ -110,7 +90,7 @@ class MenuManager
      * Find an item by a path
      *
      * @param string $path
-     * @return \Zicht\Bundle\MenuBundle\Entity\MenuItem
+     * @return MenuItem
      * @deprecated Use getItemBy(array(':path' => $path))
      */
     public function getItem($path)
@@ -118,42 +98,42 @@ class MenuManager
         return $this->doctrine->getManager()->getRepository('ZichtMenuBundle:MenuItem')->findOneByPath($path);
     }
 
-
     /**
      * Finds an item in the menu repository by specific property (either 'name' or 'path')
      *
      * @param array $parameters Array containing keys ':name' or ':path'
      * @param MenuItem $ancestor Optional MenuItem whose descendants will be searched
-     * @return null|\Zicht\Bundle\MenuBundle\Entity\MenuItem
+     * @return MenuItem|null
      * @throws \Exception
      */
     public function getItemBy(array $parameters, MenuItem $ancestor = null)
     {
-        $where = array();
+        $where = [];
         if (!is_null($ancestor)) {
-            $where [] = 'm.lft > :lft';
-            $where [] = 'm.rgt < :rgt';
+            $where[] = 'm.lft > :lft';
+            $where[] = 'm.rgt < :rgt';
             $parameters[':lft'] = $ancestor->getLft();
             $parameters[':rgt'] = $ancestor->getRgt();
 
             if (!isset($parameters[':language']) && $language = $ancestor->getLanguage()) {
-                $parameters[':language']= $language;
+                $parameters[':language'] = $language;
             }
         }
 
         foreach ($parameters as $key => $value) {
             switch ($key) {
                 case ':name':
-                    $where []= 'm.name = :name';
+                    $where[] = 'm.name = :name';
                     break;
                 case ':language':
-                    $where []= '( m.language = :language OR ( m.language IS NULL AND root.language = :language) )';
+                    $where[] = '( m.language = :language OR ( m.language IS NULL AND root.language = :language) )';
                     break;
                 case ':path':
-                    $where []= 'm.path = :path';
+                    $where[] = 'm.path = :path';
                     break;
                 case ':level':
-                    $where [] = 'm.lvl = :level';
+                    $where[] = 'm.lvl = :level';
+                    // no break
                 case ':lft':
                 case ':rgt':
                     break;
@@ -167,11 +147,11 @@ class MenuManager
         $query = $this->doctrine->getManager()->createQuery(
             join(
                 ' ',
-                array(
+                [
                     'SELECT m, root FROM ZichtMenuBundle:MenuItem m INNER JOIN ZichtMenuBundle:MenuItem root WITH m.root=root.id WHERE',
                     join(' AND ', $where),
                     'ORDER BY m.lft',
-                )
+                ]
             )
         );
         $query->setParameters($parameters);

@@ -19,7 +19,7 @@
         "twig/twig": "^2.7 || ^3",
         "zicht/admin-bundle": "^6 || ^7",
         "zicht/framework-extra-bundle": "^9.0",
-        "zicht/url-bundle": "^5.0"
+        "zicht/url-bundle": "^5 || ^6"
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^3",

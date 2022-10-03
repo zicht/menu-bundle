@@ -1,7 +1,6 @@
 <?php
 /**
- * @author    Philip Bergman <philip@zicht.nl>
- * @copyright Zicht Online <http://www.zicht.nl>
+ * @copyright Zicht Online <https://zicht.nl>
  */
 
 namespace Zicht\Bundle\MenuBundle\Security\Authorization;
@@ -11,57 +10,36 @@ use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 use Symfony\Component\Security\Core\Role\RoleHierarchyInterface;
 use Zicht\Bundle\MenuBundle\Entity\MenuItem;
 
-/**
- * Class MenuVoter
- *
- * @package Zicht\Bundle\MenuBundle\Security\Authorization
- */
 class MenuVoter implements VoterInterface
 {
     /**
      * The role name to use for having access to the admin menu
      */
-    const ROLE_ADMIN_MENU_ITEM = "ROLE_ADMIN_MENU_ITEM";
+    const ROLE_ADMIN_MENU_ITEM = 'ROLE_ADMIN_MENU_ITEM';
 
     /**
      * Whether the user has access to the 'name' field.
      */
-    const ROLE_NAME_FIELD_ACCESS = "ROLE_NAME_FIELD_ACCESS";
+    const ROLE_NAME_FIELD_ACCESS = 'ROLE_NAME_FIELD_ACCESS';
 
-    /**
-     * @var RoleHierarchyInterface
-     */
+    /** @var RoleHierarchyInterface */
     protected $hierarchy;
 
-    /**
-     * Constructor
-     *
-     * @param RoleHierarchyInterface $hierarchy
-     */
     public function __construct(RoleHierarchyInterface $hierarchy)
     {
         $this->hierarchy = $hierarchy;
     }
 
-    /**
-     * @{inheritDoc}
-     */
     public function supportsAttribute($attribute)
     {
-        return in_array($attribute, array('DELETE', self::ROLE_NAME_FIELD_ACCESS));
+        return in_array($attribute, ['DELETE', self::ROLE_NAME_FIELD_ACCESS]);
     }
 
-    /**
-     * @{inheritDoc}
-     */
     public function supportsClass($class)
     {
         return $class === MenuItem::class;
     }
 
-    /**
-     * @{inheritDoc}
-     */
     public function vote(TokenInterface $token, $object, array $attributes)
     {
         foreach ($attributes as $attribute) {
@@ -89,7 +67,6 @@ class MenuVoter implements VoterInterface
     /**
      * Calculate whether the current token is allowed.
      *
-     * @param TokenInterface $token
      * @return  bool
      */
     protected function userIsAllowed(TokenInterface $token)

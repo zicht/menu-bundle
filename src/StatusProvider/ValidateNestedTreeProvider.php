@@ -1,7 +1,6 @@
 <?php
 /**
- * @author Boudewijn Schoon <boudewijn@zicht.nl>
- * @copyright Zicht Online <http://zicht.nl>
+ * @copyright Zicht Online <https://zicht.nl>
  */
 
 namespace Zicht\Bundle\MenuBundle\StatusProvider;
@@ -16,11 +15,6 @@ class ValidateNestedTreeProvider extends StatusProviderHelper implements StatusP
     /** @var ManagerRegistry */
     private $doctrine;
 
-    /**
-     * ValidateNestedTreeProvider constructor.
-     *
-     * @param ManagerRegistry $doctrine
-     */
     public function __construct(ManagerRegistry $doctrine)
     {
         $this->doctrine = $doctrine;
@@ -37,33 +31,21 @@ class ValidateNestedTreeProvider extends StatusProviderHelper implements StatusP
         return [false, ['error_count' => count($result)]];
     }
 
-    /**
-     * @{inheritDoc}
-     */
     public function getGroup()
     {
         return 'Menu bundle';
     }
 
-    /**
-     * @{inheritDoc}
-     */
     public function getOrder()
     {
         return 0;
     }
 
-    /**
-     * @{inheritDoc}
-     */
     public function getName()
     {
         return 'Nested tree status';
     }
 
-    /**
-     * @{inheritDoc}
-     */
     public function getDescription()
     {
         return sprintf('Check that the menu stored in entity "%s" is valid', MenuItem::class);

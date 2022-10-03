@@ -8,9 +8,6 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class TreeAdminExtension extends AbstractAdminExtension
 {
-    /**
-     * {@inheritDoc}
-     */
     public function configureFormFields(FormMapper $formMapper)
     {
         $subject = $formMapper->getAdmin()->getSubject();

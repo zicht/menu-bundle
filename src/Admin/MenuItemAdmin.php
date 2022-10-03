@@ -1,8 +1,8 @@
 <?php
 /**
- * @author Gerard van Helden <gerard@zicht.nl>
  * @copyright Zicht Online <http://zicht.nl>
  */
+
 namespace Zicht\Bundle\MenuBundle\Admin;
 
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
@@ -12,16 +12,8 @@ use Zicht\Bundle\AdminBundle\Admin\TreeAdmin;
 use Zicht\Bundle\MenuBundle\Security\Authorization\MenuVoter;
 use Zicht\Bundle\UrlBundle\Type\UrlType;
 
-/**
- * Class MenuItemAdmin
- *
- * @package Zicht\Bundle\MenuBundle\Admin
- */
 class MenuItemAdmin extends TreeAdmin
 {
-    /**
-     * @{inheritDoc}
-     */
     public function configureFormFields(FormMapper $formMapper)
     {
         parent::configureFormFields($formMapper);
@@ -29,25 +21,21 @@ class MenuItemAdmin extends TreeAdmin
         $formMapper
             ->tab('admin.tab.menu_item')
                 ->with('admin.tab.menu_item')
-                    ->add('path', UrlType::class, array('required' => false))
+                    ->add('path', UrlType::class, ['required' => false])
                     ->add(
                         'name',
                         null,
-                        array(
+                        [
                             'label' => 'form.label_name_technical',
                             'attr' => ['read_only' => !$this->hasNameFieldAccess()],
-                            'disabled'  => !$this->hasNameFieldAccess(),
-                            'help' => 'admin.help.menu_item_name'
-                        )
+                            'disabled' => !$this->hasNameFieldAccess(),
+                            'help' => 'admin.help.menu_item_name',
+                        ]
                     )
                 ->end()
             ->end();
-        ;
     }
 
-    /**
-     * @{inheritDoc}
-     */
     public function configureListFields(ListMapper $listMapper)
     {
         parent::configureListFields($listMapper);
@@ -61,9 +49,6 @@ class MenuItemAdmin extends TreeAdmin
         );
     }
 
-    /**
-     * @param DatagridMapper $filter
-     */
     protected function configureDatagridFilters(DatagridMapper $filter)
     {
         parent::configureDatagridFilters($filter);

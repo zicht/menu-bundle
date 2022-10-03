@@ -8,6 +8,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added|Changed|Deprecated|Removed|Fixed|Security
 Nothing so far
 
+## 5.0.5 - 2022-10-01
+### Changed
+- Introduced PHP CS Fixer.
+- Removed PHP 7.3 and added PHP 8.1 to the GitHub actions PHP versions matrix.
+- Additional cleanup.
+- Remove suggests from composer.json
+
 ## 5.0.4 - 2022-05-20
 ### Changed
 - Forward merge of v4.3.4: Require symfony/security-core instead of bundled package symfony/security

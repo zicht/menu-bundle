@@ -1,6 +1,5 @@
 <?php
 /**
- * @author Gerard van Helden <gerard@zicht.nl>
  * @copyright Zicht Online <http://zicht.nl>
  */
 
@@ -8,6 +7,7 @@ namespace Zicht\Bundle\MenuBundle\Menu;
 
 use Doctrine\Bundle\DoctrineBundle\Registry;
 use Doctrine\Persistence\ManagerRegistry;
+use Gedmo\Tree\Entity\Repository\NestedTreeRepository;
 use InvalidArgumentException;
 use Knp\Menu\FactoryInterface;
 use Knp\Menu\ItemInterface;
@@ -16,61 +16,40 @@ use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\HttpFoundation\Request;
 
-/**
- * Class Builder
- *
- * @package Zicht\Bundle\MenuBundle\Menu
- */
 class Builder implements ContainerAwareInterface, BuilderInterface
 {
     use ContainerAwareTrait;
 
-    /**
-     * @var \Knp\Menu\FactoryInterface
-     */
+    /** @var FactoryInterface */
     protected $factory;
 
-    /**
-     * @var \Gedmo\Tree\Entity\Repository\NestedTreeRepository
-     */
+    /** @var NestedTreeRepository */
     protected $menuItemEntity;
 
-    /**
-     * @var Registry
-     */
+    /** @var Registry */
     protected $em;
 
     /**
-     * Keep cache map of locales -> [root names -> [root_id, left_value, right_value]]
+     * @var array Keep cache map of locales -> [root names -> [root_id, left_value, right_value]]
      */
     protected $roots = [];
 
     /**
-     * Previously (pre-)loaded menus, mapped by locale and name
-     *
-     * @var array
+     * @var array Previously (pre-)loaded menus, mapped by locale and name
      */
     protected $menus = [];
 
     /**
-     * List with menu names that should be loaded
-     *
-     * @var array
+     * @var array List with menu names that should be loaded
      */
     protected $preloadMenus = [];
 
     /**
-     * The default locale from the application
-     *
-     * @var string
+     * @var string The default locale from the application
      */
     protected $defaultLocale;
 
     /**
-     * Builder constructor.
-     *
-     * @param FactoryInterface $factory
-     * @param Registry $doctrine
      * @param string $entity
      * @param string $defaultLocale The [null] variable was inherited from old code, and will always be overwritten with a valid locale.
      */
@@ -84,8 +63,6 @@ class Builder implements ContainerAwareInterface, BuilderInterface
     }
 
     /**
-     * Set the menu names to preload
-     *
      * @param array $menus
      */
     public function setPreloadMenus($menus)
@@ -94,12 +71,10 @@ class Builder implements ContainerAwareInterface, BuilderInterface
     }
 
     /**
-     * Create the menu based on the doctrine model.
+     * {@inheritDoc}
      *
      * @param string $name
-     * @param \Symfony\Component\HttpFoundation\Request $request
      * @return ItemInterface
-     *
      * @throws \InvalidArgumentException
      */
     public function build($name, Request $request)
@@ -168,7 +143,7 @@ class Builder implements ContainerAwareInterface, BuilderInterface
     }
 
     /**
-     * Get the root item based on the specified name and request.
+     * {@inheritDoc}
      *
      * @param string $name
      * @param Request $request
@@ -186,8 +161,6 @@ class Builder implements ContainerAwareInterface, BuilderInterface
     }
 
     /**
-     * Check if a root item exists.
-     *
      * @param string $name
      * @param Request $request
      * @return bool
@@ -199,9 +172,6 @@ class Builder implements ContainerAwareInterface, BuilderInterface
     }
 
     /**
-     * Preload all roots for the specified locale.
-     *
-     * @param Request $request
      * @return array
      */
     protected function loadRoots(Request $request)
@@ -222,7 +192,7 @@ class Builder implements ContainerAwareInterface, BuilderInterface
         }
 
         $rows = $connection->query('SELECT id, name, language, lft, rgt FROM menu_item WHERE ' . $where)->fetchAll(\PDO::FETCH_NUM);
-        foreach ($rows as list($id, $name, $language, $lft, $rgt)) {
+        foreach ($rows as [$id, $name, $language, $lft, $rgt]) {
             // if the language is null, and the root items is already loaded; ignore it.
             if (null === $language && isset($this->roots[$name])) {
                 continue;
@@ -240,8 +210,6 @@ class Builder implements ContainerAwareInterface, BuilderInterface
     }
 
     /**
-     * Create menu
-     *
      * @param Request $request
      * @param ItemInterface $root
      * @return ItemInterface
@@ -250,7 +218,7 @@ class Builder implements ContainerAwareInterface, BuilderInterface
     public function createMenu($request, $root)
     {
         if (!$root) {
-            throw new InvalidArgumentException("Invalid root item");
+            throw new InvalidArgumentException('Invalid root item');
         }
         $menu = $this->factory->createItem('root');
         $this->addMenuItemHierarchy($request, $this->menuItemEntity->childrenHierarchy($root), $menu);
@@ -264,8 +232,6 @@ class Builder implements ContainerAwareInterface, BuilderInterface
     }
 
     /**
-     * Add menu item hierarchy
-     *
      * @param Request $request
      * @param mixed $children
      * @param ItemInterface $parent
@@ -275,7 +241,7 @@ class Builder implements ContainerAwareInterface, BuilderInterface
     {
         $ret = 0;
         foreach ($children as $child) {
-            $ret++;
+            ++$ret;
             $item = $this->addMenuItem($request, $child, $parent);
             if (!empty($child['__children'])) {
                 $ret += $this->addMenuItemHierarchy($request, $child['__children'], $item);
@@ -285,17 +251,13 @@ class Builder implements ContainerAwareInterface, BuilderInterface
     }
 
     /**
-     * Utility method to convert MenuItem's from the doctrine model to Knp MenuItems
-     *
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     * @param array $item
-     * @param MenuItem $menu
+     * {@inheritDoc}
      *
      * @return ItemInterface
      */
     public function addMenuItem(Request $request, array $item, MenuItem $menu)
     {
-        $attributes = array();
+        $attributes = [];
 
         // if the menu item has a name, add it as a css class.
         if ($name = $item['name']) {
@@ -312,11 +274,11 @@ class Builder implements ContainerAwareInterface, BuilderInterface
 
         $menuItem = $menu->addChild(
             $item['id'],
-            array(
+            [
                 'uri' => $uri,
                 'attributes' => $attributes,
-                'label' => $item['title']
-            )
+                'label' => $item['title'],
+            ]
         );
 
         if (!empty($item['json_data'])) {
@@ -328,9 +290,8 @@ class Builder implements ContainerAwareInterface, BuilderInterface
     }
 
     /**
-     * Adds an item on the fly that was not originally in the menu.
+     * {@inheritDoc}
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request
      * @param ItemInterface $item
      * @return void
      */

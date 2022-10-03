@@ -1,7 +1,6 @@
 <?php
 
 /**
- * @author Muhammed Akbulut <muhammed@zicht.nl>
  * @copyright Zicht Online <http://www.zicht.nl>
  */
 
@@ -14,23 +13,14 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Command class for replacing public menu URI’s with internal ones.
- *
- * @package Zicht\Bundle\MenuBundle\Command
  */
 class PublicToInternalUriCommand extends Command
 {
-    /**
-     * @var EntityManagerInterface $entityManager
-     */
+    /** @var EntityManagerInterface */
     protected $entityManager;
 
     protected static $defaultName = 'zicht:menu:public-to-internal';
 
-    /**
-     * Initializes a new instance of the PublicToInternalUriCommand class.
-     *
-     * @param EntityManagerInterface $entityManager
-     */
     public function __construct(EntityManagerInterface $entityManager)
     {
         parent::__construct();
@@ -38,21 +28,12 @@ class PublicToInternalUriCommand extends Command
         $this->entityManager = $entityManager;
     }
 
-
-    /**
-     * {@inheritdoc}
-     */
     protected function configure()
     {
-        $this
-            ->setDescription('Convert public menu URI’s to internal URI’s');
+        $this->setDescription('Convert public menu URI’s to internal URI’s');
     }
 
     /**
-     * Execute
-     *
-     * @param InputInterface $input
-     * @param OutputInterface $output
      * @throws \Exception
      */
     protected function execute(InputInterface $input, OutputInterface $output)

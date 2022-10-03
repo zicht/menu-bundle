@@ -10,7 +10,7 @@ jobs:
         runs-on: ubuntu-22.04
         strategy:
             matrix:
-                php: [ '7.2', '7.3', '7.4', '8.0' ]
+                php: [ '7.2', '7.4', '8.0', '8.1' ]
         name: PHP ${{ matrix.php }}
         steps:
             -   uses: actions/checkout@v2
@@ -20,11 +20,13 @@ jobs:
                 with:
                     php-version: ${{ matrix.php }}
                     coverage: none # disable xdebug, pcov
-                    tools: composer:v2
+                    tools: cs2pr
 
             -   run: composer validate --strict
             -   run: composer config -g github-oauth.github.com ${{ secrets.GITHUB_TOKEN }}
             -   run: composer install --prefer-dist --no-progress --no-scripts
+            -   if: always()
+                run: composer run-script lint -- --format=checkstyle | cs2pr
             -   if: always()
                 run: composer run-script test
 

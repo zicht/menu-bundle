@@ -8,7 +8,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class TreeAdminExtension extends AbstractAdminExtension
 {
-    public function configureFormFields(FormMapper $formMapper)
+    public function configureFormFields(FormMapper $formMapper): void
     {
         $subject = $formMapper->getAdmin()->getSubject();
         // follow the path from Zicht\Bundle\AdminBundle\Admin\TreeAdmin

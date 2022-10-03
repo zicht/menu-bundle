@@ -8,13 +8,21 @@ namespace Zicht\Bundle\MenuBundle\Admin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Zicht\Bundle\AdminBundle\Admin\TreeAdmin;
 use Zicht\Bundle\MenuBundle\Security\Authorization\MenuVoter;
 use Zicht\Bundle\UrlBundle\Type\UrlType;
 
 class MenuItemAdmin extends TreeAdmin
 {
-    public function configureFormFields(FormMapper $formMapper)
+    private ?AuthorizationCheckerInterface $checker = null;
+
+    public function setAuthorizationChecker(AuthorizationCheckerInterface $checker)
+    {
+        $this->checker = $checker;
+    }
+
+    public function configureFormFields(FormMapper $formMapper): void
     {
         parent::configureFormFields($formMapper);
 
@@ -36,7 +44,7 @@ class MenuItemAdmin extends TreeAdmin
             ->end();
     }
 
-    public function configureListFields(ListMapper $listMapper)
+    public function configureListFields(ListMapper $listMapper): void
     {
         parent::configureListFields($listMapper);
 
@@ -49,7 +57,7 @@ class MenuItemAdmin extends TreeAdmin
         );
     }
 
-    protected function configureDatagridFilters(DatagridMapper $filter)
+    protected function configureDatagridFilters(DatagridMapper $filter): void
     {
         parent::configureDatagridFilters($filter);
 
@@ -64,13 +72,6 @@ class MenuItemAdmin extends TreeAdmin
      */
     protected function hasNameFieldAccess()
     {
-        return $this
-            ->getConfigurationPool()
-            ->getContainer()
-            ->get('security.authorization_checker')
-            ->isGranted(
-                MenuVoter::ROLE_NAME_FIELD_ACCESS
-            )
-        ;
+        return $this->checker->isGranted(MenuVoter::ROLE_NAME_FIELD_ACCESS);
     }
 }

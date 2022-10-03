@@ -8,6 +8,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added|Changed|Deprecated|Removed|Fixed|Security
 Nothing so far
 
+## 5.1.0 - 2022-10-03
+### Added
+- Support for zicht/admin-bundle v7 and zicht/url-bundle v6 = support for Sonata 4.
+- Made own code forward compatible with Sonata 4.
+
 ## 5.0.5 - 2022-10-01
 ### Changed
 - Introduced PHP CS Fixer.

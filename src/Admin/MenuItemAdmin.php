@@ -17,7 +17,7 @@ class MenuItemAdmin extends TreeAdmin
 {
     private ?AuthorizationCheckerInterface $checker = null;
 
-    public function configureFormFields(FormMapper $formMapper): void
+    protected function configureFormFields(FormMapper $formMapper): void
     {
         parent::configureFormFields($formMapper);
 
@@ -39,7 +39,7 @@ class MenuItemAdmin extends TreeAdmin
             ->end();
     }
 
-    public function configureListFields(ListMapper $listMapper): void
+    protected function configureListFields(ListMapper $listMapper): void
     {
         parent::configureListFields($listMapper);
 

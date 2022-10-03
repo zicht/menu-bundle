@@ -17,7 +17,7 @@
                 <argument>admin</argument>
             </call>
             <call method="setAuthorizationChecker">
-                <argument type="service" id="Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface"/>
+                <argument type="service" id="security.authorization_checker"/>
             </call>
         </service>
 

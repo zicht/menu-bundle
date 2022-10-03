@@ -17,6 +17,11 @@ class MenuItemAdmin extends TreeAdmin
 {
     private ?AuthorizationCheckerInterface $checker = null;
 
+    public function setAuthorizationChecker(AuthorizationCheckerInterface $checker)
+    {
+        $this->checker = $checker;
+    }
+
     protected function configureFormFields(FormMapper $formMapper): void
     {
         parent::configureFormFields($formMapper);
@@ -60,11 +65,6 @@ class MenuItemAdmin extends TreeAdmin
             ->add('title')
             ->add('name')
             ->add('path');
-    }
-
-    public function setAuthorizationChecker(AuthorizationCheckerInterface $checker)
-    {
-        $this->checker = $checker;
     }
 
     /**

@@ -12,14 +12,14 @@
         "php": "^7.2 || ^8.0",
         "gedmo/doctrine-extensions": "^3",
         "knplabs/knp-menu-bundle": "^3.0",
-        "symfony/console": "^4.4",
-        "symfony/dependency-injection": "^4.4",
-        "symfony/http-kernel": "^4.4",
-        "symfony/security-core": "^4.4",
+        "symfony/console": "^5.4",
+        "symfony/dependency-injection": "^5.4",
+        "symfony/http-kernel": "^5.4",
+        "symfony/security-core": "^5.4",
         "twig/twig": "^2.7 || ^3",
-        "zicht/admin-bundle": "^6 || ^7",
-        "zicht/framework-extra-bundle": "^9.0",
-        "zicht/url-bundle": "^5 || ^6"
+        "zicht/admin-bundle": "dev-feature/symfony-5",
+        "zicht/framework-extra-bundle": "dev-feature/symfony-5",
+        "zicht/url-bundle": "dev-feature/symfony-5"
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^3",
@@ -27,16 +27,12 @@
     },
     "autoload": {
         "psr-4": {
-            "Zicht\\Bundle\\MenuBundle\\": [
-                "src/"
-            ]
+            "Zicht\\Bundle\\MenuBundle\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "ZichtTest\\Bundle\\MenuBundle\\": [
-                "tests/"
-            ]
+            "ZichtTest\\Bundle\\MenuBundle\\": "tests/"
         }
     },
     "minimum-stability": "stable",

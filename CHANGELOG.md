@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added|Changed|Deprecated|Removed|Fixed|Security
 Nothing so far
 
+## 6.0.0 - 2022-10-06
+### Added
+- Support for Symfony ^5.4
+### Removed
+- Support for Symfony 4
+
 ## 5.1.0 - 2022-10-03
 ### Added
 - Support for zicht/admin-bundle v7 and zicht/url-bundle v6 = support for Sonata 4.

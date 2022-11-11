@@ -12,6 +12,7 @@ class TreeAdminExtension extends AbstractAdminExtension
     {
         $subject = $formMapper->getAdmin()->getSubject();
         // follow the path from Zicht\Bundle\AdminBundle\Admin\TreeAdmin
+        $formMapper->remove('name');
         $formMapper
             ->tab('General')
             ->with('General')

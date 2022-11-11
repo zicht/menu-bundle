@@ -9,7 +9,7 @@
         }
     ],
     "require": {
-        "php": "^7.2 || ^8.0",
+        "php": "^7.4 || ^8.0",
         "gedmo/doctrine-extensions": "^3",
         "knplabs/knp-menu-bundle": "^3.0",
         "symfony/console": "^5.4",
@@ -17,9 +17,9 @@
         "symfony/http-kernel": "^5.4",
         "symfony/security-core": "^5.4",
         "twig/twig": "^2.7 || ^3",
-        "zicht/admin-bundle": "dev-feature/symfony-5",
-        "zicht/framework-extra-bundle": "dev-feature/symfony-5",
-        "zicht/url-bundle": "dev-feature/symfony-5"
+        "zicht/admin-bundle": "^8",
+        "zicht/framework-extra-bundle": "^10",
+        "zicht/url-bundle": "^7"
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^3",

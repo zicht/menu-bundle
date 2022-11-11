@@ -24,6 +24,6 @@ class UriVoter implements VoterInterface
 
     public function matchItem(ItemInterface $item): ?bool
     {
-        return $this->requestStack->getMasterRequest()->getPathInfo() === $item->getUri() ? true : null;
+        return $this->requestStack->getMainRequest()->getPathInfo() === $item->getUri() ? true : null;
     }
 }

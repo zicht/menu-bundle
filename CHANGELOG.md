@@ -13,6 +13,7 @@ Nothing so far
 - Support for Symfony ^5.4
 ### Removed
 - Support for Symfony 4
+- Support for PHP 7.2/7.3
 
 ## 5.1.0 - 2022-10-03
 ### Added

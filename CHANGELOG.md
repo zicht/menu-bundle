@@ -8,6 +8,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added|Changed|Deprecated|Removed|Fixed|Security
 Nothing so far
 
+## 6.0.2 - 2022-11-16
+### Added
+- Extra MySQL-index for `MenuItem` where `lvl` and `language` are queried together
+
 ## 6.0.1 - 2022-11-11
 ### Fixed
 - Adding `name` twice on `TreeAdminExtension`

@@ -17,7 +17,8 @@ use Gedmo\Mapping\Annotation as Gedmo;
  *      indexes={
  *          @ORM\Index(columns={"name", "path"}),
  *          @ORM\Index(columns={"lft", "rgt", "root"}),
- *          @ORM\Index(columns={"root", "lft"})
+ *          @ORM\Index(columns={"root", "lft"}),
+ *          @ORM\Index(columns={"lvl", "language"})
  *      }
  * )
  * @ORM\Entity(repositoryClass="Gedmo\Tree\Entity\Repository\NestedTreeRepository")

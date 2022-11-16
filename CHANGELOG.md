@@ -8,6 +8,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added|Changed|Deprecated|Removed|Fixed|Security
 Nothing so far
 
+## 6.0.1 - 2022-11-11
+### Fixed
+- Adding `name` twice on `TreeAdminExtension`
+- Return value for `PublicToInternalUriCommand`
+
 ## 6.0.0 - 2022-10-06
 ### Added
 - Support for Symfony ^5.4

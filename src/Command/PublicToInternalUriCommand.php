@@ -53,5 +53,7 @@ class PublicToInternalUriCommand extends Command
 
             throw $exception;
         }
+
+        return Command::SUCCESS;
     }
 }

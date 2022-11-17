@@ -6,6 +6,7 @@
 namespace Zicht\Bundle\MenuBundle\Menu;
 
 use Doctrine\Bundle\DoctrineBundle\Registry;
+use Doctrine\DBAL\Connection;
 use Doctrine\Persistence\ManagerRegistry;
 use Gedmo\Tree\Entity\Repository\NestedTreeRepository;
 use InvalidArgumentException;
@@ -116,7 +117,16 @@ class Builder implements ContainerAwareInterface, BuilderInterface
             }
             $query .= ' ORDER BY root, lft';
 
-            foreach ($this->em->getConnection()->query($query)->fetchAll(\PDO::FETCH_GROUP) as $rootId => $menu) {
+            // This used to be a FETCH_GROUP fetch https://github.com/doctrine/dbal/issues/4206
+            // [1 => [ [id=>13], [id=>14], [id=>16] ], 3 => [ [id=>23], [], [] ]
+            /** @var Connection $conn */
+            $conn = $this->em->getConnection();
+            $items = $conn->executeQuery($query)->fetchAllAssociative();
+            $roots = [];
+            foreach ($items as $item) {
+                $roots[$item['root']][] = $item;
+            }
+            foreach ($roots as $rootId => $menu) {
                 if (!isset($rootIdToNameMap)) {
                     continue;
                 }
@@ -182,6 +192,7 @@ class Builder implements ContainerAwareInterface, BuilderInterface
             return $this->roots[$locale];
         }
 
+        /** @var Connection $connection */
         $connection = $this->em->getConnection();
         $where = 'lvl=0';
 
@@ -191,7 +202,7 @@ class Builder implements ContainerAwareInterface, BuilderInterface
             $where .= ' AND language IS NULL';
         }
 
-        $rows = $connection->query('SELECT id, name, language, lft, rgt FROM menu_item WHERE ' . $where)->fetchAll(\PDO::FETCH_NUM);
+        $rows = $connection->query('SELECT id, name, language, lft, rgt FROM menu_item WHERE ' . $where)->fetchAllNumeric();
         foreach ($rows as [$id, $name, $language, $lft, $rgt]) {
             // if the language is null, and the root items is already loaded; ignore it.
             if (null === $language && isset($this->roots[$name])) {

@@ -6,6 +6,7 @@
 namespace Zicht\Bundle\MenuBundle\Url;
 
 use Doctrine\Bundle\DoctrineBundle\Registry;
+use Doctrine\DBAL\Connection;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Routing\RouterInterface;
 use Zicht\Bundle\UrlBundle\Url\StaticProvider;
@@ -63,9 +64,11 @@ class MenuItemNameUrlProvider extends StaticProvider implements SuggestableProvi
             ORDER BY
                 language=:lang DESC
         ';
-        $stmt = $this->em->getConnection()->prepare($query);
-        $stmt->execute([':lang' => $this->router->getContext()->getParameter('_locale')]);
-        $this->addAll($stmt->fetchAll(\PDO::FETCH_KEY_PAIR));
+
+        /** @var Connection $conn */
+        $conn = $this->em->getConnection();
+        $stmt = $conn->prepare($query);
+        $this->addAll($stmt->execute([':lang' => $this->router->getContext()->getParameter('_locale')])->fetchAllKeyValue());
     }
 
     /**

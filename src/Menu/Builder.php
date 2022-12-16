@@ -117,8 +117,6 @@ class Builder implements ContainerAwareInterface, BuilderInterface
             }
             $query .= ' ORDER BY root, lft';
 
-            // This used to be a FETCH_GROUP fetch https://github.com/doctrine/dbal/issues/4206
-            // [1 => [ [id=>13], [id=>14], [id=>16] ], 3 => [ [id=>23], [], [] ]
             /** @var Connection $conn */
             $conn = $this->em->getConnection();
             $items = $conn->executeQuery($query)->fetchAllAssociative();

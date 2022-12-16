@@ -19,7 +19,7 @@
         "twig/twig": "^2.7 || ^3",
         "zicht/admin-bundle": "^8",
         "zicht/framework-extra-bundle": "^10",
-        "zicht/url-bundle": "dev-doctrine-dbal-3 as 7.0.0"
+        "zicht/url-bundle": "^7.2"
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^3",

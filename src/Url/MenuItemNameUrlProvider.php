@@ -68,7 +68,8 @@ class MenuItemNameUrlProvider extends StaticProvider implements SuggestableProvi
         /** @var Connection $conn */
         $conn = $this->em->getConnection();
         $stmt = $conn->prepare($query);
-        $this->addAll($stmt->execute([':lang' => $this->router->getContext()->getParameter('_locale')])->fetchAllKeyValue());
+        $rows = $stmt->executeQuery([':lang' => $this->router->getContext()->getParameter('_locale')])->fetchAllKeyValue();
+        $this->addAll($rows);
     }
 
     /**

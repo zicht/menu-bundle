@@ -8,6 +8,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added|Changed|Deprecated|Removed|Fixed|Security
 Nothing so far
 
+## 6.1.0 - 2022-12-16
+### Added
+- Forward compatability for `doctrine/dbal ^3`
+
 ## 6.0.3 - 2023-02-06
 ### Changed
 - Forward merge of `5.1.1`

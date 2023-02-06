@@ -16,7 +16,7 @@ class TreeAdminExtension extends AbstractAdminExtension
             ->tab('General')
             ->with('General')
                 ->add('language', TextType::class, ['required' => false, 'attr' => ['placeholder' => 'nl']])
-                ->add('name', TextType::class, ['required' => false, 'help' => 'admin.help.menu_item_name', 'disabled' => $subject && $subject->getId()])
+                ->add('name', TextType::class, ['required' => false, 'help_html' => true, 'help' => 'admin.help.menu_item_name', 'disabled' => $subject && $subject->getId()])
             ->end()
             ->end();
     }

@@ -8,6 +8,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added|Changed|Deprecated|Removed|Fixed|Security
 Nothing so far
 
+## 6.0.3 - 2023-02-06
+### Changed
+- Forward merge of `5.1.1`
+
 ## 6.0.2 - 2022-11-16
 ### Added
 - Extra MySQL-index for `MenuItem` where `lvl` and `language` are queried together
@@ -23,6 +27,10 @@ Nothing so far
 ### Removed
 - Support for Symfony 4
 - Support for PHP 7.2/7.3
+
+## 5.1.1 - 2023-02-06
+### Changed
+- Allow for html in `admin.help.menu_item_name` as it is sometimes desirable.
 
 ## 5.1.0 - 2022-10-03
 ### Added

@@ -38,6 +38,7 @@ class MenuItemAdmin extends TreeAdmin
                             'attr' => ['read_only' => !$this->hasNameFieldAccess()],
                             'disabled' => !$this->hasNameFieldAccess(),
                             'help' => 'admin.help.menu_item_name',
+                            'help_html' => true,
                         ]
                     )
                 ->end()

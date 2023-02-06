@@ -8,6 +8,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added|Changed|Deprecated|Removed|Fixed|Security
 Nothing so far
 
+## 5.1.1 - 2023-02-06
+### Changed
+- Allow for html in `admin.help.menu_item_name` as it is sometimes desirable.
+
 ## 5.1.0 - 2022-10-03
 ### Added
 - Support for zicht/admin-bundle v7 and zicht/url-bundle v6 = support for Sonata 4.

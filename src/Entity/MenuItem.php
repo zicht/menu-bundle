@@ -101,7 +101,7 @@ class MenuItem
     /**
      * Optional menu item name, used to hook dynamic items into the menu.
      *
-     * @ORM\Column(name="json_data", type="json_array", nullable=true)
+     * @ORM\Column(name="json_data", type="json", nullable=true)
      */
     private $json_data = null;
 

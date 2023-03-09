@@ -404,4 +404,25 @@ class MenuItem
         }
         return $this->json_data;
     }
+
+    public static function copy(MenuItem $menuItem, ?string $title = null, ?string $path = null, ?string $name = ''): self
+    {
+        $newMenuItem = new self();
+        $newMenuItem->setTitle($title ?: $menuItem->getTitle());
+        $newMenuItem->setPath($path ?: $menuItem->getPath());
+        $newMenuItem->setName($name ?: $menuItem->getName());
+        $newMenuItem->setLft($menuItem->getLft());
+        $newMenuItem->setLvl($menuItem->getLvl());
+        $newMenuItem->setRgt($menuItem->getRgt());
+        $newMenuItem->setRoot($menuItem->getRoot());
+        $newMenuItem->setParent($menuItem->getParent());
+        $newMenuItem->setLanguage($menuItem->getLanguage());
+        $newMenuItem->setJsonData($menuItem->getJsonData() ?? null);
+
+        foreach ($menuItem->getChildren() as $child) {
+            $newMenuItem->addChild($child);
+        }
+
+        return $newMenuItem;
+    }
 }

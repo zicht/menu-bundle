@@ -6,7 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added|Changed|Deprecated|Removed|Fixed|Security
-Nothing so far
+
+## 6.1.1 - 2023-03-09
+### Added
+- Added `MenuItem::copy`
 
 ## 6.1.0 - 2022-12-16
 ### Added

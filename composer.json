@@ -9,21 +9,21 @@
         }
     ],
     "require": {
-        "php": "^7.4 || ^8.0",
+        "php": "^8.0",
         "gedmo/doctrine-extensions": "^3",
         "knplabs/knp-menu-bundle": "^3.0",
-        "symfony/console": "^5.4",
-        "symfony/dependency-injection": "^5.4",
-        "symfony/http-kernel": "^5.4",
-        "symfony/security-core": "^5.4",
-        "twig/twig": "^2.7 || ^3",
-        "zicht/admin-bundle": "^8",
-        "zicht/framework-extra-bundle": "^10",
-        "zicht/url-bundle": "^7.2"
+        "symfony/console": "^5.4 || ^6",
+        "symfony/dependency-injection": "^5.4 || ^6",
+        "symfony/http-kernel": "^5.4 || ^6",
+        "symfony/security-core": "^5.4 || ^6",
+        "twig/twig": "^3",
+        "zicht/admin-bundle": "^8 || ^9.x-dev",
+        "zicht/framework-extra-bundle": "^10 || ^11.x-dev",
+        "zicht/url-bundle": "^7.2 || ^8.x-dev"
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^3",
-        "phpunit/phpunit": "^8"
+        "phpunit/phpunit": "^9.6"
     },
     "autoload": {
         "psr-4": {
@@ -41,5 +41,10 @@
         "lint": "php-cs-fixer fix --dry-run --diff -vvv",
         "lint-fix": "php-cs-fixer fix",
         "test": "phpunit"
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-feature-symfony-6": "7.x-dev"
+        }
     }
 }

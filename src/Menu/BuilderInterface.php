@@ -5,7 +5,6 @@
 
 namespace Zicht\Bundle\MenuBundle\Menu;
 
-use InvalidArgumentException;
 use Knp\Menu\ItemInterface;
 use Knp\Menu\MenuItem;
 use Symfony\Component\HttpFoundation\Request;
@@ -46,7 +45,7 @@ interface BuilderInterface
      * @param Request $request
      * @param ItemInterface $root
      * @return ItemInterface
-     * @throws InvalidArgumentException
+     * @throws \InvalidArgumentException
      */
     public function createMenu($request, $root);
 

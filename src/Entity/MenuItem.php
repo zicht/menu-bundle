@@ -1,7 +1,4 @@
 <?php
-/**
- * @copyright Zicht Online <http://www.zicht.nl>
- */
 
 namespace Zicht\Bundle\MenuBundle\Entity;
 
@@ -9,100 +6,72 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Gedmo\Tree\Entity\Repository\NestedTreeRepository;
 
-/**
- * @ORM\Entity
- * @ORM\Table(
- *      name="menu_item",
- *      indexes={
- *          @ORM\Index(columns={"name", "path"}),
- *          @ORM\Index(columns={"lft", "rgt", "root"}),
- *          @ORM\Index(columns={"root", "lft"}),
- *          @ORM\Index(columns={"lvl", "language"})
- *      }
- * )
- * @ORM\Entity(repositoryClass="Gedmo\Tree\Entity\Repository\NestedTreeRepository")
- * @Gedmo\Tree(type="nested")
- */
+#[ORM\Entity(repositoryClass: NestedTreeRepository::class)]
+#[ORM\Table(name: 'menu_item')]
+#[ORM\Index(columns: ['name', 'path'])]
+#[ORM\Index(columns: ['lft', 'rgt', 'root'])]
+#[ORM\Index(columns: ['root', 'lft'])]
+#[ORM\Index(columns: ['lvl', 'language'])]
+#[Gedmo\Tree(type: 'nested')]
 class MenuItem
 {
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
+    /** @var int */
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
+    #[ORM\Column(type: 'integer')]
     private $id;
 
-    /**
-     * @Gedmo\TreeLeft
-     * @ORM\Column(name="lft", type="integer")
-     */
+    /** @var int */
+    #[ORM\Column(type: 'integer')]
+    #[Gedmo\TreeLeft]
     private $lft;
 
-    /**
-     * @Gedmo\TreeLevel
-     * @ORM\Column(name="lvl", type="integer")
-     */
+    /** @var int */
+    #[ORM\Column(type: 'integer')]
+    #[Gedmo\TreeLevel]
     private $lvl;
 
-    /**
-     * @Gedmo\TreeRight
-     * @ORM\Column(name="rgt", type="integer")
-     */
+    /** @var int */
+    #[ORM\Column(type: 'integer')]
+    #[Gedmo\TreeRight]
     private $rgt;
 
-    /**
-     * @Gedmo\TreeRoot
-     * @ORM\Column(name="root", type="integer", nullable=true)
-     */
+    /** @var int|null */
+    #[ORM\Column(type: 'integer', nullable: true)]
+    #[Gedmo\TreeRoot]
     private $root;
 
-    /**
-     * @Gedmo\TreeParent
-     * @ORM\ManyToOne(targetEntity="MenuItem", inversedBy="children")
-     * @ORM\JoinColumn(name="parent_id", referencedColumnName="id", onDelete="SET NULL")
-     */
+    /** @var MenuItem|null */
+    #[ORM\ManyToOne(targetEntity: MenuItem::class, inversedBy: 'children')]
+    #[ORM\JoinColumn(name: 'parent_id', referencedColumnName: 'id', onDelete: 'SET NULL')]
+    #[Gedmo\TreeParent]
     private $parent;
 
-    /**
-     * @ORM\OneToMany(targetEntity="MenuItem", mappedBy="parent")
-     * @ORM\OrderBy({"lft" = "ASC"})
-     */
+    /** @var Collection<array-key, MenuItem> */
+    #[ORM\OneToMany(targetEntity: MenuItem::class, mappedBy: 'parent')]
+    #[ORM\OrderBy(['lft' => 'ASC'])]
     private $children;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="title", type="string", length=255)
-     */
+    /** @var string */
+    #[ORM\Column(type: 'string')]
     private $title;
 
-    /**
-     * @ORM\Column(name="language", type="string", length=5, nullable=true)
-     */
+    /** @var string|null */
+    #[ORM\Column(type: 'string', length: 5, nullable: true)]
     private $language = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="path", type="string", length=255, nullable=true)
-     */
+    /** @var string|null */
+    #[ORM\Column(type: 'string', nullable: true)]
     private $path = null;
 
-    /**
-     * Optional menu item name, used to hook dynamic items into the menu.
-     *
-     * @ORM\Column(name="name", type="string", length=255, nullable=true)
-     */
+    /** @var string|null Optional menu item name, used to hook dynamic items into the menu. */
+    #[ORM\Column(type: 'string', nullable: true)]
     private $name = null;
 
-    /**
-     * Optional menu item name, used to hook dynamic items into the menu.
-     *
-     * @ORM\Column(name="json_data", type="json", nullable=true)
-     */
+    /** @var array|null Additional menu item data. */
+    #[ORM\Column(type: 'json', nullable: true)]
     private $json_data = null;
 
     /** @var bool */
@@ -176,7 +145,6 @@ class MenuItem
     }
 
     /**
-     * @param MenuItem $parent
      * @return MenuItem
      */
     public function setParent(MenuItem $parent = null)

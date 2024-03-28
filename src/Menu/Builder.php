@@ -9,13 +9,13 @@ use Doctrine\Bundle\DoctrineBundle\Registry;
 use Doctrine\DBAL\Connection;
 use Doctrine\Persistence\ManagerRegistry;
 use Gedmo\Tree\Entity\Repository\NestedTreeRepository;
-use InvalidArgumentException;
 use Knp\Menu\FactoryInterface;
 use Knp\Menu\ItemInterface;
 use Knp\Menu\MenuItem;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\HttpFoundation\Request;
+use Zicht\Bundle\MenuBundle\Entity\MenuItem as MenuItemEntity;
 
 class Builder implements ContainerAwareInterface, BuilderInterface
 {
@@ -51,10 +51,10 @@ class Builder implements ContainerAwareInterface, BuilderInterface
     protected $defaultLocale;
 
     /**
-     * @param string $entity
+     * @param class-string $entity
      * @param string $defaultLocale The [null] variable was inherited from old code, and will always be overwritten with a valid locale.
      */
-    public function __construct(FactoryInterface $factory, ManagerRegistry $doctrine, $entity = 'ZichtMenuBundle:MenuItem', $defaultLocale = '[null]')
+    public function __construct(FactoryInterface $factory, ManagerRegistry $doctrine, $entity = MenuItemEntity::class, $defaultLocale = '[null]')
     {
         $this->factory = $factory;
         $this->em = $doctrine->getManager();
@@ -222,12 +222,12 @@ class Builder implements ContainerAwareInterface, BuilderInterface
      * @param Request $request
      * @param ItemInterface $root
      * @return ItemInterface
-     * @throws InvalidArgumentException
+     * @throws \InvalidArgumentException
      */
     public function createMenu($request, $root)
     {
         if (!$root) {
-            throw new InvalidArgumentException('Invalid root item');
+            throw new \InvalidArgumentException('Invalid root item');
         }
         $menu = $this->factory->createItem('root');
         $this->addMenuItemHierarchy($request, $this->menuItemEntity->childrenHierarchy($root), $menu);

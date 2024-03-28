@@ -5,10 +5,18 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
-### Removed
-- Removed PHP 8.0 from Github Q&A action
 ### Added|Changed|Deprecated|Removed|Fixed|Security
 Nothing so far
+
+## 7.0.0 - TBA
+### Added
+- Support for Symfony 6
+### Removed
+- Support for PHP 7.4
+- Support for Twig 2
+- Removed PHP 8.0 from Github Q&A action
+### Changed
+- Using attributes instead of annotations for ORM mapping and commands
 
 ## 6.1.1 - 2023-03-09
 ### Added

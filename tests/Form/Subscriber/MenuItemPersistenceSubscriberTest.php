@@ -3,7 +3,7 @@
  * @copyright Zicht Online <http://zicht.nl>
  */
 
-namespace ZichtTest\Bundle\MenuBundle\Manager;
+namespace ZichtTest\Bundle\MenuBundle\Form\Subscriber;
 
 use PHPUnit\Framework\TestCase;
 use Zicht\Bundle\MenuBundle\Form\Subscriber\MenuItemPersistenceSubscriber;

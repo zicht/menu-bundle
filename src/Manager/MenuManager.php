@@ -95,7 +95,7 @@ class MenuManager
      */
     public function getItem($path)
     {
-        return $this->doctrine->getManager()->getRepository('ZichtMenuBundle:MenuItem')->findOneByPath($path);
+        return $this->doctrine->getManager()->getRepository(MenuItem::class)->findOneByPath($path);
     }
 
     /**
@@ -148,7 +148,7 @@ class MenuManager
             join(
                 ' ',
                 [
-                    'SELECT m, root FROM ZichtMenuBundle:MenuItem m INNER JOIN ZichtMenuBundle:MenuItem root WITH m.root=root.id WHERE',
+                    'SELECT m, root FROM ' . MenuItem::class . ' m INNER JOIN ' . MenuItem::class . ' root WITH m.root=root.id WHERE',
                     join(' AND ', $where),
                     'ORDER BY m.lft',
                 ]

@@ -5,8 +5,9 @@
 
 namespace Zicht\Bundle\MenuBundle\Menu;
 
-use Doctrine\Bundle\DoctrineBundle\Registry;
+use Doctrine\Persistence\ManagerRegistry;
 use Knp\Menu\FactoryInterface;
+use Zicht\Bundle\MenuBundle\Entity\MenuItem as MenuItemEntity;
 
 /**
  * @deprecated The aliasing is now delegated to a response listener in the UrlBundle. Extend the regular Builder in stead
@@ -16,10 +17,9 @@ class UrlAliasingAwareBuilder extends Builder
     /**
      * Overridden to provide a DEPRECATED warning
      *
-     * @param Registry $doctrine
-     * @param string $entity
+     * @param class-string $entity
      */
-    public function __construct(FactoryInterface $factory, $doctrine, $entity = 'ZichtMenuBundle:MenuItem')
+    public function __construct(FactoryInterface $factory, ManagerRegistry $doctrine, $entity = MenuItemEntity::class)
     {
         parent::__construct($factory, $doctrine, $entity);
 

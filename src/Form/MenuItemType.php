@@ -51,7 +51,7 @@ class MenuItemType extends AbstractType
             ->add('title', TextType::class, ['required' => false, 'label' => 'form.label_title']);
     }
 
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'zicht_menu_item';
     }

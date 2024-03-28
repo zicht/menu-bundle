@@ -1,12 +1,9 @@
 <?php
 
-/**
- * @copyright Zicht Online <http://www.zicht.nl>
- */
-
 namespace Zicht\Bundle\MenuBundle\Command;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -14,12 +11,10 @@ use Symfony\Component\Console\Output\OutputInterface;
 /**
  * Command class for replacing public menu URI’s with internal ones.
  */
+#[AsCommand('zicht:menu:public-to-internal')]
 class PublicToInternalUriCommand extends Command
 {
-    /** @var EntityManagerInterface */
-    protected $entityManager;
-
-    protected static $defaultName = 'zicht:menu:public-to-internal';
+    protected EntityManagerInterface $entityManager;
 
     public function __construct(EntityManagerInterface $entityManager)
     {
@@ -36,7 +31,7 @@ class PublicToInternalUriCommand extends Command
     /**
      * @throws \Exception
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->entityManager->getConnection()->beginTransaction();
 
